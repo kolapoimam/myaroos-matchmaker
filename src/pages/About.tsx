@@ -105,6 +105,73 @@ const About = () => {
                   </p>
                 </AccordionContent>
               </AccordionItem>
+              
+              <AccordionItem value="item-6">
+                <AccordionTrigger>
+                  Can I use this app for arranged marriage prospects?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    Absolutely! MyAroos is especially useful for arranged marriage scenarios where you may have limited information about the potential spouse. 
+                    The compatibility test can help guide your conversations during initial meetings and identify areas where you should seek more information. 
+                    Many of our users find it helpful to complete the compatibility test after meeting a potential spouse suggested by family members.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="item-7">
+                <AccordionTrigger>
+                  How often should I take the marriage readiness quiz?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    We recommend taking the marriage readiness quiz at least once a year if you're actively seeking marriage. Personal growth 
+                    happens continuously, and your readiness may change over time. If you've been working on specific areas of improvement, you 
+                    might retake it after a few months to track your progress. The quiz is designed to be a tool for self-reflection rather than 
+                    a one-time assessment.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="item-8">
+                <AccordionTrigger>
+                  Does the app consider cultural differences in marriage expectations?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    Yes, our compatibility tool recognizes that Muslims come from diverse cultural backgrounds with varying customs and traditions. 
+                    While we prioritize Islamic principles that apply universally, we acknowledge cultural differences in our assessment questions. 
+                    We encourage users to discuss cultural expectations openly, as these can significantly impact marital harmony.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="item-9">
+                <AccordionTrigger>
+                  Can converts to Islam use this app effectively?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    Absolutely! MyAroos is designed to be accessible to all Muslims, including recent converts. We've intentionally created our 
+                    tools to focus on core Islamic values while being inclusive of people at different stages in their Islamic journey. If you're 
+                    a convert, the marriage readiness quiz can be particularly helpful in identifying areas where you might benefit from more 
+                    Islamic knowledge or community support before marriage.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="item-10">
+                <AccordionTrigger>
+                  How can I contribute feedback to improve MyAroos?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    We welcome feedback from our users! Your insights help us make MyAroos more beneficial for the Muslim community. You can share your 
+                    suggestions, report any issues, or tell us your success stories by emailing us. We particularly value feedback from Islamic scholars, 
+                    marriage counselors, and community leaders who can help ensure our content remains authentic and beneficial.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
             
             <div className="bg-brand-green text-white p-8 rounded-lg text-center">

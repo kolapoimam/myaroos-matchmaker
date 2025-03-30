@@ -5,34 +5,34 @@ import { useEffect, useState } from "react";
 
 const testimonials = [
   {
-    name: "Fatima H.",
-    location: "London, UK",
-    testimonial: "The Marriage Readiness Quiz helped me realize I had important areas to work on before finding a spouse. Alhamdulillah for this tool!",
-    avatar: "FH"
+    name: "Aisha B.",
+    location: "Lagos, Nigeria",
+    testimonial: "The Marriage Readiness Quiz helped me realize I needed to work on my financial planning before considering marriage. Alhamdulillah for this guidance!",
+    avatar: "AB"
   },
   {
-    name: "Ahmed K.",
-    location: "Toronto, Canada",
-    testimonial: "The compatibility tool confirmed what I felt in my heart. It helped me have an honest conversation with my potential spouse.",
-    avatar: "AK"
+    name: "Ibrahim K.",
+    location: "Abuja, Nigeria",
+    testimonial: "The compatibility tool confirmed what I felt about a suitor. It helped my family and I have an honest conversation about our different expectations.",
+    avatar: "IK"
   },
   {
-    name: "Aisha M.",
-    location: "Dubai, UAE",
-    testimonial: "I was unsure about a suitor, but the compatibility test revealed we had different religious values. Saved me future heartache!",
-    avatar: "AM"
+    name: "Fatima M.",
+    location: "Kano, Nigeria",
+    testimonial: "I was unsure about a potential spouse, but the compatibility test revealed we had different approaches to religious practice. Saved me future heartache!",
+    avatar: "FM"
   },
   {
-    name: "Anonymous",
-    location: "Kuala Lumpur, Malaysia",
-    testimonial: "After scoring high on compatibility, we used the marriage checklist to guide our pre-nikkah conversations. So helpful!",
-    avatar: "A"
+    name: "Yusuf O.",
+    location: "Accra, Ghana",
+    testimonial: "After scoring high on compatibility, we used the marriage checklist to guide our conversations before meeting the families. Extremely helpful!",
+    avatar: "YO"
   },
   {
-    name: "Yusuf R.",
-    location: "Chicago, USA",
-    testimonial: "The respectful breakup message generator helped me end things kindly when I realized we weren't compatible. Jazakallah khair!",
-    avatar: "YR"
+    name: "Aminah J.",
+    location: "Nairobi, Kenya",
+    testimonial: "The respectful breakup message generator helped me end things kindly when I realized we weren't compatible. Jazakallah khair for this tool!",
+    avatar: "AJ"
   }
 ];
 
