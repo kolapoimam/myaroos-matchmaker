@@ -19,39 +19,45 @@ import {
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
-// Separated interfaces to improve readability
+// Updated interface to match usage in pages
 interface ResultsActionsProps {
-  resultsRef: React.RefObject<HTMLDivElement>;
   title: string;
-  description: string;
-  score?: number | string;
+  subtitle?: string;  // Made optional for backward compatibility
+  description?: string; // Keeping this for backward compatibility
+  score: number;
+  type?: string;
+  shareText?: string;
   maxScore?: number;
-}
-
-interface ShareOptions {
-  title: string;
-  text: string;
-  url?: string;
+  resultsRef?: React.RefObject<HTMLDivElement>;
 }
 
 const ResultsActions = ({ 
-  resultsRef, 
+  resultsRef,
   title, 
+  subtitle,
   description, 
   score, 
+  type,
+  shareText,
   maxScore 
 }: ResultsActionsProps) => {
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
+  // Use either subtitle or description (for backward compatibility)
+  const displayDescription = subtitle || description;
+
   // Extracted download functions
   const downloadAsImage = async () => {
-    if (!resultsRef.current) return;
+    // Find the results container if no ref is provided
+    const targetElement = resultsRef?.current || document.getElementById('results-container');
+    if (!targetElement) return;
     
     try {
-      const canvas = await html2canvas(resultsRef.current, {
+      const canvas = await html2canvas(targetElement, {
         scale: 2,
         backgroundColor: null,
+        useCORS: true,
       });
       
       const date = new Date().toLocaleString();
@@ -67,12 +73,15 @@ const ResultsActions = ({
   };
 
   const downloadAsPdf = async () => {
-    if (!resultsRef.current) return;
+    // Find the results container if no ref is provided
+    const targetElement = resultsRef?.current || document.getElementById('results-container');
+    if (!targetElement) return;
     
     try {
-      const canvas = await html2canvas(resultsRef.current, {
+      const canvas = await html2canvas(targetElement, {
         scale: 2,
         backgroundColor: null,
+        useCORS: true,
       });
       
       const date = new Date().toLocaleString();
@@ -114,27 +123,28 @@ const ResultsActions = ({
     }
   };
 
+  // Use provided shareText or generate one
+  const getShareText = () => {
+    if (shareText) return shareText;
+    
+    const scoreText = score !== undefined && maxScore !== undefined
+      ? `${score}/${maxScore} (${Math.round((Number(score) / Number(maxScore)) * 100)}%)`
+      : score !== undefined ? `${score}%` : '';
+      
+    return `${title}\n${displayDescription || ''}\n${scoreText}\n\nGenerated with MyAroos - Islamic Marriage Readiness & Compatibility Tool`;
+  };
+
   // Extracted share functionality
   const shareContent = () => {
     setIsShareDialogOpen(true);
   };
 
   const copyToClipboard = () => {
-    const scoreText = score !== undefined && maxScore !== undefined
-      ? `${score}/${maxScore} (${Math.round((Number(score) / Number(maxScore)) * 100)}%)`
-      : '';
-      
-    const shareText = `${title}\n${description}\n${scoreText}\n\nGenerated with MyAroos - Islamic Marriage Readiness & Compatibility Tool`;
-    
-    navigator.clipboard.writeText(shareText).then(() => {
+    navigator.clipboard.writeText(getShareText()).then(() => {
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
     });
   };
-
-  const shareText = score !== undefined && maxScore !== undefined
-    ? `${title}: ${score}/${maxScore} (${Math.round((Number(score) / Number(maxScore)) * 100)}%)\n${description}\n\nGenerated with MyAroos - Islamic Marriage Readiness & Compatibility Tool`
-    : `${title}\n${description}\n\nGenerated with MyAroos - Islamic Marriage Readiness & Compatibility Tool`;
 
   return (
     <div className="flex flex-wrap gap-2 mt-4 justify-center">
@@ -162,7 +172,7 @@ const ResultsActions = ({
             Share
           </Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-md font-poppins">
           <DialogHeader>
             <DialogTitle>Share your results</DialogTitle>
             <DialogDescription>
@@ -171,7 +181,7 @@ const ResultsActions = ({
           </DialogHeader>
           <div className="flex flex-col gap-4">
             <div className="bg-muted p-4 rounded-md">
-              <p className="text-sm">{shareText}</p>
+              <p className="text-sm">{getShareText()}</p>
             </div>
             <div className="flex justify-between">
               <Button
@@ -187,7 +197,7 @@ const ResultsActions = ({
                   size="icon"
                   variant="outline"
                   className="rounded-full bg-[#1877F2] hover:bg-[#1877F2]/90 text-white"
-                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${encodeURIComponent(shareText)}`, '_blank')}
+                  onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${window.location.href}&quote=${encodeURIComponent(getShareText())}`, '_blank')}
                 >
                   <Facebook className="h-4 w-4" />
                 </Button>
@@ -195,7 +205,7 @@ const ResultsActions = ({
                   size="icon"
                   variant="outline"
                   className="rounded-full bg-[#1DA1F2] hover:bg-[#1DA1F2]/90 text-white"
-                  onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`, '_blank')}
+                  onClick={() => window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(getShareText())}`, '_blank')}
                 >
                   <Twitter className="h-4 w-4" />
                 </Button>
@@ -203,7 +213,7 @@ const ResultsActions = ({
                   size="icon"
                   variant="outline"
                   className="rounded-full bg-[#0077B5] hover:bg-[#0077B5]/90 text-white"
-                  onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(description)}`, '_blank')}
+                  onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}&title=${encodeURIComponent(title)}&summary=${encodeURIComponent(displayDescription || '')}`, '_blank')}
                 >
                   <Linkedin className="h-4 w-4" />
                 </Button>
@@ -211,7 +221,7 @@ const ResultsActions = ({
                   size="icon"
                   variant="outline"
                   className="rounded-full bg-[#25D366] hover:bg-[#25D366]/90 text-white"
-                  onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank')}
+                  onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(getShareText())}`, '_blank')}
                 >
                   <MessageCircle className="h-4 w-4" />
                 </Button>
