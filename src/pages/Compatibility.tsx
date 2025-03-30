@@ -104,7 +104,7 @@ const compatibilityQuestions = [
       },
       {
         id: "quran-reading",
-        question: "How often do they read or listen to Quran?",
+        magiquequestion: "How often do they read or listen to Quran?",
         options: [
           { value: "daily", label: "Daily, with understanding", score: 10 },
           { value: "weekly", label: "Weekly, consistent schedule", score: 7 },
@@ -331,7 +331,7 @@ const compatibilityQuestions = [
         question: "What is their level of education or value placed on education?",
         options: [
           { value: "highly-educated", label: "Highly educated and values continuous learning", score: 5 },
-          { value: "college-education", label: "College educated and values knowledge", score:  personally5 },
+          { value: "college-education", label: "College educated and values knowledge", score: 5 },
           { value: "vocational", label: "Vocational/specialized training", score: 5 },
           { value: "high-school", label: "High school education", score: 5 },
           { value: "self-taught", label: "Self-taught/informal education", score: 5 },
@@ -467,7 +467,6 @@ const Compatibility = () => {
   };
 
   const validateCompatibilityAnswers = () => {
-    // Check if at least one question from each category is answered
     for (const category of compatibilityQuestions) {
       const hasAnswer = category.questions.some(
         (question) => answers[question.id] !== undefined
@@ -497,10 +496,8 @@ const Compatibility = () => {
       }
     } else if (activeTab === "compatibility") {
       if (validateCompatibilityAnswers()) {
-        // Generate tips for low scoring areas
         const tips: Record<string, string[]> = {};
         
-        // Check religious values alignment
         const sharedValues = yourInfo.religiousValues.filter((value) =>
           suitorInfo.religiousValues.includes(value)
         );
@@ -509,13 +506,12 @@ const Compatibility = () => {
         
         if (religiousValueScore < 60) {
           tips["Religious Values"] = [
-            "Discuss your your non-negotiable values clearly before proceeding further",
+            "Discuss your non-negotiable values clearly before proceeding further",
             "Consider which values you might be flexible on and which ones are absolute must-haves",
             "Ask about the reasoning behind their values to better understand their perspective"
           ];
         }
         
-        // Check religious commitment alignment
         if (yourInfo.religiousCommitment !== suitorInfo.religiousCommitment) {
           tips["Religious Commitment"] = [
             "Discuss expectations regarding religious growth in marriage",
@@ -524,7 +520,6 @@ const Compatibility = () => {
           ];
         }
         
-        // Check category scores
         compatibilityQuestions.forEach((category) => {
           let categoryScore = 0;
           let categoryMaxScore = 0;
@@ -539,7 +534,6 @@ const Compatibility = () => {
               
               if (option) {
                 categoryScore += option.score;
-                // For questions where alignment matters (not personality matches)
                 if (question.id !== "personality-type" && option.score < 5) {
                   switch (question.id) {
                     case "daily-prayers":
@@ -558,7 +552,6 @@ const Compatibility = () => {
                       categoryTips.push("Discuss and practice healthy conflict resolution techniques together");
                       break;
                     default:
-                      // Generic tips based on category
                       if (category.category === "Core Religious Practice") {
                         categoryTips.push("Discuss expectations for religious practices in your household");
                       } else if (category.category === "Long-Term Compatibility") {
@@ -576,7 +569,7 @@ const Compatibility = () => {
           if (answeredQuestions > 0) {
             const normScore = Math.round((categoryScore / categoryMaxScore) * 100);
             if (normScore < 70 && categoryTips.length > 0) {
-              tips[category.category] = [...new Set(categoryTips)]; // Remove duplicates
+              tips[category.category] = [...new Set(categoryTips)];
             }
           }
         });
@@ -598,17 +591,14 @@ const Compatibility = () => {
 
   const calculateCompatibilityScore = () => {
     let totalScore = 0;
-    let maxPossibleScore = 0;
     let answeredQuestions = 0;
     
-    // Religious values match
     const sharedValues = yourInfo.religiousValues.filter((value) =>
       suitorInfo.religiousValues.includes(value)
     );
     
     const valueScore = (sharedValues.length / yourInfo.religiousValues.length) * 40;
     
-    // Religious commitment match (0-20 points)
     let commitmentScore = 0;
     if (yourInfo.religiousCommitment === suitorInfo.religiousCommitment) {
       commitmentScore = 20;
@@ -619,7 +609,6 @@ const Compatibility = () => {
       commitmentScore = 10;
     }
     
-    // Compatibility questions (0-40 points)
     let questionsScore = 0;
     let questionsMaxScore = 0;
     
@@ -632,12 +621,10 @@ const Compatibility = () => {
           if (option) {
             questionsScore += option.score;
             
-            // For personality questions, all options have the same score
-            // For other questions, use the max score
             const maxScore = question.id.includes("personality") || 
-                             question.id === "weekend-preference" ||
-                             question.id === "polygamy" ||
-                             question.id === "children"
+                            question.id === "weekend-preference" ||
+                            question.id === "polygamy" ||
+                            question.id === "children"
               ? option.score 
               : Math.max(...question.options.map((o) => o.score));
               
@@ -647,7 +634,6 @@ const Compatibility = () => {
       });
     });
     
-    // Normalize questions score to a 0-40 scale
     const normalizedQuestionsScore = answeredQuestions > 0
       ? (questionsScore / questionsMaxScore) * 40
       : 0;
@@ -698,13 +684,11 @@ const Compatibility = () => {
       "Cultural & Educational Compatibility": 0,
     };
     
-    // Religious values match
     const sharedValues = yourInfo.religiousValues.filter((value) =>
       suitorInfo.religiousValues.includes(value)
     );
     scores["Religious Values"] = Math.round((sharedValues.length / yourInfo.religiousValues.length) * 100);
     
-    // Religious commitment match
     if (yourInfo.religiousCommitment === suitorInfo.religiousCommitment) {
       scores["Religious Commitment"] = 100;
     } else if (
@@ -716,7 +700,6 @@ const Compatibility = () => {
       scores["Religious Commitment"] = 25;
     }
     
-    // Compatibility questions
     compatibilityQuestions.forEach((category) => {
       let categoryScore = 0;
       let categoryMaxScore = 0;
@@ -902,7 +885,9 @@ const Compatibility = () => {
                         Select Must-Have Religious Values (Select at least one)
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                        {yourInfo.gender === "male" && 
+                        {!yourInfo.gender ? (
+                          <p className="text-muted-foreground">Please select your gender to see relevant religious values.</p>
+                        ) : yourInfo.gender === "male" ? (
                           maleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
                               <Checkbox
@@ -913,8 +898,7 @@ const Compatibility = () => {
                               <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
-                        }
-                        {yourInfo.gender === "female" && 
+                        ) : yourInfo.gender === "female" ? (
                           femaleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
                               <Checkbox
@@ -925,8 +909,7 @@ const Compatibility = () => {
                               <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
-                        }
-                        {yourInfo.gender === "prefer-not-to-say" && 
+                        ) : (
                           [...maleReligiousValues, ...femaleReligiousValues]
                             .filter((value, index, self) => 
                               index === self.findIndex((v) => v.id === value.id)
@@ -941,7 +924,7 @@ const Compatibility = () => {
                                 <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
                               </div>
                             ))
-                        }
+                        )}
                       </div>
                     </div>
                   </div>
@@ -1010,7 +993,9 @@ const Compatibility = () => {
                         Select Shared Religious Values
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                        {suitorInfo.gender === "male" && 
+                        {!suitorInfo.gender ? (
+                          <p className="text-muted-foreground">Please select your gender first to see suitor's relevant religious values.</p>
+                        ) : suitorInfo.gender === "male" ? (
                           maleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
                               <Checkbox
@@ -1021,8 +1006,7 @@ const Compatibility = () => {
                               <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
-                        }
-                        {suitorInfo.gender === "female" && 
+                        ) : suitorInfo.gender === "female" ? (
                           femaleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
                               <Checkbox
@@ -1033,8 +1017,7 @@ const Compatibility = () => {
                               <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
-                        }
-                        {suitorInfo.gender === "prefer-not-to-say" && 
+                        ) : (
                           [...maleReligiousValues, ...femaleReligiousValues]
                             .filter((value, index, self) => 
                               index === self.findIndex((v) => v.id === value.id)
@@ -1049,7 +1032,7 @@ const Compatibility = () => {
                                 <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
                               </div>
                             ))
-                        }
+                        )}
                       </div>
                     </div>
                   </div>
