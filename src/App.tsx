@@ -16,7 +16,6 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <div>
-        <h1>Myaroos Matchmaker</h1> {/* Add this to test */}
         <DefaultToaster />
         <SonnerToaster />
         <BrowserRouter>
