@@ -25,10 +25,10 @@ const Index = () => {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                   <Button asChild size="lg">
-                    <Link to="/marriage-readiness">Readiness Quiz</Link>
+                    <Link to="/marriage-readiness">Try Readiness Quiz</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <Link to="/compatibility">Compatibility Quiz</Link>
+                    <Link to="/compatibility">Get Compatibility Score</Link>
                   </Button>
                 </div>
               </div>
