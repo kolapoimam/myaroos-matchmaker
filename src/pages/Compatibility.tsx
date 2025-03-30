@@ -18,6 +18,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import CompatibilityGraph from "@/components/CompatibilityGraph";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import ResultsActions from "@/components/ResultsActions";
 
 // Define the religious values
 const maleReligiousValues = [
@@ -36,6 +37,10 @@ const maleReligiousValues = [
   { id: "arabic", label: "Speaks Arabic or is willing to learn" },
   { id: "quran", label: "Reads Quran regularly" },
   { id: "islamic-knowledge", label: "Seeks Islamic knowledge actively" },
+  { id: "cooking", label: "Has cooking skills" },
+  { id: "children", label: "Wants children" },
+  { id: "tahajjud", label: "Prays Tahajjud regularly" },
+  { id: "fasting", label: "Observes voluntary fasts" },
 ];
 
 const femaleReligiousValues = [
@@ -53,6 +58,11 @@ const femaleReligiousValues = [
   { id: "homeschooling", label: "Open to homeschooling children with Islamic studies" },
   { id: "quran", label: "Reads Quran regularly" },
   { id: "islamic-knowledge", label: "Seeks Islamic knowledge actively" },
+  { id: "cooking", label: "Has cooking skills" },
+  { id: "children", label: "Wants children" },
+  { id: "tahajjud", label: "Prays Tahajjud regularly" },
+  { id: "fasting", label: "Observes voluntary fasts" },
+  { id: "masjid", label: "Attends masjid regularly" },
 ];
 
 // Define compatibility questions
@@ -64,27 +74,66 @@ const compatibilityQuestions = [
         id: "daily-prayers",
         question: "Does this person pray five times daily?",
         options: [
-          { value: "yes", label: "Yes", score: 10 },
-          { value: "sometimes", label: "Sometimes", score: 5 },
-          { value: "no", label: "No", score: 0 },
+          { value: "yes-on-time", label: "Yes, consistently on time", score: 10 },
+          { value: "yes", label: "Yes, but sometimes delayed", score: 8 },
+          { value: "sometimes", label: "Sometimes (3-4 prayers daily)", score: 5 },
+          { value: "rarely", label: "Rarely (1-2 prayers daily)", score: 2 },
+          { value: "no", label: "No, not currently praying", score: 0 },
         ],
       },
       {
         id: "ramadan-fasting",
         question: "Do they fast during Ramadan?",
         options: [
-          { value: "yes", label: "Yes", score: 10 },
-          { value: "somewhat", label: "Somewhat", score: 5 },
-          { value: "no", label: "No", score: 0 },
+          { value: "all", label: "Yes, all days with enthusiasm", score: 10 },
+          { value: "most", label: "Yes, most days", score: 8 },
+          { value: "half", label: "About half the month", score: 5 },
+          { value: "few", label: "Only a few days", score: 3 },
+          { value: "no", label: "No, rarely or never", score: 0 },
         ],
       },
       {
         id: "avoid-riba",
         question: "Do they avoid riba (interest-based transactions)?",
         options: [
-          { value: "strictly", label: "Strictly", score: 10 },
-          { value: "sometimes", label: "Sometimes", score: 5 },
-          { value: "not-concerned", label: "Not Concerned", score: 0 },
+          { value: "strictly", label: "Strictly, including student loans and mortgages", score: 10 },
+          { value: "mostly", label: "Mostly, with few exceptions when necessary", score: 7 },
+          { value: "sometimes", label: "Sometimes, but has some interest-based loans", score: 5 },
+          { value: "rarely", label: "Rarely thinks about it", score: 2 },
+          { value: "not-concerned", label: "Not concerned about Islamic finance", score: 0 },
+        ],
+      },
+      {
+        id: "quran-reading",
+        question: "How often do they read or listen to Quran?",
+        options: [
+          { value: "daily", label: "Daily, with understanding", score: 10 },
+          { value: "weekly", label: "Weekly, consistent schedule", score: 7 },
+          { value: "occasionally", label: "Occasionally, especially during Ramadan", score: 5 },
+          { value: "rarely", label: "Rarely, only on special occasions", score: 3 },
+          { value: "never", label: "Never or almost never", score: 0 },
+        ],
+      },
+      {
+        id: "islamic-knowledge",
+        question: "Do they actively seek Islamic knowledge?",
+        options: [
+          { value: "consistently", label: "Consistently through classes and self-study", score: 10 },
+          { value: "regularly", label: "Regularly through online lectures", score: 7 },
+          { value: "occasionally", label: "Occasionally when interested in a topic", score: 5 },
+          { value: "rarely", label: "Rarely seeks knowledge", score: 2 },
+          { value: "never", label: "Never actively seeks knowledge", score: 0 },
+        ],
+      },
+      {
+        id: "halal-lifestyle",
+        question: "How strict are they about following a halal lifestyle (food, entertainment, etc.)?",
+        options: [
+          { value: "very-strict", label: "Very strict in all aspects", score: 10 },
+          { value: "mostly-strict", label: "Mostly strict with occasional exceptions", score: 7 },
+          { value: "moderately", label: "Moderately observant, flexible on some things", score: 5 },
+          { value: "minimally", label: "Minimally observant, only basic requirements", score: 3 },
+          { value: "not-observant", label: "Not particularly observant", score: 0 },
         ],
       },
     ],
@@ -96,27 +145,77 @@ const compatibilityQuestions = [
         id: "personality-type",
         question: "Are they introverted or extroverted?",
         options: [
-          { value: "introvert", label: "Introvert", score: 5 },
-          { value: "extrovert", label: "Extrovert", score: 5 },
-          { value: "ambivert", label: "Ambivert", score: 5 },
+          { value: "strongly-introvert", label: "Strongly introverted", score: 5 },
+          { value: "introvert", label: "Somewhat introverted", score: 5 },
+          { value: "ambivert", label: "Ambivert (balanced)", score: 5 },
+          { value: "extrovert", label: "Somewhat extroverted", score: 5 },
+          { value: "strongly-extrovert", label: "Strongly extroverted", score: 5 },
+        ],
+      },
+      {
+        id: "communication-style",
+        question: "How would you describe their communication style?",
+        options: [
+          { value: "direct", label: "Direct and straightforward", score: 5 },
+          { value: "diplomatic", label: "Diplomatic and tactful", score: 5 },
+          { value: "reflective", label: "Reflective and thoughtful", score: 5 },
+          { value: "emotional", label: "Emotional and expressive", score: 5 },
+          { value: "avoidant", label: "Avoidant of difficult topics", score: 2 },
+        ],
+      },
+      {
+        id: "conflict-resolution",
+        question: "How do they handle conflicts and disagreements?",
+        options: [
+          { value: "calm-discussion", label: "Through calm, solution-focused discussion", score: 10 },
+          { value: "compromise", label: "Through compromise and understanding", score: 8 },
+          { value: "time-out", label: "Taking a time-out, then revisiting", score: 7 },
+          { value: "emotional", label: "Emotionally, occasionally heated", score: 3 },
+          { value: "avoidance", label: "Avoiding conflict altogether", score: 1 },
         ],
       },
       {
         id: "family-career",
         question: "Do they prioritize family over career?",
         options: [
-          { value: "yes", label: "Yes", score: 10 },
-          { value: "balanced", label: "Balanced", score: 7 },
-          { value: "no", label: "No", score: 3 },
+          { value: "family-first", label: "Family always comes first", score: 10 },
+          { value: "mostly-family", label: "Mostly family, but career is important", score: 8 },
+          { value: "balanced", label: "Balanced approach to both", score: 7 },
+          { value: "mostly-career", label: "Career-focused with family time", score: 5 },
+          { value: "career-first", label: "Career is the top priority", score: 3 },
         ],
       },
       {
         id: "weekend-preference",
         question: "How do they prefer to spend weekends?",
         options: [
-          { value: "home", label: "At home", score: 5 },
-          { value: "socializing", label: "Socializing", score: 5 },
-          { value: "balanced", label: "Balanced mix", score: 5 },
+          { value: "home", label: "Relaxing at home", score: 5 },
+          { value: "family", label: "With family activities", score: 5 },
+          { value: "outdoors", label: "Outdoor activities and adventures", score: 5 },
+          { value: "socializing", label: "Socializing with friends", score: 5 },
+          { value: "productive", label: "Being productive (work/study/projects)", score: 5 },
+        ],
+      },
+      {
+        id: "life-pace",
+        question: "What pace of life do they prefer?",
+        options: [
+          { value: "slow", label: "Slow and relaxed, minimal commitments", score: 5 },
+          { value: "moderate", label: "Moderate pace with planned activities", score: 5 },
+          { value: "busy", label: "Busy and structured with many activities", score: 5 },
+          { value: "dynamic", label: "Dynamic and spontaneous", score: 5 },
+          { value: "hectic", label: "Fast-paced and hectic", score: 5 },
+        ],
+      },
+      {
+        id: "cleanliness",
+        question: "How would you describe their cleanliness and organization habits?",
+        options: [
+          { value: "very-organized", label: "Very organized and clean", score: 5 },
+          { value: "mostly-organized", label: "Mostly organized with occasional messiness", score: 5 },
+          { value: "average", label: "Average cleanliness", score: 5 },
+          { value: "somewhat-messy", label: "Somewhat messy but functional", score: 5 },
+          { value: "very-messy", label: "Very messy and disorganized", score: 5 },
         ],
       },
     ],
@@ -125,30 +224,129 @@ const compatibilityQuestions = [
     category: "Long-Term Compatibility",
     questions: [
       {
+        id: "financial-management",
+        question: "How do they approach financial management?",
+        options: [
+          { value: "very-responsible", label: "Very responsible, saves regularly", score: 10 },
+          { value: "responsible", label: "Responsible with occasional splurges", score: 8 },
+          { value: "balanced", label: "Balanced approach to saving and spending", score: 7 },
+          { value: "impulsive", label: "Somewhat impulsive spending habits", score: 3 },
+          { value: "irresponsible", label: "Struggles with financial management", score: 1 },
+        ],
+      },
+      {
         id: "polygamy",
         question: "Are they open to polygamy?",
         options: [
-          { value: "yes", label: "Yes", score: 5 },
-          { value: "no", label: "No", score: 5 },
+          { value: "yes-actively", label: "Yes, actively considering it", score: 5 },
+          { value: "yes", label: "Yes, if circumstances warrant it", score: 5 },
+          { value: "maybe", label: "Maybe, under specific conditions", score: 5 },
           { value: "not-sure", label: "Not Sure", score: 5 },
+          { value: "no", label: "No", score: 5 },
         ],
       },
       {
         id: "children",
         question: "Do they want children?",
         options: [
-          { value: "yes", label: "Yes", score: 5 },
-          { value: "no", label: "No", score: 5 },
-          { value: "undecided", label: "Undecided", score: 5 },
+          { value: "yes-many", label: "Yes, many (4+)", score: 5 },
+          { value: "yes-few", label: "Yes, a few (1-3)", score: 5 },
+          { value: "undecided", label: "Undecided but open to it", score: 5 },
+          { value: "prefer-not", label: "Prefer not to have children", score: 5 },
+          { value: "no", label: "Definitely no children", score: 5 },
+        ],
+      },
+      {
+        id: "parenting-style",
+        question: "What's their parenting style or preference?",
+        options: [
+          { value: "islamic-strict", label: "Islamic-focused with structure and discipline", score: 5 },
+          { value: "islamic-balanced", label: "Islamic-focused with balanced approach", score: 5 },
+          { value: "permissive", label: "Permissive but with Islamic values", score: 5 },
+          { value: "western-influenced", label: "Modern/Western-influenced approach", score: 5 },
+          { value: "not-thought-about", label: "Haven't thought much about it", score: 5 },
+        ],
+      },
+      {
+        id: "in-laws",
+        question: "How do they feel about living with or near in-laws?",
+        options: [
+          { value: "very-comfortable", label: "Very comfortable living with in-laws", score: 5 },
+          { value: "comfortable", label: "Comfortable living near in-laws", score: 5 },
+          { value: "temporary", label: "Comfortable temporarily if needed", score: 5 },
+          { value: "prefer-distance", label: "Prefers some distance from in-laws", score: 5 },
+          { value: "uncomfortable", label: "Uncomfortable with close in-law relationships", score: 5 },
         ],
       },
       {
         id: "relocate",
         question: "Are they willing to relocate for marriage?",
         options: [
-          { value: "yes", label: "Yes", score: 10 },
-          { value: "maybe", label: "Maybe", score: 5 },
-          { value: "no", label: "No", score: 0 },
+          { value: "yes-anywhere", label: "Yes, anywhere including internationally", score: 10 },
+          { value: "yes-within-country", label: "Yes, within the same country", score: 8 },
+          { value: "yes-nearby", label: "Yes, but only within nearby areas", score: 6 },
+          { value: "maybe", label: "Maybe under specific circumstances", score: 5 },
+          { value: "no", label: "No, not willing to relocate", score: 0 },
+        ],
+      },
+      {
+        id: "life-goals",
+        question: "Do they have clear life goals and plans?",
+        options: [
+          { value: "very-clear", label: "Very clear goals with action plans", score: 10 },
+          { value: "clear", label: "Clear goals but flexible plans", score: 8 },
+          { value: "general", label: "General direction but no specific plans", score: 6 },
+          { value: "figuring-out", label: "Still figuring things out", score: 4 },
+          { value: "no-goals", label: "No clear goals or plans", score: 2 },
+        ],
+      },
+    ],
+  },
+  {
+    category: "Cultural & Educational Compatibility",
+    questions: [
+      {
+        id: "cultural-background",
+        question: "How important is their cultural background in daily life?",
+        options: [
+          { value: "very-important", label: "Very important, practices cultural traditions", score: 5 },
+          { value: "somewhat-important", label: "Somewhat important, observes major customs", score: 5 },
+          { value: "balanced", label: "Balanced between culture and Islamic practices", score: 5 },
+          { value: "less-important", label: "Less important than Islamic identity", score: 5 },
+          { value: "not-important", label: "Not important at all", score: 5 },
+        ],
+      },
+      {
+        id: "mixed-gender-settings",
+        question: "How do they behave in mixed-gender settings?",
+        options: [
+          { value: "strict-segregation", label: "Prefers strict segregation", score: 5 },
+          { value: "limited-interaction", label: "Limited, necessary interaction only", score: 5 },
+          { value: "modest-interaction", label: "Modest interaction with boundaries", score: 5 },
+          { value: "comfortable-boundaries", label: "Comfortable but maintains Islamic boundaries", score: 5 },
+          { value: "very-comfortable", label: "Very comfortable with minimal boundaries", score: 5 },
+        ],
+      },
+      {
+        id: "education",
+        question: "What is their level of education or value placed on education?",
+        options: [
+          { value: "highly-educated", label: "Highly educated and values continuous learning", score: 5 },
+          { value: "college-education", label: "College educated and values knowledge", score: 5 },
+          { value: "vocational", label: "Vocational/specialized training", score: 5 },
+          { value: "high-school", label: "High school education", score: 5 },
+          { value: "self-taught", label: "Self-taught/informal education", score: 5 },
+        ],
+      },
+      {
+        id: "language",
+        question: "Do they speak or are willing to learn your native language?",
+        options: [
+          { value: "fluent", label: "Already fluent in my language", score: 5 },
+          { value: "learning", label: "Currently learning my language", score: 5 },
+          { value: "willing", label: "Willing to learn my language", score: 5 },
+          { value: "not-sure", label: "Not sure if they're willing to learn", score: 5 },
+          { value: "not-willing", label: "Not willing to learn my language", score: 5 },
         ],
       },
     ],
@@ -174,6 +372,7 @@ const Compatibility = () => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([compatibilityQuestions[0].category]);
+  const [lowScoreAreas, setLowScoreAreas] = useState<Record<string, string[]>>({});
   const { toast } = useToast();
 
   const handleYourInfoChange = (field: string, value: string) => {
@@ -292,7 +491,93 @@ const Compatibility = () => {
       }
     } else if (activeTab === "compatibility") {
       if (validateCompatibilityAnswers()) {
+        // Generate tips for low scoring areas
+        const tips: Record<string, string[]> = {};
+        
+        // Check religious values alignment
+        const sharedValues = yourInfo.religiousValues.filter((value) =>
+          suitorInfo.religiousValues.includes(value)
+        );
+        
+        const religiousValueScore = (sharedValues.length / yourInfo.religiousValues.length) * 100;
+        
+        if (religiousValueScore < 60) {
+          tips["Religious Values"] = [
+            "Discuss your non-negotiable values clearly before proceeding further",
+            "Consider which values you might be flexible on and which ones are absolute must-haves",
+            "Ask about the reasoning behind their values to better understand their perspective"
+          ];
+        }
+        
+        // Check religious commitment alignment
+        if (yourInfo.religiousCommitment !== suitorInfo.religiousCommitment) {
+          tips["Religious Commitment"] = [
+            "Discuss expectations regarding religious growth in marriage",
+            "Consider how differences in practice might affect daily life together",
+            "Talk about how you would handle religious teaching for children"
+          ];
+        }
+        
+        // Check category scores
+        compatibilityQuestions.forEach((category) => {
+          let categoryScore = 0;
+          let categoryMaxScore = 0;
+          let answeredQuestions = 0;
+          let categoryTips: string[] = [];
+          
+          category.questions.forEach((question) => {
+            const answer = answers[question.id];
+            if (answer) {
+              answeredQuestions++;
+              const option = question.options.find((o) => o.value === answer);
+              
+              if (option) {
+                categoryScore += option.score;
+                // For questions where alignment matters (not personality matches)
+                if (question.id !== "personality-type" && option.score < 5) {
+                  switch (question.id) {
+                    case "daily-prayers":
+                      categoryTips.push("Consider how differences in prayer habits might affect your daily routine together");
+                      break;
+                    case "avoid-riba":
+                      categoryTips.push("Discuss financial principles and how you'll handle major purchases in an Islamically-compliant way");
+                      break;
+                    case "relocate":
+                      categoryTips.push("Have an honest conversation about where you both see yourselves living long-term");
+                      break;
+                    case "financial-management":
+                      categoryTips.push("Consider creating a financial plan together to align your approaches to money");
+                      break;
+                    case "conflict-resolution":
+                      categoryTips.push("Discuss and practice healthy conflict resolution techniques together");
+                      break;
+                    default:
+                      // Generic tips based on category
+                      if (category.category === "Core Religious Practice") {
+                        categoryTips.push("Discuss expectations for religious practices in your household");
+                      } else if (category.category === "Long-Term Compatibility") {
+                        categoryTips.push("Have deeper conversations about your 5-10 year vision for life together");
+                      }
+                  }
+                }
+                
+                const maxScore = Math.max(...question.options.map((o) => o.score));
+                categoryMaxScore += maxScore;
+              }
+            }
+          });
+          
+          if (answeredQuestions > 0) {
+            const normScore = Math.round((categoryScore / categoryMaxScore) * 100);
+            if (normScore < 70 && categoryTips.length > 0) {
+              tips[category.category] = [...new Set(categoryTips)]; // Remove duplicates
+            }
+          }
+        });
+        
+        setLowScoreAreas(tips);
         setShowResults(true);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
     }
   };
@@ -343,7 +628,10 @@ const Compatibility = () => {
             
             // For personality questions, all options have the same score
             // For other questions, use the max score
-            const maxScore = question.id.includes("personality") 
+            const maxScore = question.id.includes("personality") || 
+                             question.id === "weekend-preference" ||
+                             question.id === "polygamy" ||
+                             question.id === "children"
               ? option.score 
               : Math.max(...question.options.map((o) => o.score));
               
@@ -369,24 +657,29 @@ const Compatibility = () => {
     if (score >= 80) {
       return {
         title: "MashaAllah! You two are like Medina dates—sweet and blessed!",
-        message: "Your compatibility is exceptional. You share core religious values and have similar life goals.",
+        message: "Your compatibility is exceptional. Like a perfect cup of Arabic coffee and fresh dates, you complement each other wonderfully. Your shared religious values provide a strong foundation, and your personalities seem to fit together like the pieces of a beautiful Islamic geometric pattern. Make dua for continued harmony, and remember that even the most compatible couples need to nurture their relationship daily.",
       };
     } else if (score >= 60) {
       return {
-        title: "There's potential!",
-        message: "Like biryani without raita—you'll need some adjustments, but you have a strong foundation.",
+        title: "There's potential! Like biryani without raita—good but needs some adjustments.",
+        message: "You have a promising foundation, alhamdulillah! Like a pot of biryani that's missing its raita—the fundamentals are excellent, but a few complementary elements would make it perfect. With open communication and patience, your minor differences could actually strengthen your relationship. Focus on the areas where you align well, and approach your differences with compassion and understanding. Perhaps perform Istikhara (prayer for guidance) as you consider moving forward.",
       };
     } else if (score >= 40) {
       return {
-        title: "Major differences exist.",
-        message: "Think tea with salt instead of sugar! You may need to have serious discussions about expectations.",
+        title: "Major differences exist—like tea with salt instead of sugar!",
+        message: "Your compatibility is like accidentally putting salt in your tea instead of sugar—the fundamental elements are there, but the experience might not be what you're hoping for! There are significant differences in key areas that could lead to challenges. This doesn't mean a relationship is impossible, but it would require substantial compromise and understanding from both sides. Consider whether you're prepared for the work this relationship might require, and definitely perform Istikhara before proceeding.",
       };
     } else {
       return {
-        title: "Run. Like, really.",
-        message: "It's giving \"Pharaoh and Musa\" vibes. You might want to reconsider this match.",
+        title: "Run. Like, really run. It's giving 'Pharaoh and Musa' vibes.",
+        message: "Your compatibility score suggests this match has more red flags than a Moroccan souk! Like Pharaoh and Musa (AS), you seem to be headed in completely different directions. While Allah is capable of bringing together even the most unlikely hearts, this particular match might require more adjustments than renovating the Kaaba. Consider whether you're prepared to make fundamental compromises on your values and expectations—and then consider if that's really what Allah would want for you. Perhaps it's time to make dua for patience and look elsewhere.",
       };
     }
+  };
+
+  const getShareText = () => {
+    const score = calculateCompatibilityScore();
+    return `I just completed the Compatibility Match Tool on MyAroos and scored ${score}% with ${suitorInfo.name}! ${getResultMessage().title} Try your own compatibility test at MyAroos.com!`;
   };
 
   const getCategoryScores = () => {
@@ -396,6 +689,7 @@ const Compatibility = () => {
       "Core Religious Practice": 0,
       "Personality & Lifestyle": 0,
       "Long-Term Compatibility": 0,
+      "Cultural & Educational Compatibility": 0,
     };
     
     // Religious values match
@@ -497,9 +791,9 @@ const Compatibility = () => {
 
   const generateBreakupMessage = () => {
     const messages = [
-      "I really appreciate the time we've spent getting to know each other. After careful thought and consideration, I don't think we are fully aligned in terms of our values and future goals. I wish you the best in finding someone who is a great match for you, In Sha Allah.",
-      "Thank you for our discussions and for sharing your perspective. I have reflected on our compatibility and, after seeking guidance, I believe it's best for us to part ways. May Allah grant us both what is best.",
-      "It has been great learning about you, and I sincerely appreciate the time. However, I feel we may have some fundamental differences that could impact our future. I pray Allah grants us both spouses who align with our paths."
+      "I really appreciate the time we've spent getting to know each other. After careful thought, prayer, and consideration, I don't think we are fully aligned in terms of our values and future goals. I wish you the best in finding someone who is a great match for you, In Sha Allah.",
+      "Thank you for our discussions and for sharing your perspective. I have reflected on our compatibility and, after seeking guidance through Istikhara, I believe it's best for us to part ways. May Allah grant us both what is best and lead us to spouses who will help us grow closer to Him.",
+      "It has been great learning about you, and I sincerely appreciate the time we've spent getting to know each other. However, I feel we may have some fundamental differences that could impact our future together. I pray Allah grants us both spouses who align with our paths and strengthen our deen."
     ];
     
     const randomIndex = Math.floor(Math.random() * messages.length);
@@ -826,7 +1120,7 @@ const Compatibility = () => {
                 </div>
               </Tabs>
             ) : (
-              <div>
+              <div id="results-container">
                 <h2 className="text-2xl font-bold mb-6 text-center">Your Compatibility Results</h2>
                 
                 <div className="mb-8">
@@ -856,6 +1150,37 @@ const Compatibility = () => {
                   </div>
                   
                   <CompatibilityGraph scores={getCategoryScores()} />
+                  
+                  {Object.keys(lowScoreAreas).length > 0 && (
+                    <div className="mt-8 p-6 bg-gray-50 dark:bg-brand-black rounded-lg">
+                      <h4 className="font-semibold text-lg mb-4">Areas to Consider:</h4>
+                      
+                      <Accordion type="multiple" className="w-full">
+                        {Object.entries(lowScoreAreas).map(([area, tips]) => (
+                          <AccordionItem key={area} value={area}>
+                            <AccordionTrigger className="text-left">
+                              <span>{area}</span>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <ul className="list-disc pl-6 space-y-2 mt-2">
+                                {tips.map((tip, index) => (
+                                  <li key={index} className="text-sm">{tip}</li>
+                                ))}
+                              </ul>
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                    </div>
+                  )}
+                  
+                  <ResultsActions 
+                    title={getResultMessage().title}
+                    subtitle={getResultMessage().message}
+                    score={calculateCompatibilityScore()}
+                    type="compatibility"
+                    shareText={getShareText()}
+                  />
                   
                   <div className="mt-12">
                     <h3 className="text-xl font-semibold mb-4">Next Steps</h3>
