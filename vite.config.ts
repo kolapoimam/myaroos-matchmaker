@@ -18,4 +18,16 @@ export default defineConfig(({ mode }) => ({
     },
   },
   base: "/", // Ensure assets load correctly
+    },
+  build: {
+    outDir: "dist", // Explicitly set the output directory for Vercel
+    sourcemap: mode === "development", // Enable sourcemaps in development for debugging
+  },
+  define: {
+    // Expose process.env.NODE_ENV to the client
+    "process.env.NODE_ENV": JSON.stringify(mode),
+    // Expose VERCEL_ANALYTICS_ID if available (optional, for Vercel Analytics debugging)
+    "process.env.VERCEL_ANALYTICS_ID": JSON.stringify(process.env.VERCEL_ANALYTICS_ID || ""),
+  },
+}));
 }));
