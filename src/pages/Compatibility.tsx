@@ -999,7 +999,7 @@ const Compatibility = () => {
                                 checked={suitorInfo.religiousValues.includes(value.id)}
                                 onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
                               />
-                              <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</ policía>
+                              <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
                         }
