@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Download, Share2, Copy, Facebook, Twitter, Linkedin, Whatsapp } from "lucide-react";
+import { Download, Share2, Copy, Facebook, Twitter, Linkedin, MessageCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -282,7 +282,7 @@ const ResultsActions = ({ title, subtitle, score, type, shareText }: ResultsActi
                 className="rounded-full bg-[#25D366] hover:bg-[#25D366]/90 text-white"
                 onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank')}
               >
-                <Whatsapp className="h-4 w-4" />
+                <MessageCircle className="h-4 w-4" />
               </Button>
             </div>
           </DialogContent>
