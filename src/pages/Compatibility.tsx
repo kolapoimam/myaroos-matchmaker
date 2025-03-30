@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -22,28 +21,6 @@ import ResultsActions from "@/components/ResultsActions";
 
 // Define the religious values
 const maleReligiousValues = [
-  { id: "hijab", label: "Wears Hijab" },
-  { id: "niqab", label: "Wears Niqab" },
-  { id: "prayers", label: "Prays 5 times daily" },
-  { id: "polygamy", label: "Comfortable with polygamy" },
-  { id: "homeschooling", label: "Open to homeschooling children with Islamic studies" },
-  { id: "islamic-banking", label: "Prefers Islamic banking (avoids riba)" },
-  { id: "modest-interactions", label: "Observes modest social interactions" },
-  { id: "relocate", label: "Willing to relocate for marriage" },
-  { id: "madhab", label: "Follows a specific school of thought" },
-  { id: "halal-food", label: "Eats only halal-certified food" },
-  { id: "in-laws", label: "Willing to live with in-laws if necessary" },
-  { id: "long-distance", label: "Open to long-distance marriage initially" },
-  { id: "arabic", label: "Speaks Arabic or is willing to learn" },
-  { id: "quran", label: "Reads Quran regularly" },
-  { id: "islamic-knowledge", label: "Seeks Islamic knowledge actively" },
-  { id: "cooking", label: "Has cooking skills" },
-  { id: "children", label: "Wants children" },
-  { id: "tahajjud", label: "Prays Tahajjud regularly" },
-  { id: "fasting", label: "Observes voluntary fasts" },
-];
-
-const femaleReligiousValues = [
   { id: "beard", label: "Has a beard (Sunnah practice)" },
   { id: "prayers", label: "Prays 5 times daily" },
   { id: "islamic-finance", label: "Observes Islamic finance (avoids riba)" },
@@ -63,6 +40,28 @@ const femaleReligiousValues = [
   { id: "tahajjud", label: "Prays Tahajjud regularly" },
   { id: "fasting", label: "Observes voluntary fasts" },
   { id: "masjid", label: "Attends masjid regularly" },
+];
+
+const femaleReligiousValues = [
+  { id: "hijab", label: "Wears Hijab" },
+  { id: "niqab", label: "Wears Niqab" },
+  { id: "prayers", label: "Prays 5 times daily" },
+  { id: "polygamy", label: "Comfortable with polygamy" },
+  { id: "homeschooling", label: "Open to homeschooling children with Islamic studies" },
+  { id: "islamic-banking", label: "Prefers Islamic banking (avoids riba)" },
+  { id: "modest-interactions", label: "Observes modest social interactions" },
+  { id: "relocate", label: "Willing to relocate for marriage" },
+  { id: "madhab", label: "Follows a specific school of thought" },
+  { id: "halal-food", label: "Eats only halal-certified food" },
+  { id: "in-laws", label: "Willing to live with in-laws if necessary" },
+  { id: "long-distance", label: "Open to long-distance marriage initially" },
+  { id: "arabic", label: "Speaks Arabic or is willing to learn" },
+  { id: "quran", label: "Reads Quran regularly" },
+  { id: "islamic-knowledge", label: "Seeks Islamic knowledge actively" },
+  { id: "cooking", label: "Has cooking skills" },
+  { id: "children", label: "Wants children" },
+  { id: "tahajjud", label: "Prays Tahajjud regularly" },
+  { id: "fasting", label: "Observes voluntary fasts" },
 ];
 
 // Define compatibility questions
@@ -381,6 +380,12 @@ const Compatibility = () => {
     // Reset religious values when gender changes
     if (field === "gender") {
       setYourInfo((prev) => ({ ...prev, religiousValues: [] }));
+      // Enforce suitor gender based on your gender
+      if (value === "male") {
+        setSuitorInfo((prev) => ({ ...prev, gender: "female", religiousValues: [] }));
+      } else if (value === "female") {
+        setSuitorInfo((prev) => ({ ...prev, gender: "male", religiousValues: [] }));
+      }
     }
   };
 
@@ -869,7 +874,6 @@ const Compatibility = () => {
                           <SelectContent>
                             <SelectItem value="male">Male</SelectItem>
                             <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -897,18 +901,6 @@ const Compatibility = () => {
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         {yourInfo.gender === "male" && 
-                          femaleReligiousValues.map((value) => (
-                            <div key={value.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`your-value-${value.id}`}
-                                checked={yourInfo.religiousValues.includes(value.id)}
-                                onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
-                              />
-                              <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
-                            </div>
-                          ))
-                        }
-                        {yourInfo.gender === "female" && 
                           maleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
                               <Checkbox
@@ -920,21 +912,17 @@ const Compatibility = () => {
                             </div>
                           ))
                         }
-                        {yourInfo.gender === "prefer-not-to-say" && 
-                          [...maleReligiousValues, ...femaleReligiousValues]
-                            .filter((value, index, self) => 
-                              index === self.findIndex((v) => v.id === value.id)
-                            )
-                            .map((value) => (
-                              <div key={value.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={`your-value-${value.id}`}
-                                  checked={yourInfo.religiousValues.includes(value.id)}
-                                  onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
-                                />
-                                <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
-                              </div>
-                            ))
+                        {yourInfo.gender === "female" && 
+                          femaleReligiousValues.map((value) => (
+                            <div key={value.id} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={`your-value-${value.id}`}
+                                checked={yourInfo.religiousValues.includes(value.id)}
+                                onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
+                              />
+                              <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
+                            </div>
+                          ))
                         }
                       </div>
                     </div>
@@ -969,6 +957,7 @@ const Compatibility = () => {
                         <Select
                           value={suitorInfo.gender}
                           onValueChange={(value) => handleSuitorInfoChange("gender", value)}
+                          disabled
                         >
                           <SelectTrigger id="suitor-gender">
                             <SelectValue placeholder="Select gender" />
@@ -976,7 +965,6 @@ const Compatibility = () => {
                           <SelectContent>
                             <SelectItem value="male">Male</SelectItem>
                             <SelectItem value="female">Female</SelectItem>
-                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -1011,7 +999,7 @@ const Compatibility = () => {
                                 checked={suitorInfo.religiousValues.includes(value.id)}
                                 onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
                               />
-                              <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
+                              <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</ policía>
                             </div>
                           ))
                         }
@@ -1026,22 +1014,6 @@ const Compatibility = () => {
                               <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
-                        }
-                        {suitorInfo.gender === "prefer-not-to-say" && 
-                          [...maleReligiousValues, ...femaleReligiousValues]
-                            .filter((value, index, self) => 
-                              index === self.findIndex((v) => v.id === value.id)
-                            )
-                            .map((value) => (
-                              <div key={value.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={`suitor-value-${value.id}`}
-                                  checked={suitorInfo.religiousValues.includes(value.id)}
-                                  onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
-                                />
-                                <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
-                              </div>
-                            ))
                         }
                       </div>
                     </div>
