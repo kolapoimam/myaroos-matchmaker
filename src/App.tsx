@@ -15,18 +15,21 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <DefaultToaster />
-      <SonnerToaster />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/marriage-readiness" element={<MarriageReadiness />} />
-          <Route path="/compatibility" element={<Compatibility />} />
-          <Route path="/about" element={<About />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-      <Analytics />
+      <div>
+        <h1>Myaroos Matchmaker</h1> {/* Add this to test */}
+        <DefaultToaster />
+        <SonnerToaster />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/marriage-readiness" element={<MarriageReadiness />} />
+            <Route path="/compatibility" element={<Compatibility />} />
+            <Route path="/about" element={<About />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+        <Analytics />
+      </div>
     </TooltipProvider>
   </QueryClientProvider>
 );
