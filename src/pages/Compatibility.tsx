@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useToast } from "@/components/hooks/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import {
   Select,
   SelectContent,
@@ -331,7 +331,7 @@ const compatibilityQuestions = [
         question: "What is their level of education or value placed on education?",
         options: [
           { value: "highly-educated", label: "Highly educated and values continuous learning", score: 5 },
-          { value: "college-education", label: "College educated and values knowledge", score: 5 },
+          { value: "college-education", label: "College educated and values knowledge", score:  personally5 },
           { value: "vocational", label: "Vocational/specialized training", score: 5 },
           { value: "high-school", label: "High school education", score: 5 },
           { value: "self-taught", label: "Self-taught/informal education", score: 5 },
@@ -377,14 +377,15 @@ const Compatibility = () => {
   const handleYourInfoChange = (field: string, value: string) => {
     setYourInfo((prev) => ({ ...prev, [field]: value }));
     
-    // Reset religious values when gender changes
+    // Reset religious values and set suitor gender when your gender changes
     if (field === "gender") {
       setYourInfo((prev) => ({ ...prev, religiousValues: [] }));
-      // Enforce suitor gender based on your gender
       if (value === "male") {
         setSuitorInfo((prev) => ({ ...prev, gender: "female", religiousValues: [] }));
       } else if (value === "female") {
         setSuitorInfo((prev) => ({ ...prev, gender: "male", religiousValues: [] }));
+      } else {
+        setSuitorInfo((prev) => ({ ...prev, gender: "", religiousValues: [] }));
       }
     }
   };
@@ -508,7 +509,7 @@ const Compatibility = () => {
         
         if (religiousValueScore < 60) {
           tips["Religious Values"] = [
-            "Discuss your non-negotiable values clearly before proceeding further",
+            "Discuss your your non-negotiable values clearly before proceeding further",
             "Consider which values you might be flexible on and which ones are absolute must-haves",
             "Ask about the reasoning behind their values to better understand their perspective"
           ];
@@ -874,6 +875,7 @@ const Compatibility = () => {
                           <SelectContent>
                             <SelectItem value="male">Male</SelectItem>
                             <SelectItem value="female">Female</SelectItem>
+                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -924,6 +926,22 @@ const Compatibility = () => {
                             </div>
                           ))
                         }
+                        {yourInfo.gender === "prefer-not-to-say" && 
+                          [...maleReligiousValues, ...femaleReligiousValues]
+                            .filter((value, index, self) => 
+                              index === self.findIndex((v) => v.id === value.id)
+                            )
+                            .map((value) => (
+                              <div key={value.id} className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={`your-value-${value.id}`}
+                                  checked={yourInfo.religiousValues.includes(value.id)}
+                                  onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
+                                />
+                                <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
+                              </div>
+                            ))
+                        }
                       </div>
                     </div>
                   </div>
@@ -957,7 +975,7 @@ const Compatibility = () => {
                         <Select
                           value={suitorInfo.gender}
                           onValueChange={(value) => handleSuitorInfoChange("gender", value)}
-                          disabled
+                          disabled={yourInfo.gender === "male" || yourInfo.gender === "female"}
                         >
                           <SelectTrigger id="suitor-gender">
                             <SelectValue placeholder="Select gender" />
@@ -965,6 +983,7 @@ const Compatibility = () => {
                           <SelectContent>
                             <SelectItem value="male">Male</SelectItem>
                             <SelectItem value="female">Female</SelectItem>
+                            <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
@@ -1014,6 +1033,22 @@ const Compatibility = () => {
                               <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
                             </div>
                           ))
+                        }
+                        {suitorInfo.gender === "prefer-not-to-say" && 
+                          [...maleReligiousValues, ...femaleReligiousValues]
+                            .filter((value, index, self) => 
+                              index === self.findIndex((v) => v.id === value.id)
+                            )
+                            .map((value) => (
+                              <div key={value.id} className="flex items-center space-x-2">
+                                <Checkbox
+                                  id={`suitor-value-${value.id}`}
+                                  checked={suitorInfo.religiousValues.includes(value.id)}
+                                  onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
+                                />
+                                <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
+                              </div>
+                            ))
                         }
                       </div>
                     </div>
