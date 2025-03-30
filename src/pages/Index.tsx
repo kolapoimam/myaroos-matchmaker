@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col islamic-pattern">
+    <div className="min-h-screen flex flex-col islamic-pattern font-poppins">
       <Navbar />
       
       <main className="flex-1">
@@ -28,7 +28,7 @@ const Index = () => {
                     <Link to="/marriage-readiness">Readiness Quiz</Link>
                   </Button>
                   <Button asChild size="lg" variant="outline">
-                    <Link to="/compatibility">Compatibility Test</Link>
+                    <Link to="/compatibility">Compatibility Quiz</Link>
                   </Button>
                 </div>
               </div>
@@ -104,6 +104,6 @@ const Index = () => {
       <Footer />
     </div>
   );
-};
+}
 
 export default Index;

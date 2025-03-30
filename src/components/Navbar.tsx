@@ -28,8 +28,8 @@ export default function Navbar() {
     <header 
       className={`sticky top-0 z-10 transition-all duration-300 font-poppins ${
         scrolled 
-          ? "backdrop-blur-lg bg-background/80 border-b shadow-sm" 
-          : "bg-background border-b"
+          ? "backdrop-blur-lg bg-background/70 border-b shadow-sm" 
+          : "bg-background/90 border-b"
       }`}
     >
       <div className="container-custom py-4 flex items-center justify-between">
@@ -69,7 +69,7 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-6 mt-8">
+              <div className="flex flex-col gap-6 mt-8 font-poppins">
                 <Link to="/marriage-readiness" className="text-lg font-medium hover:text-brand-green transition-colors">
                   Readiness Quiz
                 </Link>

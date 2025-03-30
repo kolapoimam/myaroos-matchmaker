@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const About = () => {
   return (
-    <div className="min-h-screen flex flex-col islamic-pattern">
+    <div className="min-h-screen flex flex-col islamic-pattern font-poppins">
       <Navbar />
       
       <main className="flex-1 py-12">
@@ -161,6 +161,33 @@ const About = () => {
               </AccordionItem>
               
               <AccordionItem value="item-10">
+                <AccordionTrigger>
+                  Is MyAroos suitable for Muslims of all madhabs?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    Yes, MyAroos is designed to be inclusive of all orthodox Islamic schools of thought. Our questions focus on fundamental 
+                    aspects of marriage that are generally agreed upon across major madhabs. Where there might be differences in fiqh rulings, 
+                    we've taken a balanced approach that respects diverse interpretations while maintaining core Islamic principles.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="item-11">
+                <AccordionTrigger>
+                  How are the scores calculated in your assessment?
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p>
+                    Our scoring system is based on a weighted algorithm that prioritizes factors in this order: religious compatibility, life goals 
+                    and values, personality traits, and practical considerations. Religious factors receive the highest weight in our calculations because 
+                    of their fundamental importance in an Islamic marriage. Each category contributes to your overall compatibility score, giving you 
+                    a comprehensive view of your potential relationship's strengths and areas that may need discussion.
+                  </p>
+                </AccordionContent>
+              </AccordionItem>
+              
+              <AccordionItem value="item-12">
                 <AccordionTrigger>
                   How can I contribute feedback to improve MyAroos?
                 </AccordionTrigger>

@@ -5,7 +5,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-brand-black text-white py-12">
+    <footer className="bg-brand-black text-white py-12 font-poppins">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -13,7 +13,7 @@ export default function Footer() {
               <div className="relative w-8 h-8 bg-brand-green rounded-full flex items-center justify-center text-white font-semibold text-xl">
                 M
               </div>
-              MyAroos
+              <Link to="/" className="hover:text-brand-green transition-colors">MyAroos</Link>
             </h3>
             <p className="text-gray-300 mb-4">
               A Muslim marriage readiness and compatibility tool to help you make one of the most important decisions in your life.
@@ -23,11 +23,6 @@ export default function Footer() {
           <div>
             <h4 className="font-medium text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <Link to="/" className="text-gray-300 hover:text-brand-green transition-colors">
-                  Home
-                </Link>
-              </li>
               <li>
                 <Link to="/marriage-readiness" className="text-gray-300 hover:text-brand-green transition-colors">
                   Marriage Readiness Quiz

@@ -19,11 +19,11 @@ import {
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
-// Updated interface to match usage in pages
-interface ResultsActionsProps {
+// Updated interface to support both legacy description and newer subtitle
+export interface ResultsActionsProps {
   title: string;
-  subtitle?: string;  // Made optional for backward compatibility
-  description?: string; // Keeping this for backward compatibility
+  subtitle?: string;
+  description?: string;
   score: number;
   type?: string;
   shareText?: string;
@@ -31,7 +31,7 @@ interface ResultsActionsProps {
   resultsRef?: React.RefObject<HTMLDivElement>;
 }
 
-const ResultsActions = ({ 
+export default function ResultsActions({ 
   resultsRef,
   title, 
   subtitle,
@@ -40,16 +40,34 @@ const ResultsActions = ({
   type,
   shareText,
   maxScore 
-}: ResultsActionsProps) => {
+}: ResultsActionsProps) {
   const [isShareDialogOpen, setIsShareDialogOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
   // Use either subtitle or description (for backward compatibility)
   const displayDescription = subtitle || description;
 
-  // Extracted download functions
+  // Get share text
+  const getShareText = () => {
+    if (shareText) return shareText;
+    
+    const scoreText = score !== undefined && maxScore !== undefined
+      ? `${score}/${maxScore} (${Math.round((Number(score) / Number(maxScore)) * 100)}%)`
+      : score !== undefined ? `${score}%` : '';
+      
+    return `${title}\n${displayDescription || ''}\n${scoreText}\n\nGenerated with MyAroos - Islamic Marriage Readiness & Compatibility Tool`;
+  };
+  
+  // Copy text to clipboard
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(getShareText()).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 2000);
+    });
+  };
+
+  // Download functions
   const downloadAsImage = async () => {
-    // Find the results container if no ref is provided
     const targetElement = resultsRef?.current || document.getElementById('results-container');
     if (!targetElement) return;
     
@@ -73,7 +91,6 @@ const ResultsActions = ({
   };
 
   const downloadAsPdf = async () => {
-    // Find the results container if no ref is provided
     const targetElement = resultsRef?.current || document.getElementById('results-container');
     if (!targetElement) return;
     
@@ -123,31 +140,8 @@ const ResultsActions = ({
     }
   };
 
-  // Use provided shareText or generate one
-  const getShareText = () => {
-    if (shareText) return shareText;
-    
-    const scoreText = score !== undefined && maxScore !== undefined
-      ? `${score}/${maxScore} (${Math.round((Number(score) / Number(maxScore)) * 100)}%)`
-      : score !== undefined ? `${score}%` : '';
-      
-    return `${title}\n${displayDescription || ''}\n${scoreText}\n\nGenerated with MyAroos - Islamic Marriage Readiness & Compatibility Tool`;
-  };
-
-  // Extracted share functionality
-  const shareContent = () => {
-    setIsShareDialogOpen(true);
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(getShareText()).then(() => {
-      setIsCopied(true);
-      setTimeout(() => setIsCopied(false), 2000);
-    });
-  };
-
   return (
-    <div className="flex flex-wrap gap-2 mt-4 justify-center">
+    <div className="flex flex-wrap gap-2 mt-4 justify-center font-poppins">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline">
@@ -167,7 +161,7 @@ const ResultsActions = ({
 
       <Dialog open={isShareDialogOpen} onOpenChange={setIsShareDialogOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" onClick={shareContent}>
+          <Button variant="outline" onClick={() => setIsShareDialogOpen(true)}>
             <Share2 className="h-4 w-4 mr-2" />
             Share
           </Button>
@@ -232,6 +226,4 @@ const ResultsActions = ({
       </Dialog>
     </div>
   );
-};
-
-export default ResultsActions;
+}
