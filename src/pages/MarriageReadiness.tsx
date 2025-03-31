@@ -624,7 +624,7 @@ const MarriageReadiness = () => {
                               <AccordionTrigger className="text-left">
                                 <span className="flex items-center">
                                   <span className="inline-block w-2 h-2 bg-brand-green rounded-full mr-2"></span>
-                                  <span>{category?.name} ({categoryScore}%)</span>
+                                  <span>{category?.title} ({categoryScore}%)</span>
                                 </span>
                               </AccordionTrigger>
                               <AccordionContent>
