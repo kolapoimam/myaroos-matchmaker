@@ -7,9 +7,9 @@ export default function Footer() {
   return (
     <footer className="bg-brand-black text-white py-12 font-poppins">
       <div className="container-custom">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="font-semibold text-xl mb-4 flex items-center justify-center md:justify-start gap-2">
+            <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
               <div className="relative w-8 h-8 bg-brand-green rounded-full flex items-center justify-center text-white font-semibold text-xl">
                 M
               </div>

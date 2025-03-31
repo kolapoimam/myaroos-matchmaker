@@ -1,4 +1,3 @@
-
 import { Toaster as DefaultToaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,7 +15,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <div className="font-poppins">
+      <div>
         <DefaultToaster />
         <SonnerToaster />
         <BrowserRouter>
