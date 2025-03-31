@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -10,11 +9,10 @@ import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
 import ResultsActions from "@/components/ResultsActions";
 
-// Define question categories
 const categories = [
   {
     id: "spiritual",
-    title: "Spiritual Readiness",
+    name: "Spiritual Readiness",
     questions: [
       {
         id: "pray-five-times",
@@ -86,7 +84,7 @@ const categories = [
   },
   {
     id: "emotional",
-    title: "Emotional Readiness",
+    name: "Emotional Readiness",
     questions: [
       {
         id: "handle-disagreements",
@@ -158,7 +156,7 @@ const categories = [
   },
   {
     id: "financial",
-    title: "Financial Readiness",
+    name: "Financial Readiness",
     questions: [
       {
         id: "stable-income",
@@ -219,7 +217,7 @@ const categories = [
   },
   {
     id: "family-social",
-    title: "Family & Social Readiness",
+    name: "Family & Social Readiness",
     questions: [
       {
         id: "family-expectations",
@@ -314,7 +312,6 @@ const MarriageReadiness = () => {
   };
 
   const handleNext = () => {
-    // Check if all questions in current category are answered
     const currentCategoryQuestions = categories[currentCategory].questions;
     const allAnswered = currentCategoryQuestions.every(
       (q) => answers[q.id] !== undefined
@@ -334,7 +331,6 @@ const MarriageReadiness = () => {
       setExpandedCategories([categories[currentCategory + 1].id]);
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
-      // Generate improvement tips based on answers
       const tips: Record<string, string[]> = {};
       
       categories.forEach(category => {
@@ -389,7 +385,7 @@ const MarriageReadiness = () => {
         });
         
         if (categoryTips.length > 0) {
-          tips[category.id] = [...new Set(categoryTips)]; // Remove duplicates
+          tips[category.id] = [...new Set(categoryTips)];
         }
       });
       
@@ -484,6 +480,32 @@ const MarriageReadiness = () => {
     return `I just completed the Marriage Readiness Quiz on MyAroos and scored ${percentage}%! ${getResultMessage().title} Check out your own readiness at MyAroos.com!`;
   };
 
+  const handleCategoryClick = (category: string) => {
+    const clickedIndex = categories.findIndex(c => c.name === category);
+    
+    if (clickedIndex > currentCategory) {
+      if (validateCurrentCategory()) {
+        setCurrentCategory(clickedIndex);
+      } else {
+        toast({
+          title: "Careful there!",
+          description: "You don't wanna marry the wrong person, do you? Please answer all required questions first.",
+          variant: "destructive",
+        });
+      }
+    } 
+    else if (clickedIndex < currentCategory) {
+      setCurrentCategory(clickedIndex);
+    }
+  };
+
+  const validateCurrentCategory = () => {
+    const currentCategoryQuestions = categories[currentCategory].questions;
+    return currentCategoryQuestions.every(
+      (q) => answers[q.id] !== undefined
+    );
+  };
+
   return (
     <div className="min-h-screen flex flex-col islamic-pattern">
       <Navbar />
@@ -494,34 +516,22 @@ const MarriageReadiness = () => {
             <h1 className="text-3xl font-bold mb-6 text-center">Marriage Readiness Quiz</h1>
             
             {!showResults ? (
-              <>
-                <p className="mb-8 text-center text-muted-foreground">
-                  Answer the following questions honestly to assess your readiness for marriage according to Islamic principles.
-                </p>
-                
-                <div className="mb-8">
-                  <div className="flex justify-between mb-2 text-sm">
-                    <span>Category {currentCategory + 1} of {categories.length}</span>
-                    <span>{Math.round(((currentCategory + 1) / categories.length) * 100)}% Complete</span>
-                  </div>
-                  <Progress value={((currentCategory + 1) / categories.length) * 100} className="h-2" />
-                </div>
-
+              <div className="space-y-6">
                 <Accordion
                   type="single"
-                  collapsible
-                  value={expandedCategories[0]}
-                  onValueChange={(value) => setExpandedCategories([value])}
+                  collapsible={false}
+                  value={categories[currentCategory].name}
+                  onValueChange={(value) => handleCategoryClick(value)}
                 >
                   {categories.map((category, index) => (
-                    <AccordionItem 
-                      key={category.id} 
-                      value={category.id}
-                      disabled={index !== currentCategory}
-                      className={index !== currentCategory ? "opacity-50" : ""}
+                    <AccordionItem
+                      key={category.name}
+                      value={category.name}
+                      disabled={index > currentCategory}
+                      className={index > currentCategory ? "opacity-50" : ""}
                     >
                       <AccordionTrigger className="text-xl font-medium">
-                        {category.title}
+                        {category.name}
                       </AccordionTrigger>
                       <AccordionContent>
                         <div className="space-y-6 pt-4">
@@ -571,7 +581,7 @@ const MarriageReadiness = () => {
                     {currentCategory < categories.length - 1 ? "Next" : "See Results"}
                   </Button>
                 </div>
-              </>
+              </div>
             ) : (
               <div className="text-center" id="results-container">
                 <h2 className="text-2xl font-bold mb-4">Your Marriage Readiness Results</h2>
