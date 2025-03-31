@@ -680,14 +680,47 @@ const Compatibility = () => {
       "Cultural & Educational Compatibility": 0,
     };
     
+    // Religious values match
     const sharedValues = yourInfo.religiousValues.filter((value) =>
       suitorInfo.religiousValues.includes(value)
     );
     scores["Religious Values"] = Math.round((sharedValues.length / yourInfo.religiousValues.length) * 100);
     
-    if (sharedValues.length > 0) {
-      scores["Religious Commitment"] = Math.round((yourInfo.religiousCommitment === suitorInfo.religiousCommitment ? 20 : 10) * 100);
+    // Religious commitment match
+    if (yourInfo.religiousCommitment === suitorInfo.religiousCommitment) {
+      scores["Religious Commitment"] = 100;
+    } else if (
+      (yourInfo.religiousCommitment === "practicing" && suitorInfo.religiousCommitment === "moderate") ||
+      (yourInfo.religiousCommitment === "moderate" && suitorInfo.religiousCommitment === "practicing")
+    ) {
+      scores["Religious Commitment"] = 50;
+    } else {
+      scores["Religious Commitment"] = 25;
     }
+    
+    // Compatibility questions
+    compatibilityQuestions.forEach((category) => {
+      let categoryScore = 0;
+      let categoryMaxScore = 0;
+      let answeredQuestions = 0;
+      
+      category.questions.forEach((question) => {
+        const answer = answers[question.id];
+        if (answer) {
+          answeredQuestions++;
+          const option = question.options.find((o) => o.value === answer);
+          if (option) {
+            categoryScore += option.score;
+            const maxScore = Math.max(...question.options.map((o) => o.score));
+            categoryMaxScore += maxScore;
+          }
+        }
+      });
+      
+      scores[category.category] = answeredQuestions > 0
+        ? Math.round((categoryScore / categoryMaxScore) * 100)
+        : 0;
+    });
     
     return scores;
   };
@@ -1014,83 +1047,90 @@ const Compatibility = () => {
               </Tabs>
             ) : (
               <div id="results-container">
-                <div className="space-y-6">
-                  <h2 className="text-lg font-bold mb-4">Results</h2>
+                <div className="text-center mb-8">
+                  <h3 className="text-xl font-bold text-brand-green mb-2">{getResultMessage().title}</h3>
+                  <p>{getResultMessage().message}</p>
+                </div>
+                
+                <CompatibilityGraph scores={getCategoryScores()} />
+                
+                {Object.keys(lowScoreAreas).length > 0 && (
+                  <div className="mt-8 p-6 bg-gray-50 dark:bg-brand-black rounded-lg">
+                    <h4 className="font-semibold text-lg mb-4">Areas to Consider:</h4>
+                    
+                    <Accordion type="multiple" className="w-full">
+                      {Object.entries(lowScoreAreas).map(([area, tips]) => (
+                        <AccordionItem key={area} value={area}>
+                          <AccordionTrigger className="text-left">
+                            <span>{area}</span>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="list-disc pl-6 space-y-2 mt-2">
+                              {tips.map((tip, index) => (
+                                <li key={index} className="text-sm">{tip}</li>
+                              ))}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      ))}
+                    </Accordion>
+                  </div>
+                )}
+                
+                <ResultsActions 
+                  title={getResultMessage().title}
+                  subtitle={getResultMessage().message}
+                  score={calculateCompatibilityScore()}
+                  type="compatibility"
+                  shareText={getShareText()}
+                />
+                
+                <div className="mt-12">
+                  <h3 className="text-xl font-semibold mb-4">Next Steps</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">Compatibility Score</h3>
-                      <p className="text-2xl font-bold">{calculateCompatibilityScore()}</p>
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-bold mb-2">Shared Religious Values</h3>
-                      <p className="text-2xl font-bold">{yourInfo.religiousValues.filter((value) => suitorInfo.religiousValues.includes(value)).length}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold mb-2">Category Scores</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {getCategoryScores().map((score, index) => (
-                        <div key={index} className="space-y-2">
-                          <h4 className="text-lg font-bold">{score[0]}</h4>
-                          <p className="text-2xl font-bold">{score[1]}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold mb-2">Tips</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {lowScoreAreas.map((tips, index) => (
-                        <div key={index} className="space-y-2">
-                          <h4 className="text-lg font-bold">{tips[0]}</h4>
-                          <ul className="list-disc pl-4">
-                            {tips[1].map((tip, index) => (
-                              <li key={index} className="text-2xl font-bold">{tip}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold mb-2">Marriage Checklist</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {generateMarriageChecklist().map((tips, index) => (
-                        <div key={index} className="space-y-2">
-                          <h4 className="text-lg font-bold">{tips[0]}</h4>
-                          <ul className="list-disc pl-4">
-                            {tips[1].map((tip, index) => (
-                              <li key={index} className="text-2xl font-bold">{tip}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold mb-2">Breakup Message</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Button 
+                      className="h-auto py-6"
+                      onClick={() => {
+                        const nextStepsSection = document.getElementById("next-steps");
+                        if (nextStepsSection) {
+                          nextStepsSection.scrollIntoView({ behavior: "smooth" });
+                        }
+                      }}
+                    >
                       <div>
-                        <h4 className="text-lg font-bold">{generateBreakupMessage().title}</h4>
-                        <p className="text-2xl font-bold">{generateBreakupMessage().message}</p>
+                        <p className="font-semibold mb-1">Proceed with Relationship</p>
+                        <p className="text-xs font-normal">Generate Marriage Checklist</p>
                       </div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-bold mb-2">Share</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="h-auto py-6"
+                      onClick={() => {
+                        const nextStepsSection = document.getElementById("next-steps");
+                        if (nextStepsSection) {
+                          nextStepsSection.scrollIntoView({ behavior: "smooth" });
+                        }
+                      }}
+                    >
                       <div>
-                        <Button onClick={() => navigator.clipboard.writeText(getShareText())}>
-                          Copy to Clipboard
-                        </Button>
+                        <p className="font-semibold mb-1">End Things Respectfully</p>
+                        <p className="text-xs font-normal">Generate Breakup Message</p>
                       </div>
-                    </div>
+                    </Button>
                   </div>
+                </div>
+                
+                <div className="space-x-4 mt-8">
+                  <Button onClick={() => {
+                    setAnswers({});
+                    setActiveTab("your-info");
+                    setShowResults(false);
+                  }} variant="outline">
+                    Retake Test
+                  </Button>
+                  <Button asChild>
+                    <a href="/marriage-readiness">Try Marriage Readiness Quiz</a>
+                  </Button>
                 </div>
               </div>
             )}
