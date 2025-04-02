@@ -136,7 +136,7 @@ const categories = [
         id: "past-relationships",
         question: "Have you emotionally healed from past relationships or rejections?",
         options: [
-          { value: "completely", label: "Completely healed and moved forward", score: 10 },
+          { value: "completely", label: "No past relationships, I'm good", score: 10 },
           { value: "mostly", label: "Mostly healed, occasional thoughts", score: 7 },
           { value: "in-process", label: "In the process of healing", score: 5 },
           { value: "struggling", label: "Still struggling with past experiences", score: 2 },
