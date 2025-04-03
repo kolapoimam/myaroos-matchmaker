@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { Link } from "react-router-dom";
@@ -55,7 +54,12 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <ThemeToggle />
           
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-4">
+            <Button asChild variant="outline">
+              <a href="https://paystack.com/pay/myaroos" target="_blank" rel="noopener noreferrer">
+                Donate
+              </a>
+            </Button>
             <Button asChild size="lg">
               <Link to="/marriage-readiness">Get Started</Link>
             </Button>
@@ -79,7 +83,12 @@ export default function Navbar() {
                 <Link to="/about" className="text-lg font-medium hover:text-brand-green transition-colors">
                   About
                 </Link>
-                <Button asChild className="mt-4">
+                <Button asChild variant="outline" className="mt-4">
+                  <a href="https://paystack.com/pay/myaroos" target="_blank" rel="noopener noreferrer">
+                    Donate
+                  </a>
+                </Button>
+                <Button asChild>
                   <Link to="/marriage-readiness">Get Started</Link>
                 </Button>
               </div>
