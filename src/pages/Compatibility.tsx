@@ -817,26 +817,27 @@ const Compatibility = () => {
             
             {!showResults ? (
 <Tabs value={activeTab} onValueChange={setActiveTab}>
-  <TabsList className="grid w-full grid-cols-3 gap-1 mb-8 bg-gray-100 p-1 rounded-lg">
+  <TabsList className="grid w-full grid-cols-3 gap-1 mb-8 bg-[#09090b] p-1 rounded-lg">
     <TabsTrigger
       value="your-info"
-      className="text-xs sm:text-sm px-2 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm"
+      className="text-[10px] xs:text-xs sm:text-sm px-1 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md text-white data-[state=active]:bg-black data-[state=active]:text-white"
     >
-      Your Information
+      Your Info
     </TabsTrigger>
     <TabsTrigger
       value="suitor-info"
-      className="text-xs sm:text-sm px-2 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm"
+      className="text-[10px] xs:text-xs sm:text-sm px-1 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md text-white data-[state=active]:bg-black data-[state=active]:text-white"
     >
-      Suitor's Information
+      Suitor's Info
     </TabsTrigger>
     <TabsTrigger
       value="compatibility"
-      className="text-xs sm:text-sm px-2 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md data-[state=active]:bg-white data-[state=active]:shadow-sm"
+      className="text-[10px] xs:text-xs sm:text-sm px-1 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md text-white data-[state=active]:bg-black data-[state=active]:text-white"
     >
       Compatibility
     </TabsTrigger>
   </TabsList>
+</Tabs>
                 
                 <TabsContent value="your-info">
                   <div className="space-y-6">
