@@ -837,67 +837,67 @@ const Compatibility = () => {
       Compatibility
     </TabsTrigger>
   </TabsList>
-</Tabs>
-                
-                <TabsContent value="your-info">
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <Label htmlFor="your-name">Your Name/Nickname</Label>
-                        <Input
-                          id="your-name"
-                          value={yourInfo.name}
-                          onChange={(e) => handleYourInfoChange("name", e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="your-age">Your Age</Label>
-                        <Input
-                          id="your-age"
-                          type="number"
-                          value={yourInfo.age}
-                          onChange={(e) => handleYourInfoChange("age", e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <Label htmlFor="your-gender">Your Gender</Label>
-                        <Select
-                          value={yourInfo.gender}
-                          onValueChange={(value) => handleYourInfoChange("gender", value)}
-                        >
-                          <SelectTrigger id="your-gender">
-                            <SelectValue placeholder="Select gender" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="male">Male</SelectItem>
-                            <SelectItem value="female">Female</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label htmlFor="your-religious-commitment">Level of Religious Commitment</Label>
-                        <Select
-                          value={yourInfo.religiousCommitment}
-                          onChange={(value) => handleYourInfoChange("religiousCommitment", value)}
-                        >
-                          <SelectTrigger id="your-religious-commitment">
-                            <SelectValue placeholder="Select level" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="practicing">Practicing (Prays 5 times, follows Islamic finance, modesty, etc.)</SelectItem>
-                            <SelectItem value="moderate">Moderately Practicing (Observes basics but flexible on some aspects)</SelectItem>
-                            <SelectItem value="non-practicing">Non-Practicing (Identifies as Muslim but does not follow many obligations)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
+
+  {/* TabsContent must be inside Tabs component */}
+  <TabsContent value="your-info">
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <Label htmlFor="your-name">Your Name/Nickname</Label>
+          <Input
+            id="your-name"
+            value={yourInfo.name}
+            onChange={(e) => handleYourInfoChange("name", e.target.value)}
+          />
+        </div>
+        <div>
+          <Label htmlFor="your-age">Your Age</Label>
+          <Input
+            id="your-age"
+            type="number"
+            value={yourInfo.age}
+            onChange={(e) => handleYourInfoChange("age", e.target.value)}
+          />
+        </div>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <Label htmlFor="your-gender">Your Gender</Label>
+          <Select
+            value={yourInfo.gender}
+            onValueChange={(value) => handleYourInfoChange("gender", value)}
+          >
+            <SelectTrigger id="your-gender">
+              <SelectValue placeholder="Select gender" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="male">Male</SelectItem>
+              <SelectItem value="female">Female</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label htmlFor="your-religious-commitment">Level of Religious Commitment</Label>
+          <Select
+            value={yourInfo.religiousCommitment}
+            onValueChange={(value) => handleYourInfoChange("religiousCommitment", value)}
+          >
+            <SelectTrigger id="your-religious-commitment">
+              <SelectValue placeholder="Select level" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="practicing">Practicing (Prays 5 times, follows Islamic finance, modesty, etc.)</SelectItem>
+              <SelectItem value="moderate">Moderately Practicing (Observes basics but flexible on some aspects)</SelectItem>
+              <SelectItem value="non-practicing">Non-Practicing (Identifies as Muslim but does not follow many obligations)</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
                     
                     <div>
                       <Label className="mb-3 block">
-                        Select Must-Have Religious Values (Select at least one)
+                        Indicate Religious Values (Select at least one)
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         {!yourInfo.gender ? (
