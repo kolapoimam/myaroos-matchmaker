@@ -653,7 +653,7 @@ const Compatibility = () => {
       };
     } else if (score >= 60) {
       return {
-        title: "There's potential! Like biryani without raita—good but needs some adjustments.",
+        title: "There's potential! Like Popcorn without Groundnut, but needs some adjustments.",
         message: "You have a promising foundation, alhamdulillah! Like a pot of biryani that's missing its raita—the fundamentals are excellent, but a few complementary elements would make it perfect. With open communication and patience, your minor differences could actually strengthen your relationship. Focus on the areas where you align well, and approach your differences with compassion and understanding. Perhaps perform Istikhara (prayer for guidance) as you consider moving forward.",
       };
     } else if (score >= 40) {
@@ -881,7 +881,7 @@ const Compatibility = () => {
                     
                     <div>
                       <Label className="mb-3 block">
-                        Select Must-Have Religious Values (Select at least one)
+                       Indicate Religious Values (Select at least one)
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         {!yourInfo.gender ? (
@@ -992,7 +992,7 @@ const Compatibility = () => {
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         {!suitorInfo.gender ? (
-                          <p className="text-muted-foreground">Please select your gender first to see suitor's relevant religious values.</p>
+                          <p className="text-muted-foreground">Please select your gender first to see relevant religious values.</p>
                         ) : suitorInfo.gender === "male" ? (
                           maleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
