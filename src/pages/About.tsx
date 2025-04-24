@@ -206,7 +206,7 @@ const About = () => {
                 Have questions, suggestions, or feedback? We'd love to hear from you! 
               </p>
               <p className="font-medium">
-                Email: hello@myaroos.com
+                Email:
               </p>
             </div>
           </div>
