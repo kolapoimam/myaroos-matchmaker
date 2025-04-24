@@ -817,25 +817,25 @@ const Compatibility = () => {
             
             {!showResults ? (
 <Tabs value={activeTab} onValueChange={setActiveTab}>
-  <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-8">
-    <TabsTrigger
-      value="your-info"
-      className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
-    >
-      Your Information
-    </TabsTrigger>
-    <TabsTrigger
-      value="suitor-info"
-      className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
-    >
-      Suitor's Information
-    </TabsTrigger>
-    <TabsTrigger
-      value="compatibility"
-      className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
-    >
-      Compatibility
-    </TabsTrigger>
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-8">
+          <TabsTrigger
+            value="your-info"
+            className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+          >
+            Your Information
+          </TabsTrigger>
+          <TabsTrigger
+            value="suitor-info"
+            className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+          >
+            Suitor's Information
+          </TabsTrigger>
+          <TabsTrigger
+            value="compatibility"
+            className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+          >
+            Compatibility
+          </TabsTrigger>
   </TabsList>
 </Tabs>
                 
