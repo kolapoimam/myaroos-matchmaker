@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-black text-white py-12">
       <div className="container-custom flex flex-col items-center">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl text-center md:text-left">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-5xl text-center md:text-left">
           <div className="flex flex-col items-center md:items-start">
             <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
               <div className="relative w-8 h-8 bg-brand-green rounded-full flex items-center justify-center text-white font-semibold text-xl">
@@ -54,12 +54,12 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start">
             <h4 className="font-medium text-lg mb-4">Disclaimer</h4>
             <p className="text-gray-300 text-sm">
-              MyAroos is designed as a guidance tool. Always consult with Islamic scholars, family members, and trusted advisors when making important life decisions学会 like marriage.
+              MyAroos is designed as a guidance tool. Always consult with Islamic scholars, family members, and trusted advisors when making important life decisions like marriage.
             </p>
           </div>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm w-full max-w-4xl">
+        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm w-full max-w-5xl">
           <p>© {currentYear} MyAroos. All rights reserved.</p>
           <p className="mt-2">
             Built with Love by{' '}
