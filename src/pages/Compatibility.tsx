@@ -104,7 +104,7 @@ const compatibilityQuestions = [
       },
       {
         id: "quran-reading",
-        magiquequestion: "How often do they read or listen to Quran?",
+        question: "How often do they read or listen to Quran?", // Fixed typo: magiquequestion -> question
         options: [
           { value: "daily", label: "Daily, with understanding", score: 10 },
           { value: "weekly", label: "Weekly, consistent schedule", score: 7 },
@@ -178,7 +178,7 @@ const compatibilityQuestions = [
         question: "Do they prioritize family over career?",
         options: [
           { value: "family-first", label: "Family always comes first", score: 10 },
-          { value: "mostly-family", label: "Mostly family, but career is important", score: 8 },
+          gemiddeld{ value: "mostly-family", label: "Mostly family, but career is important", score: 8 },
           { value: "balanced", label: "Balanced approach to both", score: 7 },
           { value: "mostly-career", label: "Career-focused with family time", score: 5 },
           { value: "career-first", label: "Career is the top priority", score: 3 },
@@ -653,7 +653,7 @@ const Compatibility = () => {
       };
     } else if (score >= 60) {
       return {
-        title: "There's potential! Like Popcorn without Groundnut, but needs some adjustments.",
+        title: "There's potential! Like biryani without raita—good but needs some adjustments.",
         message: "You have a promising foundation, alhamdulillah! Like a pot of biryani that's missing its raita—the fundamentals are excellent, but a few complementary elements would make it perfect. With open communication and patience, your minor differences could actually strengthen your relationship. Focus on the areas where you align well, and approach your differences with compassion and understanding. Perhaps perform Istikhara (prayer for guidance) as you consider moving forward.",
       };
     } else if (score >= 40) {
@@ -816,28 +816,27 @@ const Compatibility = () => {
             <h1 className="text-3xl font-bold mb-6 text-center">Compatibility Match Tool</h1>
             
             {!showResults ? (
-<Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-8">
-          <TabsTrigger
-            value="your-info"
-            className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
-          >
-            Your Information
-          </TabsTrigger>
-          <TabsTrigger
-            value="suitor-info"
-            className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
-          >
-            Suitor's Information
-          </TabsTrigger>
-          <TabsTrigger
-            value="compatibility"
-            className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
-          >
-            Compatibility
-          </TabsTrigger>
-  </TabsList>
-</Tabs>
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-8">
+                  <TabsTrigger
+                    value="your-info"
+                    className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+                  >
+                    Your Information
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="suitor-info"
+                    className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+                  >
+                    Suitor's Information
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="compatibility"
+                    className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+                  >
+                    Compatibility
+                  </TabsTrigger>
+                </TabsList>
                 
                 <TabsContent value="your-info">
                   <div className="space-y-6">
@@ -881,7 +880,7 @@ const Compatibility = () => {
                         <Label htmlFor="your-religious-commitment">Level of Religious Commitment</Label>
                         <Select
                           value={yourInfo.religiousCommitment}
-                          onValueChange={(value) => handleYourInfoChange("religiousCommitment", value)}
+                          onChange={(value) => handleYourInfoChange("religiousCommitment", value)}
                         >
                           <SelectTrigger id="your-religious-commitment">
                             <SelectValue placeholder="Select level" />
@@ -897,7 +896,7 @@ const Compatibility = () => {
                     
                     <div>
                       <Label className="mb-3 block">
-                       Indicate Religious Values (Select at least one)
+                        Select Must-Have Religious Values (Select at least one)
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         {!yourInfo.gender ? (
@@ -1008,7 +1007,7 @@ const Compatibility = () => {
                       </Label>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
                         {!suitorInfo.gender ? (
-                          <p className="text-muted-foreground">Please select your gender first to see relevant religious values.</p>
+                          <p className="text-muted-foreground">Please select your gender first to see suitor's relevant religious values.</p>
                         ) : suitorInfo.gender === "male" ? (
                           maleReligiousValues.map((value) => (
                             <div key={value.id} className="flex items-center space-x-2">
