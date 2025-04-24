@@ -178,7 +178,7 @@ const compatibilityQuestions = [
         question: "Do they prioritize family over career?",
         options: [
           { value: "family-first", label: "Family always comes first", score: 10 },
-          gemiddeld{ value: "mostly-family", label: "Mostly family, but career is important", score: 8 },
+          { value: "mostly-family", label: "Mostly family, but career is important", score: 8 },
           { value: "balanced", label: "Balanced approach to both", score: 7 },
           { value: "mostly-career", label: "Career-focused with family time", score: 5 },
           { value: "career-first", label: "Career is the top priority", score: 3 },
