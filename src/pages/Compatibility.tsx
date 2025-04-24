@@ -816,12 +816,28 @@ const Compatibility = () => {
             <h1 className="text-3xl font-bold mb-6 text-center">Compatibility Match Tool</h1>
             
             {!showResults ? (
-              <Tabs value={activeTab} onValueChange={setActiveTab}>
-                <TabsList className="grid w-full grid-cols-3 mb-8">
-                  <TabsTrigger value="your-info">Your Information</TabsTrigger>
-                  <TabsTrigger value="suitor-info">Suitor's Information</TabsTrigger>
-                  <TabsTrigger value="compatibility">Compatibility</TabsTrigger>
-                </TabsList>
+<Tabs value={activeTab} onValueChange={setActiveTab}>
+  <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 mb-8">
+    <TabsTrigger
+      value="your-info"
+      className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+    >
+      Your Information
+    </TabsTrigger>
+    <TabsTrigger
+      value="suitor-info"
+      className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+    >
+      Suitor's Information
+    </TabsTrigger>
+    <TabsTrigger
+      value="compatibility"
+      className="text-sm sm:text-base px-2 py-2 sm:px-4 sm:py-2 whitespace-normal sm:whitespace-nowrap"
+    >
+      Compatibility
+    </TabsTrigger>
+  </TabsList>
+</Tabs>
                 
                 <TabsContent value="your-info">
                   <div className="space-y-6">
