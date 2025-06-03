@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const About = () => {
   return (
-    <div className="min-h-screen flex flex-col islamic-pattern font-poppins">
+    <div className="min-h-screen flex flex-col islamic-pattern font-sans">
       <Navbar />
       
       <main className="flex-1 py-12">

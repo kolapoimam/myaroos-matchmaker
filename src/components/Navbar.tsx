@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./ThemeToggle";
 import { Link } from "react-router-dom";
@@ -25,7 +26,7 @@ export default function Navbar() {
 
   return (
     <header 
-      className={`sticky top-0 z-10 transition-all duration-300 font-poppins ${
+      className={`sticky top-0 z-10 transition-all duration-300 font-sans ${
         scrolled 
           ? "backdrop-blur-lg bg-background/70 border-b shadow-sm" 
           : "bg-background/90 border-b"
@@ -73,7 +74,7 @@ export default function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col gap-6 mt-8 font-poppins">
+              <div className="flex flex-col gap-6 mt-8 font-sans">
                 <Link to="/marriage-readiness" className="text-lg font-medium hover:text-brand-green transition-colors">
                   Readiness Quiz
                 </Link>

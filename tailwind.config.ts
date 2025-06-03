@@ -20,9 +20,9 @@ export default {
 		},
 		extend: {
 fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-            serif: ['Poppins', 'sans-serif'],
-            mono: ['Poppins', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['Plus Jakarta Sans', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
