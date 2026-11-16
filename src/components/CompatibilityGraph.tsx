@@ -1,5 +1,4 @@
-
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { getScoreTone } from "@/lib/scoreTone";
 
 interface CompatibilityGraphProps {
   scores: {
@@ -7,44 +6,31 @@ interface CompatibilityGraphProps {
   };
 }
 
+/** Category breakdown as animated horizontal bars */
 const CompatibilityGraph = ({ scores }: CompatibilityGraphProps) => {
-  const data = Object.entries(scores).map(([name, value]) => ({
-    name,
-    score: value,
-  }));
+  const data = Object.entries(scores);
 
   return (
-    <div className="w-full h-80">
-      <ResponsiveContainer width="100%" height="100%">
-        <BarChart
-          data={data}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 70,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis 
-            dataKey="name" 
-            angle={-45} 
-            textAnchor="end" 
-            height={70} 
-            tick={{ fontSize: 12 }}
-          />
-          <YAxis 
-            domain={[0, 100]} 
-            label={{ value: 'Compatibility %', angle: -90, position: 'insideLeft' }} 
-          />
-          <Tooltip 
-            formatter={(value) => [`${value}%`, 'Compatibility']}
-            labelFormatter={(name) => `Category: ${name}`}
-          />
-          <Legend />
-          <Bar dataKey="score" name="Compatibility Score" fill="#10B981" />
-        </BarChart>
-      </ResponsiveContainer>
+    <div className="space-y-4">
+      {data.map(([name, value], i) => {
+        const tone = getScoreTone(value);
+        return (
+          <div key={name} className="animate-rise" style={{ animationDelay: `${i * 80}ms` }}>
+            <div className="mb-1.5 flex items-center justify-between gap-4 text-sm">
+              <span className="font-semibold">{name}</span>
+              <span className="font-bold tabular-nums" style={{ color: tone.color }}>
+                {value}%
+              </span>
+            </div>
+            <div className="h-3 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full transition-[width] duration-1000 ease-out"
+                style={{ width: `${Math.max(value, 2)}%`, background: `linear-gradient(90deg, ${tone.color}aa, ${tone.color})` }}
+              />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };

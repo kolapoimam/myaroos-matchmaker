@@ -1,356 +1,102 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight, Copy, HeartHandshake, RotateCcw, Shuffle, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { useToast } from "@/hooks/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import CompatibilityGraph from "@/components/CompatibilityGraph";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ResultsActions from "@/components/ResultsActions";
+import PageShell from "@/components/PageShell";
+import Stepper from "@/components/Stepper";
+import ScoreRing from "@/components/ScoreRing";
+import QuestionCard from "@/components/QuestionCard";
+import { compatibilityQuestions, femaleReligiousValues, maleReligiousValues } from "@/data/compatibility";
+import { celebrate } from "@/lib/celebrate";
+import { cn } from "@/lib/utils";
 
-// Define the religious values
-const maleReligiousValues = [
-  { id: "beard", label: "Has a beard (Sunnah practice)" },
-  { id: "prayers", label: "Prays 5 times daily" },
-  { id: "islamic-finance", label: "Observes Islamic finance (avoids riba)" },
-  { id: "polygamy", label: "Comfortable with polygamy" },
-  { id: "islamic-banking", label: "Prefers Islamic banking" },
-  { id: "wali", label: "Prefers a wali's involvement in the marriage process" },
-  { id: "modesty", label: "Observes modesty in dress and social interactions" },
-  { id: "relocate", label: "Willing to relocate for marriage" },
-  { id: "madhab", label: "Follows a specific school of thought" },
-  { id: "halal-food", label: "Eats only halal-certified food" },
-  { id: "provider", label: "Plans to financially provide for the family" },
-  { id: "homeschooling", label: "Open to homeschooling children with Islamic studies" },
-  { id: "quran", label: "Reads Quran regularly" },
-  { id: "islamic-knowledge", label: "Seeks Islamic knowledge actively" },
-  { id: "cooking", label: "Has cooking skills" },
-  { id: "children", label: "Wants children" },
-  { id: "tahajjud", label: "Prays Tahajjud regularly" },
-  { id: "fasting", label: "Observes voluntary fasts" },
-  { id: "masjid", label: "Attends masjid regularly" },
+const steps = [
+  { id: "your-info", label: "Your Info", emoji: "🙋" },
+  { id: "suitor-info", label: "Suitor's Info", emoji: "💌" },
+  { id: "compatibility", label: "Compatibility", emoji: "⚖️" },
 ];
 
-const femaleReligiousValues = [
-  { id: "hijab", label: "Wears Hijab" },
-  { id: "niqab", label: "Wears Niqab" },
-  { id: "prayers", label: "Prays 5 times daily" },
-  { id: "polygamy", label: "Comfortable with polygamy" },
-  { id: "homeschooling", label: "Open to homeschooling children with Islamic studies" },
-  { id: "islamic-banking", label: "Prefers Islamic banking (avoids riba)" },
-  { id: "modest-interactions", label: "Observes modest social interactions" },
-  { id: "relocate", label: "Willing to relocate for marriage" },
-  { id: "madhab", label: "Follows a specific school of thought" },
-  { id: "halal-food", label: "Eats only halal-certified food" },
-  { id: "in-laws", label: "Willing to live with in-laws if necessary" },
-  { id: "long-distance", label: "Open to long-distance marriage initially" },
-  { id: "arabic", label: "Speaks Arabic or is willing to learn" },
-  { id: "quran", label: "Reads Quran regularly" },
-  { id: "islamic-knowledge", label: "Seeks Islamic knowledge actively" },
-  { id: "cooking", label: "Has cooking skills" },
-  { id: "children", label: "Wants children" },
-  { id: "tahajjud", label: "Prays Tahajjud regularly" },
-  { id: "fasting", label: "Observes voluntary fasts" },
+const commitmentLevels = [
+  { value: "practicing", label: "Practicing (Prays 5 times, follows Islamic finance, modesty, etc.)" },
+  { value: "moderate", label: "Moderately Practicing (Observes basics but flexible on some aspects)" },
+  { value: "non-practicing", label: "Non-Practicing (Identifies as Muslim but does not follow many obligations)" },
 ];
 
-// Define compatibility questions
-const compatibilityQuestions = [
-  {
-    category: "Core Religious Practice",
-    questions: [
-      {
-        id: "daily-prayers",
-        question: "Does this person pray five times daily?",
-        options: [
-          { value: "yes-on-time", label: "Yes, consistently on time", score: 10 },
-          { value: "yes", label: "Yes, but sometimes delayed", score: 8 },
-          { value: "sometimes", label: "Sometimes (3-4 prayers daily)", score: 5 },
-          { value: "rarely", label: "Rarely (1-2 prayers daily)", score: 2 },
-          { value: "no", label: "No, not currently praying", score: 0 },
-        ],
-      },
-      {
-        id: "ramadan-fasting",
-        question: "Do they fast during Ramadan?",
-        options: [
-          { value: "all", label: "Yes, all days with enthusiasm", score: 10 },
-          { value: "most", label: "Yes, most days", score: 8 },
-          { value: "half", label: "About half the month", score: 5 },
-          { value: "few", label: "Only a few days", score: 3 },
-          { value: "no", label: "No, rarely or never", score: 0 },
-        ],
-      },
-      {
-        id: "avoid-riba",
-        question: "Do they avoid riba (interest-based transactions)?",
-        options: [
-          { value: "strictly", label: "Strictly, including student loans and mortgages", score: 10 },
-          { value: "mostly", label: "Mostly, with few exceptions when necessary", score: 7 },
-          { value: "sometimes", label: "Sometimes, but has some interest-based loans", score: 5 },
-          { value: "rarely", label: "Rarely thinks about it", score: 2 },
-          { value: "not-concerned", label: "Not concerned about Islamic finance", score: 0 },
-        ],
-      },
-      {
-        id: "quran-reading",
-        question: "How often do they read or listen to Quran?", // Fixed typo: magiquequestion -> question
-        options: [
-          { value: "daily", label: "Daily, with understanding", score: 10 },
-          { value: "weekly", label: "Weekly, consistent schedule", score: 7 },
-          { value: "occasionally", label: "Occasionally, especially during Ramadan", score: 5 },
-          { value: "rarely", label: "Rarely, only on special occasions", score: 3 },
-          { value: "never", label: "Never or almost never", score: 0 },
-        ],
-      },
-      {
-        id: "islamic-knowledge",
-        question: "Do they actively seek Islamic knowledge?",
-        options: [
-          { value: "consistently", label: "Consistently through classes and self-study", score: 10 },
-          { value: "regularly", label: "Regularly through online lectures", score: 7 },
-          { value: "occasionally", label: "Occasionally when interested in a topic", score: 5 },
-          { value: "rarely", label: "Rarely seeks knowledge", score: 2 },
-          { value: "never", label: "Never actively seeks knowledge", score: 0 },
-        ],
-      },
-      {
-        id: "halal-lifestyle",
-        question: "How strict are they about following a halal lifestyle (food, entertainment, etc.)?",
-        options: [
-          { value: "very-strict", label: "Very strict in all aspects", score: 10 },
-          { value: "mostly-strict", label: "Mostly strict with occasional exceptions", score: 7 },
-          { value: "moderately", label: "Moderately observant, flexible on some things", score: 5 },
-          { value: "minimally", label: "Minimally observant, only basic requirements", score: 3 },
-          { value: "not-observant", label: "Not particularly observant", score: 0 },
-        ],
-      },
-    ],
-  },
-  {
-    category: "Personality & Lifestyle",
-    questions: [
-      {
-        id: "personality-type",
-        question: "Are they introverted or extroverted?",
-        options: [
-          { value: "strongly-introvert", label: "Strongly introverted", score: 5 },
-          { value: "introvert", label: "Somewhat introverted", score: 5 },
-          { value: "ambivert", label: "Ambivert (balanced)", score: 5 },
-          { value: "extrovert", label: "Somewhat extroverted", score: 5 },
-          { value: "strongly-extrovert", label: "Strongly extroverted", score: 5 },
-        ],
-      },
-      {
-        id: "communication-style",
-        question: "How would you describe their communication style?",
-        options: [
-          { value: "direct", label: "Direct and straightforward", score: 5 },
-          { value: "diplomatic", label: "Diplomatic and tactful", score: 5 },
-          { value: "reflective", label: "Reflective and thoughtful", score: 5 },
-          { value: "emotional", label: "Emotional and expressive", score: 5 },
-          { value: "avoidant", label: "Avoidant of difficult topics", score: 2 },
-        ],
-      },
-      {
-        id: "conflict-resolution",
-        question: "How do they handle conflicts and disagreements?",
-        options: [
-          { value: "calm-discussion", label: "Through calm, solution-focused discussion", score: 10 },
-          { value: "compromise", label: "Through compromise and understanding", score: 8 },
-          { value: "time-out", label: "Taking a time-out, then revisiting", score: 7 },
-          { value: "emotional", label: "Emotionally, occasionally heated", score: 3 },
-          { value: "avoidance", label: "Avoiding conflict altogether", score: 1 },
-        ],
-      },
-      {
-        id: "family-career",
-        question: "Do they prioritize family over career?",
-        options: [
-          { value: "family-first", label: "Family always comes first", score: 10 },
-          { value: "mostly-family", label: "Mostly family, but career is important", score: 8 },
-          { value: "balanced", label: "Balanced approach to both", score: 7 },
-          { value: "mostly-career", label: "Career-focused with family time", score: 5 },
-          { value: "career-first", label: "Career is the top priority", score: 3 },
-        ],
-      },
-      {
-        id: "weekend-preference",
-        question: "How do they prefer to spend weekends?",
-        options: [
-          { value: "home", label: "Relaxing at home", score: 5 },
-          { value: "family", label: "With family activities", score: 5 },
-          { value: "outdoors", label: "Outdoor activities and adventures", score: 5 },
-          { value: "socializing", label: "Socializing with friends", score: 5 },
-          { value: "productive", label: "Being productive (work/study/projects)", score: 5 },
-        ],
-      },
-      {
-        id: "life-pace",
-        question: "What pace of life do they prefer?",
-        options: [
-          { value: "slow", label: "Slow and relaxed, minimal commitments", score: 5 },
-          { value: "moderate", label: "Moderate pace with planned activities", score: 5 },
-          { value: "busy", label: "Busy and structured with many activities", score: 5 },
-          { value: "dynamic", label: "Dynamic and spontaneous", score: 5 },
-          { value: "hectic", label: "Fast-paced and hectic", score: 5 },
-        ],
-      },
-      {
-        id: "cleanliness",
-        question: "How would you describe their cleanliness and organization habits?",
-        options: [
-          { value: "very-organized", label: "Very organized and clean", score: 5 },
-          { value: "mostly-organized", label: "Mostly organized with occasional messiness", score: 5 },
-          { value: "average", label: "Average cleanliness", score: 5 },
-          { value: "somewhat-messy", label: "Somewhat messy but functional", score: 5 },
-          { value: "very-messy", label: "Very messy and disorganized", score: 5 },
-        ],
-      },
-    ],
-  },
-  {
-    category: "Long-Term Compatibility",
-    questions: [
-      {
-        id: "financial-management",
-        question: "How do they approach financial management?",
-        options: [
-          { value: "very-responsible", label: "Very responsible, saves regularly", score: 10 },
-          { value: "responsible", label: "Responsible with occasional splurges", score: 8 },
-          { value: "balanced", label: "Balanced approach to saving and spending", score: 7 },
-          { value: "impulsive", label: "Somewhat impulsive spending habits", score: 3 },
-          { value: "irresponsible", label: "Struggles with financial management", score: 1 },
-        ],
-      },
-      {
-        id: "polygamy",
-        question: "Are they open to polygamy?",
-        options: [
-          { value: "yes-actively", label: "Yes, actively considering it", score: 5 },
-          { value: "yes", label: "Yes, if circumstances warrant it", score: 5 },
-          { value: "maybe", label: "Maybe, under specific conditions", score: 5 },
-          { value: "not-sure", label: "Not Sure", score: 5 },
-          { value: "no", label: "No", score: 5 },
-        ],
-      },
-      {
-        id: "children",
-        question: "Do they want children?",
-        options: [
-          { value: "yes-many", label: "Yes, many (4+)", score: 5 },
-          { value: "yes-few", label: "Yes, a few (1-3)", score: 5 },
-          { value: "undecided", label: "Undecided but open to it", score: 5 },
-          { value: "prefer-not", label: "Prefer not to have children", score: 5 },
-          { value: "no", label: "Definitely no children", score: 5 },
-        ],
-      },
-      {
-        id: "parenting-style",
-        question: "What's their parenting style or preference?",
-        options: [
-          { value: "islamic-strict", label: "Islamic-focused with structure and discipline", score: 5 },
-          { value: "islamic-balanced", label: "Islamic-focused with balanced approach", score: 5 },
-          { value: "permissive", label: "Permissive but with Islamic values", score: 5 },
-          { value: "western-influenced", label: "Modern/Western-influenced approach", score: 5 },
-          { value: "not-thought-about", label: "Haven't thought much about it", score: 5 },
-        ],
-      },
-      {
-        id: "in-laws",
-        question: "How do they feel about living with or near in-laws?",
-        options: [
-          { value: "very-comfortable", label: "Very comfortable living with in-laws", score: 5 },
-          { value: "comfortable", label: "Comfortable living near in-laws", score: 5 },
-          { value: "temporary", label: "Comfortable temporarily if needed", score: 5 },
-          { value: "prefer-distance", label: "Prefers some distance from in-laws", score: 5 },
-          { value: "uncomfortable", label: "Uncomfortable with close in-law relationships", score: 5 },
-        ],
-      },
-      {
-        id: "relocate",
-        question: "Are they willing to relocate for marriage?",
-        options: [
-          { value: "yes-anywhere", label: "Yes, anywhere including internationally", score: 10 },
-          { value: "yes-within-country", label: "Yes, within the same country", score: 8 },
-          { value: "yes-nearby", label: "Yes, but only within nearby areas", score: 6 },
-          { value: "maybe", label: "Maybe under specific circumstances", score: 5 },
-          { value: "no", label: "No, not willing to relocate", score: 0 },
-        ],
-      },
-      {
-        id: "life-goals",
-        question: "Do they have clear life goals and plans?",
-        options: [
-          { value: "very-clear", label: "Very clear goals with action plans", score: 10 },
-          { value: "clear", label: "Clear goals but flexible plans", score: 8 },
-          { value: "general", label: "General direction but no specific plans", score: 6 },
-          { value: "figuring-out", label: "Still figuring things out", score: 4 },
-          { value: "no-goals", label: "No clear goals or plans", score: 2 },
-        ],
-      },
-    ],
-  },
-  {
-    category: "Cultural & Educational Compatibility",
-    questions: [
-      {
-        id: "cultural-background",
-        question: "How important is their cultural background in daily life?",
-        options: [
-          { value: "very-important", label: "Very important, practices cultural traditions", score: 5 },
-          { value: "somewhat-important", label: "Somewhat important, observes major customs", score: 5 },
-          { value: "balanced", label: "Balanced between culture and Islamic practices", score: 5 },
-          { value: "less-important", label: "Less important than Islamic identity", score: 5 },
-          { value: "not-important", label: "Not important at all", score: 5 },
-        ],
-      },
-      {
-        id: "mixed-gender-settings",
-        question: "How do they behave in mixed-gender settings?",
-        options: [
-          { value: "strict-segregation", label: "Prefers strict segregation", score: 5 },
-          { value: "limited-interaction", label: "Limited, necessary interaction only", score: 5 },
-          { value: "modest-interaction", label: "Modest interaction with boundaries", score: 5 },
-          { value: "comfortable-boundaries", label: "Comfortable but maintains Islamic boundaries", score: 5 },
-          { value: "very-comfortable", label: "Very comfortable with minimal boundaries", score: 5 },
-        ],
-      },
-      {
-        id: "education",
-        question: "What is their level of education or value placed on education?",
-        options: [
-          { value: "highly-educated", label: "Highly educated and values continuous learning", score: 5 },
-          { value: "college-education", label: "College educated and values knowledge", score: 5 },
-          { value: "vocational", label: "Vocational/specialized training", score: 5 },
-          { value: "high-school", label: "High school education", score: 5 },
-          { value: "self-taught", label: "Self-taught/informal education", score: 5 },
-        ],
-      },
-      {
-        id: "language",
-        question: "Do they speak or are willing to learn your native language?",
-        options: [
-          { value: "fluent", label: "Already fluent in my language", score: 5 },
-          { value: "learning", label: "Currently learning my language", score: 5 },
-          { value: "willing", label: "Willing to learn my language", score: 5 },
-          { value: "not-sure", label: "Not sure if they're willing to learn", score: 5 },
-          { value: "not-willing", label: "Not willing to learn my language", score: 5 },
-        ],
-      },
-    ],
-  },
+const checklistItems = [
+  "Meet the wali (guardian) if applicable",
+  "Perform Istikhara (prayer for guidance)",
+  "Discuss financial expectations (mahr, living expenses, work-life balance)",
+  "Align on family planning (number of children, education, etc.)",
+  "Decide on living arrangements (relocation, in-laws, independence)",
+  "Clarify boundaries on gender interactions and social settings",
+  "Discuss goals for Islamic growth together",
 ];
+
+const breakupMessages = [
+  "I really appreciate the time we've spent getting to know each other. After careful thought, prayer, and consideration, I don't think we are fully aligned in terms of our values and future goals. I wish you the best in finding someone who is a great match for you, In Sha Allah.",
+  "Thank you for our discussions and for sharing your perspective. I have reflected on our compatibility and, after seeking guidance through Istikhara, I believe it's best for us to part ways. May Allah grant us both what is best and lead us to spouses who will help us grow closer to Him.",
+  "It has been great learning about you, and I sincerely appreciate the time we've spent getting to know each other. However, I feel we may have some fundamental differences that could impact our future together. I pray Allah grants us both spouses who align with our paths and strengthen our deen.",
+];
+
+function valuesFor(gender: string) {
+  if (gender === "male") return maleReligiousValues;
+  if (gender === "female") return femaleReligiousValues;
+  return [...maleReligiousValues, ...femaleReligiousValues].filter(
+    (value, index, self) => index === self.findIndex((v) => v.id === value.id)
+  );
+}
+
+interface ValuesPickerProps {
+  idPrefix: string;
+  gender: string;
+  selected: string[];
+  onToggle: (id: string, checked: boolean) => void;
+  emptyText: string;
+}
+
+/** Religious values as toggleable chips (checkboxes under the hood) */
+function ValuesPicker({ idPrefix, gender, selected, onToggle, emptyText }: ValuesPickerProps) {
+  if (!gender) {
+    return <p className="rounded-2xl border border-dashed p-4 text-sm text-muted-foreground">{emptyText}</p>;
+  }
+  return (
+    <div className="flex flex-wrap gap-2">
+      {valuesFor(gender).map((value) => {
+        const id = `${idPrefix}-value-${value.id}`;
+        const on = selected.includes(value.id);
+        return (
+          <label
+            key={value.id}
+            htmlFor={id}
+            className={cn(
+              "flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-2 text-sm transition-all duration-200",
+              "hover:-translate-y-0.5 hover:border-primary/50",
+              "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring has-[:focus-visible]:ring-offset-2",
+              on ? "border-primary bg-primary text-primary-foreground shadow-md" : "bg-card"
+            )}
+          >
+            <Checkbox
+              id={id}
+              checked={on}
+              onCheckedChange={(c) => onToggle(value.id, c === true)}
+              className="sr-only"
+            />
+            <span aria-hidden="true">{on ? "✓" : "+"}</span>
+            {value.label}
+          </label>
+        );
+      })}
+    </div>
+  );
+}
 
 const Compatibility = () => {
   const [activeTab, setActiveTab] = useState("your-info");
@@ -371,6 +117,8 @@ const Compatibility = () => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [showResults, setShowResults] = useState(false);
   const [expandedCategories, setExpandedCategories] = useState<string[]>([compatibilityQuestions[0].category]);
+  const [breakupIndex, setBreakupIndex] = useState(() => Math.floor(Math.random() * breakupMessages.length));
+  const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [lowScoreAreas, setLowScoreAreas] = useState<Record<string, string[]>>({});
   const { toast } = useToast();
 
@@ -524,7 +272,7 @@ const Compatibility = () => {
           let categoryScore = 0;
           let categoryMaxScore = 0;
           let answeredQuestions = 0;
-          let categoryTips: string[] = [];
+          const categoryTips: string[] = [];
           
           category.questions.forEach((question) => {
             const answer = answers[question.id];
@@ -726,149 +474,53 @@ const Compatibility = () => {
     return scores;
   };
 
-  const generateMarriageChecklist = () => {
-    return (
-      <div className="bg-gray-50 dark:bg-brand-black p-6 rounded-lg">
-        <h3 className="text-xl font-semibold mb-4">Islamic Marriage Checklist</h3>
-        <ul className="space-y-3">
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step1" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step1" className="text-base">Meet the wali (guardian) if applicable</Label>
-          </li>
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step2" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step2" className="text-base">Perform Istikhara (prayer for guidance)</Label>
-          </li>
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step3" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step3" className="text-base">Discuss financial expectations (mahr, living expenses, work-life balance)</Label>
-          </li>
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step4" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step4" className="text-base">Align on family planning (number of children, education, etc.)</Label>
-          </li>
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step5" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step5" className="text-base">Decide on living arrangements (relocation, in-laws, independence)</Label>
-          </li>
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step6" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step6" className="text-base">Clarify boundaries on gender interactions and social settings</Label>
-          </li>
-          <li className="flex items-start">
-            <div className="h-6 w-6 rounded-full border border-brand-green flex items-center justify-center mr-2 mt-0.5">
-              <Checkbox id="step7" className="h-4 w-4" />
-            </div>
-            <Label htmlFor="step7" className="text-base">Discuss goals for Islamic growth together</Label>
-          </li>
-        </ul>
-      </div>
-    );
+  useEffect(() => {
+    if (showResults && calculateCompatibilityScore() >= 60) celebrate("big");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showResults]);
+
+  const stepIndex = steps.findIndex((st) => st.id === activeTab);
+
+  const goToStep = (index: number) => {
+    setActiveTab(steps[index].id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const generateBreakupMessage = () => {
-    const messages = [
-      "I really appreciate the time we've spent getting to know each other. After careful thought, prayer, and consideration, I don't think we are fully aligned in terms of our values and future goals. I wish you the best in finding someone who is a great match for you, In Sha Allah.",
-      "Thank you for our discussions and for sharing your perspective. I have reflected on our compatibility and, after seeking guidance through Istikhara, I believe it's best for us to part ways. May Allah grant us both what is best and lead us to spouses who will help us grow closer to Him.",
-      "It has been great learning about you, and I sincerely appreciate the time we've spent getting to know each other. However, I feel we may have some fundamental differences that could impact our future together. I pray Allah grants us both spouses who align with our paths and strengthen our deen."
-    ];
-    
-    const randomIndex = Math.floor(Math.random() * messages.length);
-    
+  const renderPersonFields = (who: "your" | "suitor") => {
+    const info = who === "your" ? yourInfo : suitorInfo;
+    const onChange = who === "your" ? handleYourInfoChange : handleSuitorInfoChange;
+    const label = who === "your" ? "Your" : "Suitor's";
     return (
-      <div className="bg-gray-50 dark:bg-brand-black p-6 rounded-lg">
-        <h3 className="text-xl font-semibold mb-4">Respectful Breakup Message</h3>
-        <p className="italic">"{messages[randomIndex]}"</p>
-        <div className="mt-4 text-right">
-          <Button variant="outline" onClick={() => {
-            navigator.clipboard.writeText(messages[randomIndex]);
-            toast({
-              title: "Message Copied",
-              description: "The breakup message has been copied to your clipboard.",
-            });
-          }}>
-            Copy Message
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  return (
-    <div className="min-h-screen flex flex-col islamic-pattern">
-      <Navbar />
-      
-      <main className="flex-1 py-12">
-        <div className="container-custom">
-          <div className="max-w-3xl mx-auto bg-white dark:bg-brand-black-light p-6 md:p-8 rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold mb-6 text-center">Compatibility Match Tool</h1>
-            
-            {!showResults ? (
-<Tabs value={activeTab} onValueChange={setActiveTab}>
-  <TabsList className="grid w-full grid-cols-3 gap-1 mb-8 bg-[#09090b] p-1 rounded-lg">
-    <TabsTrigger
-      value="your-info"
-      className="text-[10px] xs:text-xs sm:text-sm px-1 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md text-white data-[state=active]:bg-black data-[state=active]:text-white"
-    >
-      Your Info
-    </TabsTrigger>
-    <TabsTrigger
-      value="suitor-info"
-      className="text-[10px] xs:text-xs sm:text-sm px-1 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md text-white data-[state=active]:bg-black data-[state=active]:text-white"
-    >
-      Suitor's Info
-    </TabsTrigger>
-    <TabsTrigger
-      value="compatibility"
-      className="text-[10px] xs:text-xs sm:text-sm px-1 py-2 whitespace-nowrap overflow-hidden text-ellipsis rounded-md text-white data-[state=active]:bg-black data-[state=active]:text-white"
-    >
-      Compatibility
-    </TabsTrigger>
-  </TabsList>
-
-  {/* TabsContent must be inside Tabs component */}
-  <TabsContent value="your-info">
-    <div className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <Label htmlFor="your-name">Your Name/Nickname</Label>
+      <div className="grid gap-5 md:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor={`${who}-name`}>{label} Name/Nickname</Label>
           <Input
-            id="your-name"
-            value={yourInfo.name}
-            onChange={(e) => handleYourInfoChange("name", e.target.value)}
+            id={`${who}-name`}
+            value={info.name}
+            placeholder={who === "your" ? "e.g. Aisha" : "e.g. Yusuf"}
+            className="h-12 rounded-xl"
+            onChange={(e) => onChange("name", e.target.value)}
           />
         </div>
-        <div>
-          <Label htmlFor="your-age">Your Age</Label>
+        <div className="space-y-2">
+          <Label htmlFor={`${who}-age`}>{label} Age</Label>
           <Input
-            id="your-age"
+            id={`${who}-age`}
             type="number"
-            value={yourInfo.age}
-            onChange={(e) => handleYourInfoChange("age", e.target.value)}
+            value={info.age}
+            placeholder="e.g. 27"
+            className="h-12 rounded-xl"
+            onChange={(e) => onChange("age", e.target.value)}
           />
         </div>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <Label htmlFor="your-gender">Your Gender</Label>
+        <div className="space-y-2">
+          <Label htmlFor={`${who}-gender`}>{label} Gender</Label>
           <Select
-            value={yourInfo.gender}
-            onValueChange={(value) => handleYourInfoChange("gender", value)}
+            value={info.gender}
+            onValueChange={(value) => onChange("gender", value)}
+            disabled={who === "suitor" && (yourInfo.gender === "male" || yourInfo.gender === "female")}
           >
-            <SelectTrigger id="your-gender">
+            <SelectTrigger id={`${who}-gender`} className="h-12 rounded-xl">
               <SelectValue placeholder="Select gender" />
             </SelectTrigger>
             <SelectContent>
@@ -877,386 +529,333 @@ const Compatibility = () => {
             </SelectContent>
           </Select>
         </div>
-        <div>
-          <Label htmlFor="your-religious-commitment">Level of Religious Commitment</Label>
-          <Select
-            value={yourInfo.religiousCommitment}
-            onValueChange={(value) => handleYourInfoChange("religiousCommitment", value)}
-          >
-            <SelectTrigger id="your-religious-commitment">
+        <div className="space-y-2">
+          <Label htmlFor={`${who}-religious-commitment`}>Level of Religious Commitment</Label>
+          <Select value={info.religiousCommitment} onValueChange={(value) => onChange("religiousCommitment", value)}>
+            <SelectTrigger id={`${who}-religious-commitment`} className="h-12 rounded-xl text-left">
               <SelectValue placeholder="Select level" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="practicing">Practicing (Prays 5 times, follows Islamic finance, modesty, etc.)</SelectItem>
-              <SelectItem value="moderate">Moderately Practicing (Observes basics but flexible on some aspects)</SelectItem>
-              <SelectItem value="non-practicing">Non-Practicing (Identifies as Muslim but does not follow many obligations)</SelectItem>
+              {commitmentLevels.map((level) => (
+                <SelectItem key={level.value} value={level.value}>
+                  {level.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
       </div>
-                    
+    );
+  };
+
+  const score = showResults ? calculateCompatibilityScore() : 0;
+  const result = showResults ? getResultMessage() : null;
+  const categoryScores: Record<string, number> = showResults ? getCategoryScores() : {};
+  const doneCount = checklistItems.filter((_, i) => checked[i]).length;
+
+  const restart = () => {
+    setShowResults(false);
+    setActiveTab("your-info");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  return (
+    <PageShell>
+      <section className="container-custom py-10 md:py-14">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 text-center">
+            <span className="eyebrow">
+              <Sparkles className="h-3.5 w-3.5" /> 3 quick steps · fully private
+            </span>
+            <h1 className="mt-4 text-4xl font-semibold md:text-5xl">
+              Compatibility <span className="italic text-primary">Match</span> Tool
+            </h1>
+          </div>
+
+          {!showResults ? (
+            <div className="surface p-5 md:p-8">
+              <Stepper steps={steps} current={stepIndex} onSelect={goToStep} />
+
+              <div key={activeTab} className="mt-10 animate-rise">
+                {activeTab === "your-info" && (
+                  <div className="space-y-8">
                     <div>
-                      <Label className="mb-3 block">
-                        Indicate Religious Values (Select at least one)
-                      </Label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                        {!yourInfo.gender ? (
-                          <p className="text-muted-foreground">Please select your gender to see relevant religious values.</p>
-                        ) : yourInfo.gender === "male" ? (
-                          maleReligiousValues.map((value) => (
-                            <div key={value.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`your-value-${value.id}`}
-                                checked={yourInfo.religiousValues.includes(value.id)}
-                                onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
-                              />
-                              <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
-                            </div>
-                          ))
-                        ) : yourInfo.gender === "female" ? (
-                          femaleReligiousValues.map((value) => (
-                            <div key={value.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`your-value-${value.id}`}
-                                checked={yourInfo.religiousValues.includes(value.id)}
-                                onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
-                              />
-                              <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
-                            </div>
-                          ))
-                        ) : (
-                          [...maleReligiousValues, ...femaleReligiousValues]
-                            .filter((value, index, self) => 
-                              index === self.findIndex((v) => v.id === value.id)
-                            )
-                            .map((value) => (
-                              <div key={value.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={`your-value-${value.id}`}
-                                  checked={yourInfo.religiousValues.includes(value.id)}
-                                  onCheckedChange={(checked) => handleYourReligiousValueChange(value.id, checked === true)}
-                                />
-                                <Label htmlFor={`your-value-${value.id}`}>{value.label}</Label>
-                              </div>
-                            ))
-                        )}
-                      </div>
+                      <h2 className="text-3xl font-semibold">Tell us about you 🙋</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">Just a nickname is fine. Nothing leaves your device.</p>
+                    </div>
+                    {renderPersonFields("your")}
+                    <div>
+                      <Label className="mb-3 block">Indicate Religious Values (Select at least one)</Label>
+                      <ValuesPicker
+                        idPrefix="your"
+                        gender={yourInfo.gender}
+                        selected={yourInfo.religiousValues}
+                        onToggle={handleYourReligiousValueChange}
+                        emptyText="Please select your gender to see relevant religious values."
+                      />
                     </div>
                   </div>
-                </TabsContent>
-                
-                <TabsContent value="suitor-info">
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <Label htmlFor="suitor-name">Suitor's Name/Nickname</Label>
-                        <Input
-                          id="suitor-name"
-                          value={suitorInfo.name}
-                          onChange={(e) => handleSuitorInfoChange("name", e.target.value)}
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="suitor-age">Suitor's Age</Label>
-                        <Input
-                          id="suitor-age"
-                          type="number"
-                          value={suitorInfo.age}
-                          onChange={(e) => handleSuitorInfoChange("age", e.target.value)}
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <Label htmlFor="suitor-gender">Suitor's Gender</Label>
-                        <Select
-                          value={suitorInfo.gender}
-                          onValueChange={(value) => handleSuitorInfoChange("gender", value)}
-                          disabled={yourInfo.gender === "male" || yourInfo.gender === "female"}
-                        >
-                          <SelectTrigger id="suitor-gender">
-                            <SelectValue placeholder="Select gender" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="male">Male</SelectItem>
-                            <SelectItem value="female">Female</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                      <div>
-                        <Label htmlFor="suitor-religious-commitment">Level of Religious Commitment</Label>
-                        <Select
-                          value={suitorInfo.religiousCommitment}
-                          onValueChange={(value) => handleSuitorInfoChange("religiousCommitment", value)}
-                        >
-                          <SelectTrigger id="suitor-religious-commitment">
-                            <SelectValue placeholder="Select level" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="practicing">Practicing (Prays 5 times, follows Islamic finance, modesty, etc.)</SelectItem>
-                            <SelectItem value="moderate">Moderately Practicing (Observes basics but flexible on some aspects)</SelectItem>
-                            <SelectItem value="non-practicing">Non-Practicing (Identifies as Muslim but does not follow many obligations)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-                    
+                )}
+
+                {activeTab === "suitor-info" && (
+                  <div className="space-y-8">
                     <div>
-                      <Label className="mb-3 block">
-                        Select Shared Religious Values
-                      </Label>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2">
-                        {!suitorInfo.gender ? (
-                          <p className="text-muted-foreground">Please select your gender first to see suitor's relevant religious values.</p>
-                        ) : suitorInfo.gender === "male" ? (
-                          maleReligiousValues.map((value) => (
-                            <div key={value.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`suitor-value-${value.id}`}
-                                checked={suitorInfo.religiousValues.includes(value.id)}
-                                onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
-                              />
-                              <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
-                            </div>
-                          ))
-                        ) : suitorInfo.gender === "female" ? (
-                          femaleReligiousValues.map((value) => (
-                            <div key={value.id} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={`suitor-value-${value.id}`}
-                                checked={suitorInfo.religiousValues.includes(value.id)}
-                                onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
-                              />
-                              <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
-                            </div>
-                          ))
-                        ) : (
-                          [...maleReligiousValues, ...femaleReligiousValues]
-                            .filter((value, index, self) => 
-                              index === self.findIndex((v) => v.id === value.id)
-                            )
-                            .map((value) => (
-                              <div key={value.id} className="flex items-center space-x-2">
-                                <Checkbox
-                                  id={`suitor-value-${value.id}`}
-                                  checked={suitorInfo.religiousValues.includes(value.id)}
-                                  onCheckedChange={(checked) => handleSuitorReligiousValueChange(value.id, checked === true)}
-                                />
-                                <Label htmlFor={`suitor-value-${value.id}`}>{value.label}</Label>
-                              </div>
-                            ))
-                        )}
-                      </div>
+                      <h2 className="text-3xl font-semibold">Now, the suitor 💌</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">Describe them as they are, not as you hope they are.</p>
+                    </div>
+                    {renderPersonFields("suitor")}
+                    <div>
+                      <Label className="mb-3 block">Select Shared Religious Values</Label>
+                      <ValuesPicker
+                        idPrefix="suitor"
+                        gender={suitorInfo.gender}
+                        selected={suitorInfo.religiousValues}
+                        onToggle={handleSuitorReligiousValueChange}
+                        emptyText="Please select your gender first to see suitor's relevant religious values."
+                      />
                     </div>
                   </div>
-                </TabsContent>
-                
-                <TabsContent value="compatibility">
+                )}
+
+                {activeTab === "compatibility" && (
                   <div className="space-y-6">
-                    <p className="text-muted-foreground mb-4">
-                      Answer the following questions about your potential suitor. You only need to answer questions you know the answers to.
-                    </p>
-                    
+                    <div>
+                      <h2 className="text-3xl font-semibold">The vibe check ⚖️</h2>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Answer the following questions about your potential suitor. You only need to answer questions you
+                        know the answers to.
+                      </p>
+                    </div>
+
                     <Accordion
                       type="single"
                       collapsible
                       value={expandedCategories[0]}
                       onValueChange={(value) => setExpandedCategories([value])}
+                      className="space-y-3"
                     >
-                      {compatibilityQuestions.map((category) => (
-                        <AccordionItem 
-                          key={category.category} 
-                          value={category.category}
-                        >
-                          <AccordionTrigger className="text-xl font-medium">
-                            {category.category}
-                          </AccordionTrigger>
-                          <AccordionContent>
-                            <div className="space-y-6 pt-4">
-                              {category.questions.map((question) => (
-                                <div key={question.id} className="p-4 border rounded-lg">
-                                  <p className="font-medium mb-4">{question.question}</p>
-                                  <RadioGroup
+                      {compatibilityQuestions.map((category) => {
+                        const answered = category.questions.filter((q) => answers[q.id] !== undefined).length;
+                        return (
+                          <AccordionItem
+                            key={category.category}
+                            value={category.category}
+                            className="overflow-hidden rounded-2xl border bg-background/50 px-4"
+                          >
+                            <AccordionTrigger className="text-left hover:no-underline">
+                              <span className="flex flex-1 items-center gap-3">
+                                <span className="text-2xl" aria-hidden="true">
+                                  {category.emoji}
+                                </span>
+                                <span className="font-display text-lg font-semibold">{category.category}</span>
+                                <span
+                                  className={cn(
+                                    "ml-auto mr-3 rounded-full px-2.5 py-0.5 text-xs font-bold",
+                                    answered > 0 ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground"
+                                  )}
+                                >
+                                  {answered}/{category.questions.length}
+                                </span>
+                              </span>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="space-y-4 pb-2 pt-2">
+                                {category.questions.map((question, i) => (
+                                  <QuestionCard
+                                    key={question.id}
+                                    number={i + 1}
+                                    question={question}
                                     value={answers[question.id]}
-                                    onValueChange={(value) =>
-                                      handleAnswerChange(question.id, value)
-                                    }
-                                  >
-                                    <div className="space-y-3">
-                                      {question.options.map((option) => (
-                                        <div key={option.value} className="flex items-center">
-                                          <RadioGroupItem
-                                            value={option.value}
-                                            id={`${question.id}-${option.value}`}
-                                          />
-                                          <Label
-                                            htmlFor={`${question.id}-${option.value}`}
-                                            className="ml-2"
-                                          >
-                                            {option.label}
-                                          </Label>
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </RadioGroup>
-                                </div>
+                                    onChange={(value) => handleAnswerChange(question.id, value)}
+                                  />
+                                ))}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
+                    </Accordion>
+                  </div>
+                )}
+              </div>
+
+              <div className="mt-8 flex items-center justify-between gap-3 border-t pt-6">
+                <Button
+                  onClick={handlePreviousTab}
+                  disabled={activeTab === "your-info"}
+                  variant="ghost"
+                  className="rounded-full"
+                >
+                  <ArrowLeft className="mr-1.5 h-4 w-4" /> Previous
+                </Button>
+                <Button onClick={handleNextTab} size="lg" className="rounded-full px-7">
+                  {activeTab === "compatibility" ? "See Results" : "Next"}
+                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            result && (
+              <div id="results-container" className="space-y-6 animate-rise">
+                <div className="surface p-6 text-center md:p-10">
+                  <p className="eyebrow mb-4">Your Compatibility Results</p>
+                  <p className="mb-6 font-display text-2xl font-semibold">
+                    {yourInfo.name} <span className="text-rose">♥</span> {suitorInfo.name}
+                  </p>
+                  <ScoreRing score={score} />
+                  <h2 className="mx-auto mt-6 max-w-xl text-2xl font-semibold leading-snug text-primary md:text-3xl">
+                    {result.title}
+                  </h2>
+                  <p className="mx-auto mt-3 max-w-xl leading-relaxed text-muted-foreground">{result.message}</p>
+
+                  <div className="mt-8">
+                    <ResultsActions
+                      shareText={getShareText()}
+                      report={{
+                        heading: "Compatibility Report",
+                        subheading: `${yourInfo.name} & ${suitorInfo.name}`,
+                        score,
+                        verdict: result.title,
+                        message: result.message,
+                        categories: Object.entries(categoryScores).map(([label, value]) => ({ label, score: value })),
+                        tips: Object.entries(lowScoreAreas).map(([area, items]) => ({ area, items })),
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="surface p-6 md:p-8">
+                  <h3 className="mb-5 text-2xl font-semibold">Score breakdown</h3>
+                  <CompatibilityGraph scores={categoryScores} />
+                </div>
+
+                {Object.keys(lowScoreAreas).length > 0 && (
+                  <div className="surface p-6 md:p-8">
+                    <h3 className="mb-4 text-2xl font-semibold">Areas to Consider</h3>
+                    <Accordion type="multiple" className="w-full">
+                      {Object.entries(lowScoreAreas).map(([area, tips]) => (
+                        <AccordionItem key={area} value={area}>
+                          <AccordionTrigger className="text-left font-semibold hover:no-underline">{area}</AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="space-y-2">
+                              {tips.map((tip, index) => (
+                                <li key={index} className="flex gap-2 text-sm leading-relaxed">
+                                  <span className="text-gold">✦</span>
+                                  {tip}
+                                </li>
                               ))}
-                            </div>
+                            </ul>
                           </AccordionContent>
                         </AccordionItem>
                       ))}
                     </Accordion>
                   </div>
-                </TabsContent>
-                
-                <div className="flex justify-between mt-8">
-                  <Button
-                    onClick={handlePreviousTab}
-                    disabled={activeTab === "your-info"}
-                    variant="outline"
-                  >
-                    Previous
-                  </Button>
-                  <Button onClick={handleNextTab}>
-                    {activeTab === "compatibility" ? "See Results" : "Next"}
-                  </Button>
-                </div>
-              </Tabs>
-            ) : (
-              <div id="results-container">
-                <h2 className="text-2xl font-bold mb-6 text-center">Your Compatibility Results</h2>
-                
-                <div className="mb-8">
-                  <div className="flex justify-center items-center mb-4">
-                    <div className="relative w-48 h-48">
-                      <div className="w-full h-full rounded-full bg-gray-100 dark:bg-brand-black flex items-center justify-center">
-                        <span className="text-4xl font-bold">{calculateCompatibilityScore()}%</span>
+                )}
+
+                <div id="next-steps" className="surface p-6 md:p-8">
+                  <h3 className="mb-1 text-2xl font-semibold">Next Steps</h3>
+                  <p className="mb-6 text-sm text-muted-foreground">Whichever way you lean, do it with ihsan.</p>
+                  <Tabs defaultValue="proceed">
+                    <TabsList className="mb-6 grid h-auto w-full grid-cols-2 gap-2 rounded-2xl bg-muted p-1.5">
+                      <TabsTrigger
+                        value="proceed"
+                        className="flex-col gap-0.5 rounded-xl py-3 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                      >
+                        <span className="font-semibold">Proceed with Relationship</span>
+                        <span className="text-xs font-normal opacity-80">Marriage Checklist</span>
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="end"
+                        className="flex-col gap-0.5 rounded-xl py-3 data-[state=active]:bg-foreground data-[state=active]:text-background"
+                      >
+                        <span className="font-semibold">End Things Respectfully</span>
+                        <span className="text-xs font-normal opacity-80">Breakup Message</span>
+                      </TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="proceed">
+                      <div className="mb-4 flex items-center justify-between">
+                        <h4 className="flex items-center gap-2 font-display text-xl font-semibold">
+                          <HeartHandshake className="h-5 w-5 text-primary" /> Islamic Marriage Checklist
+                        </h4>
+                        <span className="sticker rotate-2 text-xs">
+                          {doneCount}/{checklistItems.length} done
+                        </span>
                       </div>
-                      <svg className="absolute top-0 left-0" width="192" height="192" viewBox="0 0 192 192">
-                        <circle
-                          cx="96"
-                          cy="96"
-                          r="92"
-                          fill="none"
-                          stroke="#10B981"
-                          strokeWidth="8"
-                          strokeDasharray={`${calculateCompatibilityScore() * 5.8} 1000`}
-                          transform="rotate(-90, 96, 96)"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <div className="text-center mb-8">
-                    <h3 className="text-xl font-bold text-brand-green mb-2">{getResultMessage().title}</h3>
-                    <p>{getResultMessage().message}</p>
-                  </div>
-                  
-                  <CompatibilityGraph scores={getCategoryScores()} />
-                  
-                  {Object.keys(lowScoreAreas).length > 0 && (
-                    <div className="mt-8 p-6 bg-gray-50 dark:bg-brand-black rounded-lg">
-                      <h4 className="font-semibold text-lg mb-4">Areas to Consider:</h4>
-                      
-                      <Accordion type="multiple" className="w-full">
-                        {Object.entries(lowScoreAreas).map(([area, tips]) => (
-                          <AccordionItem key={area} value={area}>
-                            <AccordionTrigger className="text-left">
-                              <span>{area}</span>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                              <ul className="list-disc pl-6 space-y-2 mt-2">
-                                {tips.map((tip, index) => (
-                                  <li key={index} className="text-sm">{tip}</li>
-                                ))}
-                              </ul>
-                            </AccordionContent>
-                          </AccordionItem>
+                      <ul className="space-y-2">
+                        {checklistItems.map((item, i) => (
+                          <li key={item}>
+                            <label
+                              htmlFor={`step${i + 1}`}
+                              className={cn(
+                                "flex cursor-pointer items-start gap-3 rounded-xl border bg-card p-3 transition-colors",
+                                checked[i] && "border-primary/40 bg-[hsl(var(--mint)/0.4)]"
+                              )}
+                            >
+                              <Checkbox
+                                id={`step${i + 1}`}
+                                checked={!!checked[i]}
+                                onCheckedChange={(c) => {
+                                  const next = { ...checked, [i]: c === true };
+                                  setChecked(next);
+                                  if (checklistItems.every((_, j) => next[j])) celebrate("small");
+                                }}
+                                className="mt-0.5"
+                              />
+                              <span className={cn("text-sm leading-relaxed", checked[i] && "text-muted-foreground line-through")}>
+                                {item}
+                              </span>
+                            </label>
+                          </li>
                         ))}
-                      </Accordion>
-                    </div>
-                  )}
-                  
-                  <ResultsActions 
-                    title={getResultMessage().title}
-                    subtitle={getResultMessage().message}
-                    score={calculateCompatibilityScore()}
-                    type="compatibility"
-                    shareText={getShareText()}
-                  />
-                  
-                  <div className="mt-12">
-                    <h3 className="text-xl font-semibold mb-4">Next Steps</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <Button 
-                        className="h-auto py-6"
-                        onClick={() => {
-                          const nextStepsSection = document.getElementById("next-steps");
-                          if (nextStepsSection) {
-                            nextStepsSection.scrollIntoView({ behavior: "smooth" });
-                          }
-                        }}
-                      >
-                        <div>
-                          <p className="font-semibold mb-1">Proceed with Relationship</p>
-                          <p className="text-xs font-normal">Generate Marriage Checklist</p>
-                        </div>
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        className="h-auto py-6"
-                        onClick={() => {
-                          const nextStepsSection = document.getElementById("next-steps");
-                          if (nextStepsSection) {
-                            nextStepsSection.scrollIntoView({ behavior: "smooth" });
-                          }
-                        }}
-                      >
-                        <div>
-                          <p className="font-semibold mb-1">End Things Respectfully</p>
-                          <p className="text-xs font-normal">Generate Breakup Message</p>
-                        </div>
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div id="next-steps" className="mt-12 pt-6 border-t">
-                    <Tabs defaultValue="proceed">
-                      <TabsList className="grid w-full grid-cols-2 mb-6">
-                        <TabsTrigger value="proceed">Marriage Checklist</TabsTrigger>
-                        <TabsTrigger value="end">Breakup Message</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="proceed">
-                        {generateMarriageChecklist()}
-                      </TabsContent>
-                      <TabsContent value="end">
-                        {generateBreakupMessage()}
-                      </TabsContent>
-                    </Tabs>
-                  </div>
-                  
-                  <div className="mt-8 flex justify-center">
-                    <Button
-                      onClick={() => {
-                        setShowResults(false);
-                        setActiveTab("your-info");
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }}
-                      variant="outline"
-                    >
-                      Start New Compatibility Test
-                    </Button>
-                  </div>
+                      </ul>
+                    </TabsContent>
+
+                    <TabsContent value="end">
+                      <h4 className="mb-4 font-display text-xl font-semibold">Respectful Breakup Message</h4>
+                      <blockquote className="relative rounded-2xl bg-muted p-6 pl-10 italic leading-relaxed">
+                        <span className="absolute left-3 top-1 font-display text-5xl text-gold" aria-hidden="true">
+                          “
+                        </span>
+                        {breakupMessages[breakupIndex]}
+                      </blockquote>
+                      <div className="mt-4 flex flex-wrap justify-end gap-2">
+                        <Button
+                          variant="ghost"
+                          className="rounded-full"
+                          onClick={() => setBreakupIndex((i) => (i + 1) % breakupMessages.length)}
+                        >
+                          <Shuffle className="mr-2 h-4 w-4" /> Another one
+                        </Button>
+                        <Button
+                          variant="outline"
+                          className="rounded-full"
+                          onClick={() => {
+                            navigator.clipboard.writeText(breakupMessages[breakupIndex]);
+                            toast({
+                              title: "Message Copied",
+                              description: "The breakup message has been copied to your clipboard.",
+                            });
+                          }}
+                        >
+                          <Copy className="mr-2 h-4 w-4" /> Copy Message
+                        </Button>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </div>
+
+                <div className="flex justify-center pt-2">
+                  <Button onClick={restart} variant="outline" size="lg" className="rounded-full">
+                    <RotateCcw className="mr-2 h-4 w-4" /> Start New Compatibility Test
+                  </Button>
                 </div>
               </div>
-            )}
-          </div>
+            )
+          )}
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+      </section>
+    </PageShell>
   );
 };
 

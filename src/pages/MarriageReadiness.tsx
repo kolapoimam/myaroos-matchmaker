@@ -1,294 +1,23 @@
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { ArrowLeft, ArrowRight, RotateCcw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import PageShell from "@/components/PageShell";
+import QuestionCard from "@/components/QuestionCard";
+import Stepper from "@/components/Stepper";
+import ScoreRing from "@/components/ScoreRing";
+import CompatibilityGraph from "@/components/CompatibilityGraph";
 import { useToast } from "@/hooks/use-toast";
 import ResultsActions from "@/components/ResultsActions";
+import { categories } from "@/data/readiness";
+import { celebrate } from "@/lib/celebrate";
 
-// Define question categories
-const categories = [
-  {
-    id: "spiritual",
-    title: "Spiritual Readiness",
-    questions: [
-      {
-        id: "pray-five-times",
-        question: "Do you pray five times daily?",
-        options: [
-          { value: "yes", label: "Yes, consistently on time", score: 10 },
-          { value: "most-times", label: "Yes, but sometimes delayed", score: 8 },
-          { value: "sometimes", label: "Sometimes (3-4 prayers daily)", score: 5 },
-          { value: "rarely", label: "Rarely (1-2 prayers daily)", score: 2 },
-          { value: "no", label: "No, not currently praying", score: 0 },
-        ],
-      },
-      {
-        id: "islamic-marriage-study",
-        question: "Have you studied Islamic marriage rights & responsibilities?",
-        options: [
-          { value: "extensively", label: "Yes, extensively through courses/books", score: 10 },
-          { value: "somewhat", label: "Yes, through occasional lectures/articles", score: 7 },
-          { value: "occasionally", label: "Occasionally, basic knowledge only", score: 5 },
-          { value: "minimal", label: "Very minimal knowledge", score: 2 },
-          { value: "no", label: "No, not at all", score: 0 },
-        ],
-      },
-      {
-        id: "islamic-knowledge",
-        question: "How often do you seek Islamic knowledge?",
-        options: [
-          { value: "daily", label: "Daily dedicated study time", score: 10 },
-          { value: "weekly", label: "Weekly classes/study circles", score: 7 },
-          { value: "occasionally", label: "Occasionally when I have time", score: 4 },
-          { value: "rarely", label: "Rarely, only during Ramadan", score: 2 },
-          { value: "not-at-all", label: "Not currently seeking knowledge", score: 0 },
-        ],
-      },
-      {
-        id: "religious-practice",
-        question: "Are you comfortable leading/cooperating in religious household practices?",
-        options: [
-          { value: "very-comfortable", label: "Very comfortable and knowledgeable", score: 10 },
-          { value: "comfortable", label: "Comfortable with most aspects", score: 8 },
-          { value: "needs-improvement", label: "Needs improvement in some areas", score: 5 },
-          { value: "uncomfortable", label: "Uncomfortable but willing to learn", score: 3 },
-          { value: "no", label: "Not comfortable at all", score: 0 },
-        ],
-      },
-      {
-        id: "quran-recitation",
-        question: "How often do you recite and reflect on the Quran?",
-        options: [
-          { value: "daily", label: "Daily with reflection on meanings", score: 10 },
-          { value: "few-times-week", label: "A few times per week", score: 7 },
-          { value: "weekly", label: "Weekly, usually on Friday", score: 5 },
-          { value: "rarely", label: "Rarely, only on special occasions", score: 2 },
-          { value: "not-at-all", label: "Not currently reciting", score: 0 },
-        ],
-      },
-      {
-        id: "islamic-etiquettes",
-        question: "How well do you practice Islamic etiquettes in daily life (eating, sleeping, etc.)?",
-        options: [
-          { value: "consistently", label: "Consistently follow Sunnah practices", score: 10 },
-          { value: "most-times", label: "Most of the time", score: 7 },
-          { value: "sometimes", label: "Sometimes, when I remember", score: 5 },
-          { value: "rarely", label: "Rarely think about Islamic etiquettes", score: 2 },
-          { value: "not-at-all", label: "Not currently practicing these", score: 0 },
-        ],
-      },
-    ],
-  },
-  {
-    id: "emotional",
-    title: "Emotional Readiness",
-    questions: [
-      {
-        id: "handle-disagreements",
-        question: "Can you handle disagreements maturely and Islamically?",
-        options: [
-          { value: "excellent", label: "Yes, with patience and proper Islamic etiquette", score: 10 },
-          { value: "good", label: "Yes, though I sometimes get frustrated", score: 7 },
-          { value: "working-on-it", label: "Working on it, improving gradually", score: 5 },
-          { value: "difficult", label: "Find it difficult to remain calm", score: 2 },
-          { value: "no", label: "No, I struggle with controlling emotions", score: 0 },
-        ],
-      },
-      {
-        id: "handle-stress",
-        question: "How do you handle stress and difficult conversations?",
-        options: [
-          { value: "very-calmly", label: "Very calmly with dua and reflection", score: 10 },
-          { value: "calmly", label: "Calmly most of the time", score: 8 },
-          { value: "varies", label: "It varies depending on the situation", score: 5 },
-          { value: "with-difficulty", label: "With difficulty, often get overwhelmed", score: 3 },
-          { value: "avoid-it", label: "I avoid difficult conversations", score: 0 },
-        ],
-      },
-      {
-        id: "patience",
-        question: "Are you patient and understanding when things don't go your way?",
-        options: [
-          { value: "always", label: "Always, with complete trust in Allah's plan", score: 10 },
-          { value: "most-times", label: "Most of the time", score: 7 },
-          { value: "sometimes", label: "Sometimes, depending on the situation", score: 5 },
-          { value: "rarely", label: "Rarely, I usually get upset", score: 2 },
-          { value: "no", label: "No, I struggle with this consistently", score: 0 },
-        ],
-      },
-      {
-        id: "emotional-independence",
-        question: "How emotionally independent are you from your parents/family?",
-        options: [
-          { value: "very", label: "Very independent while maintaining good relations", score: 10 },
-          { value: "moderately", label: "Moderately independent", score: 7 },
-          { value: "somewhat", label: "Somewhat dependent for emotional support", score: 5 },
-          { value: "very-dependent", label: "Very dependent on family for decisions", score: 2 },
-          { value: "completely-dependent", label: "Completely dependent on family", score: 0 },
-        ],
-      },
-      {
-        id: "past-relationships",
-        question: "Have you emotionally healed from past relationships or rejections?",
-        options: [
-          { value: "completely", label: "No past relationships, I'm good", score: 10 },
-          { value: "mostly", label: "Mostly healed, occasional thoughts", score: 7 },
-          { value: "in-process", label: "In the process of healing", score: 5 },
-          { value: "struggling", label: "Still struggling with past experiences", score: 2 },
-          { value: "not-started", label: "Haven't started the healing process", score: 0 },
-        ],
-      },
-      {
-        id: "expectations",
-        question: "Do you have realistic expectations about marriage and your future spouse?",
-        options: [
-          { value: "very-realistic", label: "Very realistic and well-researched", score: 10 },
-          { value: "mostly-realistic", label: "Mostly realistic with some idealism", score: 7 },
-          { value: "somewhat-realistic", label: "Somewhat realistic, some Hollywood influence", score: 5 },
-          { value: "unrealistic", label: "Quite unrealistic expectations", score: 2 },
-          { value: "fairy-tale", label: "Completely fairy-tale expectations", score: 0 },
-        ],
-      },
-    ],
-  },
-  {
-    id: "financial",
-    title: "Financial Readiness",
-    questions: [
-      {
-        id: "stable-income",
-        question: "Do you have a stable income?",
-        options: [
-          { value: "very-stable", label: "Yes, very stable with savings", score: 10 },
-          { value: "stable", label: "Yes, stable but limited savings", score: 8 },
-          { value: "somewhat-stable", label: "Somewhat stable, paycheck to paycheck", score: 5 },
-          { value: "working-on-it", label: "Working on it, currently unstable", score: 3 },
-          { value: "no", label: "No income currently", score: 0 },
-        ],
-      },
-      {
-        id: "financial-goals",
-        question: "Do you have financial goals for marriage?",
-        options: [
-          { value: "detailed-plan", label: "Yes, with detailed plans and timelines", score: 10 },
-          { value: "general-goals", label: "Yes, general goals without specific plans", score: 7 },
-          { value: "somewhat", label: "Somewhat, haven't thought deeply about it", score: 5 },
-          { value: "vague", label: "Very vague ideas about finances", score: 3 },
-          { value: "no", label: "No financial planning for marriage", score: 0 },
-        ],
-      },
-      {
-        id: "budget",
-        question: "Can you budget effectively and avoid debt?",
-        options: [
-          { value: "excellent", label: "Yes, excellent at budgeting and debt-free", score: 10 },
-          { value: "good", label: "Good at budgeting with minimal debt", score: 8 },
-          { value: "average", label: "Average, occasional budgeting issues", score: 5 },
-          { value: "trying-to-improve", label: "Trying to improve, significant debt", score: 3 },
-          { value: "no", label: "No budgeting skills, serious debt issues", score: 0 },
-        ],
-      },
-      {
-        id: "islamic-finance",
-        question: "Do you follow Islamic principles in financial matters (avoiding riba/interest)?",
-        options: [
-          { value: "strictly", label: "Yes, strictly avoid all interest-based transactions", score: 10 },
-          { value: "mostly", label: "Mostly, with few exceptions when necessary", score: 7 },
-          { value: "trying", label: "Trying, but have some interest-based loans/cards", score: 4 },
-          { value: "minimal", label: "Minimal consideration of Islamic finance", score: 2 },
-          { value: "no", label: "No consideration of Islamic finance principles", score: 0 },
-        ],
-      },
-      {
-        id: "mahr-preparation",
-        question: "Are you financially prepared to give/receive mahr (dowry)?",
-        options: [
-          { value: "fully-prepared", label: "Fully prepared with savings set aside", score: 10 },
-          { value: "mostly-prepared", label: "Mostly prepared, need some time", score: 7 },
-          { value: "somewhat-prepared", label: "Somewhat prepared, actively saving", score: 5 },
-          { value: "barely-prepared", label: "Barely prepared, minimal savings", score: 3 },
-          { value: "not-prepared", label: "Not prepared at all", score: 0 },
-        ],
-      },
-    ],
-  },
-  {
-    id: "family-social",
-    title: "Family & Social Readiness",
-    questions: [
-      {
-        id: "family-expectations",
-        question: "Have you discussed marriage expectations with your family?",
-        options: [
-          { value: "detailed-discussions", label: "Yes, detailed discussions with clear understanding", score: 10 },
-          { value: "general-discussions", label: "Yes, general discussions", score: 7 },
-          { value: "mentioned", label: "Briefly mentioned but no deep discussions", score: 5 },
-          { value: "planning-to-soon", label: "Planning to discuss soon", score: 3 },
-          { value: "no", label: "No discussions at all", score: 0 },
-        ],
-      },
-      {
-        id: "cultural-dynamics",
-        question: "Are you open to different cultural family dynamics?",
-        options: [
-          { value: "very-open", label: "Very open and appreciative of diversity", score: 10 },
-          { value: "open", label: "Open to most cultural differences", score: 8 },
-          { value: "somewhat-open", label: "Somewhat open, with some preferences", score: 6 },
-          { value: "depends", label: "Depends on the specific culture", score: 4 },
-          { value: "no", label: "Not open to different cultural practices", score: 0 },
-        ],
-      },
-      {
-        id: "in-law-relationships",
-        question: "Are you prepared for in-law relationships?",
-        options: [
-          { value: "well-prepared", label: "Yes, well-prepared with realistic expectations", score: 10 },
-          { value: "prepared", label: "Yes, generally prepared", score: 7 },
-          { value: "somewhat-prepared", label: "Somewhat prepared, some concerns", score: 5 },
-          { value: "havent-thought", label: "I haven't thought about it much", score: 3 },
-          { value: "no", label: "No, anxious about in-law relationships", score: 0 },
-        ],
-      },
-      {
-        id: "work-life-balance",
-        question: "Do you have healthy work-life balance skills?",
-        options: [
-          { value: "excellent", label: "Excellent balance prioritizing family", score: 10 },
-          { value: "good", label: "Good balance most of the time", score: 7 },
-          { value: "moderate", label: "Moderate balance, sometimes overwork", score: 5 },
-          { value: "poor", label: "Poor balance, often overwhelmed", score: 3 },
-          { value: "no-balance", label: "No balance, work dominates everything", score: 0 },
-        ],
-      },
-      {
-        id: "household-skills",
-        question: "Do you have basic household management skills (cooking, cleaning, maintenance)?",
-        options: [
-          { value: "excellent", label: "Excellent at multiple household skills", score: 10 },
-          { value: "good", label: "Good at most household tasks", score: 7 },
-          { value: "moderate", label: "Moderate skills in some areas", score: 5 },
-          { value: "minimal", label: "Minimal skills but willing to learn", score: 3 },
-          { value: "none", label: "No household skills currently", score: 0 },
-        ],
-      },
-      {
-        id: "friendships",
-        question: "Do you maintain good, halal friendships that would support your marriage?",
-        options: [
-          { value: "strong-supportive", label: "Strong, supportive friends who encourage good", score: 10 },
-          { value: "good-friends", label: "Good friends with positive influence", score: 7 },
-          { value: "mixed", label: "Mixed friendships, some positive, some negative", score: 5 },
-          { value: "few-friends", label: "Few friends, mostly acquaintances", score: 3 },
-          { value: "no-friends", label: "No friends or negative influences only", score: 0 },
-        ],
-      },
-    ],
-  },
+const stepNudges = [
+  "Bismillah, let's start with the heart of it all.",
+  "Feelings check. Be honest, nobody is watching.",
+  "Money talk. Mahr does not pay itself.",
+  "Last stop: family, friends and the in-laws.",
 ];
 
 const totalPossibleScore = categories.reduce(
@@ -305,7 +34,6 @@ const MarriageReadiness = () => {
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [currentCategory, setCurrentCategory] = useState(0);
   const [showResults, setShowResults] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([categories[0].id]);
   const [improvementTips, setImprovementTips] = useState<Record<string, string[]>>({});
   const { toast } = useToast();
 
@@ -331,7 +59,7 @@ const MarriageReadiness = () => {
 
     if (currentCategory < categories.length - 1) {
       setCurrentCategory((prev) => prev + 1);
-      setExpandedCategories([categories[currentCategory + 1].id]);
+      celebrate("small");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } else {
       // Generate improvement tips based on answers
@@ -402,7 +130,6 @@ const MarriageReadiness = () => {
   const handlePrevious = () => {
     if (currentCategory > 0) {
       setCurrentCategory((prev) => prev - 1);
-      setExpandedCategories([categories[currentCategory - 1].id]);
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
@@ -484,192 +211,182 @@ const MarriageReadiness = () => {
     return `I just completed the Marriage Readiness Quiz on MyAroos and scored ${percentage}%! ${getResultMessage().title} Check out your own readiness at MyAroos.com!`;
   };
 
+  useEffect(() => {
+    if (showResults && getScorePercentage() >= 60) celebrate("big");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showResults]);
+
+  const category = categories[currentCategory];
+  const answeredInCategory = category.questions.filter((q) => answers[q.id] !== undefined).length;
+  const result = getResultMessage();
+  const percentage = getScorePercentage();
+  const categoryScores = Object.fromEntries(categories.map((c) => [c.title, getCategoryScore(c.id)]));
+
+  const restart = () => {
+    setAnswers({});
+    setCurrentCategory(0);
+    setShowResults(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div className="min-h-screen flex flex-col islamic-pattern">
-      <Navbar />
-      
-      <main className="flex-1 py-12">
-        <div className="container-custom">
-          <div className="max-w-3xl mx-auto bg-white dark:bg-brand-black-light p-6 md:p-8 rounded-lg shadow-lg">
-            <h1 className="text-3xl font-bold mb-6 text-center">Marriage Readiness Quiz</h1>
-            
-            {!showResults ? (
-              <>
-                <p className="mb-8 text-center text-muted-foreground">
-                  Answer the following questions honestly to assess your readiness for marriage according to Islamic principles.
-                </p>
-                
-                <div className="mb-8">
-                  <div className="flex justify-between mb-2 text-sm">
-                    <span>Category {currentCategory + 1} of {categories.length}</span>
-                    <span>{Math.round(((currentCategory + 1) / categories.length) * 100)}% Complete</span>
+    <PageShell>
+      <section className="container-custom py-10 md:py-14">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-8 text-center">
+            <span className="eyebrow">
+              <Sparkles className="h-3.5 w-3.5" /> {categories.reduce((n, c) => n + c.questions.length, 0)} questions · about 5 minutes
+            </span>
+            <h1 className="mt-4 text-4xl font-semibold md:text-5xl">
+              Marriage Readiness <span className="italic text-primary">Quiz</span>
+            </h1>
+          </div>
+
+          {!showResults ? (
+            <div className="surface p-5 md:p-8">
+              <p className="mb-8 text-center text-muted-foreground">
+                Answer the following questions honestly to assess your readiness for marriage according to Islamic
+                principles.
+              </p>
+
+              <Stepper
+                steps={categories.map((c) => ({ id: c.id, label: c.title.replace(" Readiness", ""), emoji: c.emoji }))}
+                current={currentCategory}
+                onSelect={(i) => {
+                  setCurrentCategory(i);
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }}
+              />
+
+              <div key={category.id} className="mt-10 animate-rise">
+                <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <p className="text-sm font-semibold text-muted-foreground">
+                      Category {currentCategory + 1} of {categories.length}
+                    </p>
+                    <h2 className="mt-1 flex items-center gap-2 text-3xl font-semibold">
+                      <span aria-hidden="true">{category.emoji}</span> {category.title}
+                    </h2>
+                    <p className="mt-1 text-sm text-muted-foreground">{stepNudges[currentCategory]}</p>
                   </div>
-                  <Progress value={((currentCategory + 1) / categories.length) * 100} className="h-2" />
+                  <span className="sticker -rotate-2 text-xs">
+                    {answeredInCategory}/{category.questions.length} answered
+                  </span>
                 </div>
 
-                <Accordion
-                  type="single"
-                  collapsible
-                  value={expandedCategories[0]}
-                  onValueChange={(value) => setExpandedCategories([value])}
-                >
-                  {categories.map((category, index) => (
-                    <AccordionItem 
-                      key={category.id} 
-                      value={category.id}
-                      disabled={index !== currentCategory}
-                      className={index !== currentCategory ? "opacity-50" : ""}
-                    >
-                      <AccordionTrigger className="text-xl font-medium">
-                        {category.title}
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-6 pt-4">
-                          {category.questions.map((question) => (
-                            <div key={question.id} className="p-4 border rounded-lg">
-                              <p className="font-medium mb-4">{question.question}</p>
-                              <RadioGroup
-                                value={answers[question.id]}
-                                onValueChange={(value) =>
-                                  handleAnswerChange(question.id, value)
-                                }
-                              >
-                                <div className="space-y-3">
-                                  {question.options.map((option) => (
-                                    <div key={option.value} className="flex items-center">
-                                      <RadioGroupItem
-                                        value={option.value}
-                                        id={`${question.id}-${option.value}`}
-                                      />
-                                      <Label
-                                        htmlFor={`${question.id}-${option.value}`}
-                                        className="ml-2"
-                                      >
-                                        {option.label}
-                                      </Label>
-                                    </div>
-                                  ))}
-                                </div>
-                              </RadioGroup>
-                            </div>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
+                <div className="space-y-4">
+                  {category.questions.map((question, i) => (
+                    <QuestionCard
+                      key={question.id}
+                      number={i + 1}
+                      question={question}
+                      value={answers[question.id]}
+                      onChange={(value) => handleAnswerChange(question.id, value)}
+                    />
                   ))}
-                </Accordion>
-                
-                <div className="flex justify-between mt-8">
-                  <Button
-                    onClick={handlePrevious}
-                    disabled={currentCategory === 0}
-                    variant="outline"
-                  >
-                    Previous
-                  </Button>
-                  <Button onClick={handleNext}>
-                    {currentCategory < categories.length - 1 ? "Next" : "See Results"}
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <div className="text-center" id="results-container">
-                <h2 className="text-2xl font-bold mb-4">Your Marriage Readiness Results</h2>
-                
-                <div className="mb-8">
-                  <div className="flex justify-center items-center mb-4">
-                    <div className="relative w-48 h-48">
-                      <div className="w-full h-full rounded-full bg-gray-100 flex items-center justify-center">
-                        <span className="text-4xl font-bold">{getScorePercentage()}%</span>
-                      </div>
-                      <svg className="absolute top-0 left-0" width="192" height="192" viewBox="0 0 192 192">
-                        <circle
-                          cx="96"
-                          cy="96"
-                          r="92"
-                          fill="none"
-                          stroke="#10B981"
-                          strokeWidth="8"
-                          strokeDasharray={`${getScorePercentage() * 5.8} 1000`}
-                          transform="rotate(-90, 96, 96)"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-brand-green mb-2">{getResultMessage().title}</h3>
-                  <p className="mb-6">{getResultMessage().message}</p>
-                  
-                  {Object.keys(improvementTips).length > 0 && (
-                    <div className="p-6 bg-gray-50 dark:bg-brand-black rounded-lg mb-8">
-                      <h4 className="font-semibold mb-4">Areas to focus on:</h4>
-                      
-                      <Accordion type="multiple" className="w-full">
-                        {Object.entries(improvementTips).map(([categoryId, tips]) => {
-                          const category = categories.find(c => c.id === categoryId);
-                          const categoryScore = getCategoryScore(categoryId);
-                          
-                          return (
-                            <AccordionItem key={categoryId} value={categoryId}>
-                              <AccordionTrigger className="text-left">
-                                <span className="flex items-center">
-                                  <span className="inline-block w-2 h-2 bg-brand-green rounded-full mr-2"></span>
-                                  <span>{category?.title} ({categoryScore}%)</span>
-                                </span>
-                              </AccordionTrigger>
-                              <AccordionContent>
-                                <ul className="list-disc pl-6 space-y-2 mt-2">
-                                  {tips.map((tip, index) => (
-                                    <li key={index} className="text-sm text-left">{tip}</li>
-                                  ))}
-                                </ul>
-                              </AccordionContent>
-                            </AccordionItem>
-                          );
-                        })}
-                      </Accordion>
-                      
-                      {getScorePercentage() >= 80 && (
-                        <div className="mt-4">
-                          <div className="flex items-center">
-                            <span className="inline-block w-2 h-2 bg-brand-green rounded-full mr-2"></span>
-                            <span>MashaAllah, you're doing well in all areas! Continue to grow in your faith.</span>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  
-                  <ResultsActions 
-                    title={getResultMessage().title}
-                    subtitle={getResultMessage().message}
-                    score={getScorePercentage()}
-                    type="readiness"
-                    shareText={getShareText()}
-                  />
-                </div>
-                
-                <div className="space-x-4 mt-8">
-                  <Button onClick={() => {
-                    setAnswers({});
-                    setCurrentCategory(0);
-                    setShowResults(false);
-                    setExpandedCategories([categories[0].id]);
-                  }} variant="outline">
-                    Retake Quiz
-                  </Button>
-                  <Button asChild>
-                    <a href="/compatibility">Try Compatibility Test</a>
-                  </Button>
                 </div>
               </div>
-            )}
-          </div>
+
+              <div className="mt-8 flex items-center justify-between gap-3 border-t pt-6">
+                <Button onClick={handlePrevious} disabled={currentCategory === 0} variant="ghost" className="rounded-full">
+                  <ArrowLeft className="mr-1.5 h-4 w-4" /> Previous
+                </Button>
+                <Button onClick={handleNext} size="lg" className="rounded-full px-7">
+                  {currentCategory < categories.length - 1 ? "Next" : "See Results"}
+                  <ArrowRight className="ml-1.5 h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div id="results-container" className="space-y-6 animate-rise">
+              <div className="surface p-6 text-center md:p-10">
+                <p className="eyebrow mb-6">Your Marriage Readiness Results</p>
+                <ScoreRing score={percentage} />
+                <h2 className="mx-auto mt-6 max-w-xl text-2xl font-semibold leading-snug text-primary md:text-3xl">
+                  {result.title}
+                </h2>
+                <p className="mx-auto mt-3 max-w-xl leading-relaxed text-muted-foreground">{result.message}</p>
+
+                <div className="mt-8">
+                  <ResultsActions
+                    shareText={getShareText()}
+                    report={{
+                      heading: "Marriage Readiness Report",
+                      score: percentage,
+                      verdict: result.title,
+                      message: result.message,
+                      categories: categories.map((c) => ({ label: c.title, score: getCategoryScore(c.id) })),
+                      tips: Object.entries(improvementTips).map(([categoryId, tips]) => ({
+                        area: categories.find((c) => c.id === categoryId)?.title ?? categoryId,
+                        items: tips,
+                      })),
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="surface p-6 md:p-8">
+                <h3 className="mb-5 text-2xl font-semibold">Score breakdown</h3>
+                <CompatibilityGraph scores={categoryScores} />
+              </div>
+
+              {Object.keys(improvementTips).length > 0 && (
+                <div className="surface p-6 md:p-8">
+                  <h3 className="mb-2 text-2xl font-semibold">Areas to focus on</h3>
+                  <p className="mb-4 text-sm text-muted-foreground">Small, steady steps. Tap a category to see tips.</p>
+
+                  <Accordion type="multiple" className="w-full">
+                    {Object.entries(improvementTips).map(([categoryId, tips]) => {
+                      const cat = categories.find((c) => c.id === categoryId);
+                      const categoryScore = getCategoryScore(categoryId);
+
+                      return (
+                        <AccordionItem key={categoryId} value={categoryId}>
+                          <AccordionTrigger className="text-left hover:no-underline">
+                            <span className="flex items-center gap-2 font-semibold">
+                              <span aria-hidden="true">{cat?.emoji}</span>
+                              {cat?.title}
+                              <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-bold">{categoryScore}%</span>
+                            </span>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <ul className="space-y-2">
+                              {tips.map((tip, index) => (
+                                <li key={index} className="flex gap-2 text-sm leading-relaxed">
+                                  <span className="text-gold">✦</span>
+                                  {tip}
+                                </li>
+                              ))}
+                            </ul>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+
+                  {percentage >= 80 && (
+                    <p className="mt-4 text-sm font-medium text-primary">
+                      MashaAllah, you're doing well in all areas! Continue to grow in your faith.
+                    </p>
+                  )}
+                </div>
+              )}
+
+              <div className="flex flex-col justify-center gap-3 pt-2 sm:flex-row">
+                <Button onClick={restart} variant="outline" size="lg" className="rounded-full">
+                  <RotateCcw className="mr-2 h-4 w-4" /> Retake Quiz
+                </Button>
+                <Button asChild size="lg" className="rounded-full">
+                  <Link to="/compatibility">
+                    Try Compatibility Test <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+      </section>
+    </PageShell>
   );
 };
 

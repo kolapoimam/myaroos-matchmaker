@@ -1,0 +1,22 @@
+name: Content review
+description: Suggest a change to a question, score, tip or hadith
+labels: ["content"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: Which question or text?
+      placeholder: e.g. Readiness Quiz, "Do you pray five times daily?"
+    validations:
+      required: true
+  - type: textarea
+    id: change
+    attributes:
+      label: Suggested change
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source or reasoning
+      description: For religious content please include a reference (Qur'an, hadith collection and number, or a scholar).

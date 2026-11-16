@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const hadiths = [
   {
@@ -31,39 +30,43 @@ export default function HadithCarousel() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % hadiths.length);
-    }, 5000);
-
+    }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [currentIndex]);
 
   return (
-    <div className="w-full overflow-hidden py-8">
-      <div className="relative h-48">
+    <div className="w-full">
+      <div className="relative min-h-[11rem]" aria-live="polite">
         {hadiths.map((hadith, index) => (
-          <Card
+          <figure
             key={index}
-            className={`absolute w-full transform transition-all duration-500 ease-in-out ${
-              index === currentIndex
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
+            aria-hidden={index !== currentIndex}
+            className={cn(
+              "absolute inset-0 flex flex-col justify-center transition-all duration-700 ease-out",
+              index === currentIndex ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+            )}
           >
-            <CardContent className="pt-6 flex flex-col items-center justify-center h-40 text-center">
-              <p className="text-lg mb-2 font-medium italic">"{hadith.text}"</p>
-              <p className="text-sm text-muted-foreground">— {hadith.source}</p>
-            </CardContent>
-          </Card>
+            <blockquote className="font-display text-xl font-medium leading-snug md:text-2xl">
+              <span className="mr-1 text-gold">“</span>
+              {hadith.text}
+              <span className="ml-1 text-gold">”</span>
+            </blockquote>
+            <figcaption className="mt-4 text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+              {hadith.source}
+            </figcaption>
+          </figure>
         ))}
       </div>
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="mt-6 flex gap-2">
         {hadiths.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full ${
-              index === currentIndex ? "bg-brand-green" : "bg-gray-300"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
+            className={cn(
+              "h-2 rounded-full transition-all duration-300",
+              index === currentIndex ? "w-8 bg-primary" : "w-2 bg-foreground/20 hover:bg-foreground/40"
+            )}
+            aria-label={`Go to hadith ${index + 1}`}
           />
         ))}
       </div>
