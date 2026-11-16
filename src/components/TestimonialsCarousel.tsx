@@ -1,7 +1,4 @@
-
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useState } from "react";
+import { Quote } from "lucide-react";
 
 const testimonials = [
   {
@@ -36,76 +33,38 @@ const testimonials = [
   }
 ];
 
+const tints = ["bg-[hsl(var(--mint))]", "bg-[hsl(var(--gold)/0.18)]", "bg-[hsl(var(--rose)/0.35)]"];
+
+/** Infinite, hover-pausable marquee of testimonial cards */
 export default function TestimonialsCarousel() {
-  const [startIndex, setStartIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setStartIndex((prev) => (prev + 1) % testimonials.length);
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Display 3 testimonials at a time on larger screens, 1 on mobile
-  const visibleTestimonials = [];
-  for (let i = 0; i < 3; i++) {
-    const index = (startIndex + i) % testimonials.length;
-    visibleTestimonials.push(testimonials[index]);
-  }
+  const loop = [...testimonials, ...testimonials];
 
   return (
-    <div className="w-full py-8">
-      <h2 className="text-2xl font-semibold text-center mb-8">What Our Users Say</h2>
-      <div className="hidden md:grid grid-cols-3 gap-6">
-        {visibleTestimonials.map((testimonial, idx) => (
-          <Card key={idx} className="h-full">
-            <CardContent className="pt-6">
-              <div className="flex flex-col items-center text-center">
-                <Avatar className="h-16 w-16 mb-4">
-                  <AvatarFallback className="bg-brand-green text-white">
-                    {testimonial.avatar}
-                  </AvatarFallback>
-                </Avatar>
-                <p className="mb-4 italic">{testimonial.testimonial}</p>
-                <div>
-                  <p className="font-medium">{testimonial.name}</p>
-                  <p className="text-sm text-muted-foreground">{testimonial.location}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+    <div className="w-full">
+      <div className="mb-10 text-center">
+        <span className="eyebrow">Alhamdulillah</span>
+        <h2 className="mt-4 text-4xl font-semibold md:text-5xl">What our users say</h2>
       </div>
-      
-      {/* Mobile carousel - shows one testimonial at a time */}
-      <div className="md:hidden">
-        <Card className="h-full">
-          <CardContent className="pt-6">
-            <div className="flex flex-col items-center text-center">
-              <Avatar className="h-16 w-16 mb-4">
-                <AvatarFallback className="bg-brand-green text-white">
-                  {testimonials[startIndex].avatar}
-                </AvatarFallback>
-              </Avatar>
-              <p className="mb-4 italic">{testimonials[startIndex].testimonial}</p>
-              <div>
-                <p className="font-medium">{testimonials[startIndex].name}</p>
-                <p className="text-sm text-muted-foreground">{testimonials[startIndex].location}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        <div className="flex justify-center gap-2 mt-4">
-          {testimonials.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setStartIndex(index)}
-              className={`w-2 h-2 rounded-full ${
-                index === startIndex ? "bg-brand-green" : "bg-gray-300"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            />
+      <div className="group relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+        <div className="flex w-max animate-slide gap-5 py-4 [animation-duration:45s] group-hover:[animation-play-state:paused]">
+          {loop.map((t, idx) => (
+            <figure
+              key={idx}
+              className={`w-[300px] shrink-0 rounded-3xl border p-6 shadow-sm transition-transform duration-300 hover:-rotate-1 hover:scale-[1.02] md:w-[340px] ${tints[idx % tints.length]}`}
+              aria-hidden={idx >= testimonials.length}
+            >
+              <Quote className="mb-3 h-6 w-6 text-primary/60" />
+              <blockquote className="text-[15px] leading-relaxed">{t.testimonial}</blockquote>
+              <figcaption className="mt-5 flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                  {t.avatar}
+                </span>
+                <span>
+                  <span className="block font-semibold">{t.name}</span>
+                  <span className="block text-xs text-muted-foreground">{t.location}</span>
+                </span>
+              </figcaption>
+            </figure>
           ))}
         </div>
       </div>

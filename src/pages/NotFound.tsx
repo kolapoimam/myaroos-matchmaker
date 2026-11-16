@@ -1,26 +1,30 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import PageShell from "@/components/PageShell";
 
 const NotFound = () => {
   const location = useLocation();
 
   useEffect(() => {
-    console.error(
-      "404 Error: User attempted to access non-existent route:",
-      location.pathname
-    );
+    console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">404</h1>
-        <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
-        </a>
-      </div>
-    </div>
+    <PageShell>
+      <section className="container-custom flex flex-col items-center py-24 text-center">
+        <div className="text-7xl animate-wiggle" aria-hidden="true">
+          🧭
+        </div>
+        <h1 className="mt-6 font-display text-7xl font-semibold">404</h1>
+        <p className="mt-3 max-w-md text-lg text-muted-foreground">
+          This page went missing like a sock in the washing machine. Let's get you back on the right path.
+        </p>
+        <Button asChild size="lg" className="mt-8 rounded-full">
+          <Link to="/">Return to Home</Link>
+        </Button>
+      </section>
+    </PageShell>
   );
 };
 

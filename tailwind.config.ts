@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -19,10 +20,10 @@ export default {
 			}
 		},
 		extend: {
-fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            serif: ['Plus Jakarta Sans', 'sans-serif'],
-            mono: ['Plus Jakarta Sans', 'sans-serif'],
+			fontFamily: {
+				sans: ['"Plus Jakarta Sans Variable"', '"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+				display: ['"Fraunces Variable"', 'Fraunces', 'Georgia', 'serif'],
+				arabic: ['Amiri', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
@@ -71,17 +72,21 @@ fontFamily: {
 				// Custom brand colors
 				brand: {
 					green: {
-						DEFAULT: '#10B981', // Emerald green
-						light: '#34D399',
-						dark: '#059669',
+						DEFAULT: '#0F6B4F', // Deep emerald
+						light: '#2FA77C',
+						dark: '#0A4A37',
 					},
 					black: {
 						DEFAULT: '#1F2937', // Rich black
 						light: '#374151',
 						dark: '#111827',
 					},
-					gold: '#F59E0B', // Gold accent
-				}
+					gold: '#D69E35', // Gold accent
+				},
+				gold: 'hsl(var(--gold))',
+				rose: 'hsl(var(--rose))',
+				mint: 'hsl(var(--mint))',
+				ink: 'hsl(var(--ink))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -106,8 +111,8 @@ fontFamily: {
 					}
 				},
 				'slide': {
-					'0%': { transform: 'translateX(100%)' },
-					'100%': { transform: 'translateX(-100%)' }
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-50%)' }
 				},
 				'fade-in': {
 					'0%': { opacity: '0' },
@@ -116,6 +121,26 @@ fontFamily: {
 				'fade-out': {
 					'0%': { opacity: '1' },
 					'100%': { opacity: '0' }
+				},
+				'rise': {
+					'0%': { opacity: '0', transform: 'translateY(14px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0) rotate(var(--r, 0deg))' },
+					'50%': { transform: 'translateY(-10px) rotate(var(--r, 0deg))' }
+				},
+				'wiggle': {
+					'0%, 100%': { transform: 'rotate(-4deg)' },
+					'50%': { transform: 'rotate(4deg)' }
+				},
+				'pop': {
+					'0%': { transform: 'scale(0.6)', opacity: '0' },
+					'70%': { transform: 'scale(1.08)', opacity: '1' },
+					'100%': { transform: 'scale(1)' }
+				},
+				'spin-slow': {
+					to: { transform: 'rotate(360deg)' }
 				}
 			},
 			animation: {
@@ -123,9 +148,14 @@ fontFamily: {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'slide': 'slide 20s linear infinite',
 				'fade-in': 'fade-in 0.5s ease-in-out',
-				'fade-out': 'fade-out 0.5s ease-in-out'
+				'fade-out': 'fade-out 0.5s ease-in-out',
+				'rise': 'rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both',
+				'float': 'float 6s ease-in-out infinite',
+				'wiggle': 'wiggle 2.4s ease-in-out infinite',
+				'pop': 'pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both',
+				'spin-slow': 'spin-slow 40s linear infinite'
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [tailwindcssAnimate],
 } satisfies Config;

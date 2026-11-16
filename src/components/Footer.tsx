@@ -1,76 +1,80 @@
 import { Link } from "react-router-dom";
+import { Github, Heart } from "lucide-react";
+import Logo from "./Logo";
+import { REPO_URL } from "@/lib/constants";
+
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-brand-black text-white py-12">
-      <div className="container-custom flex flex-col items-center">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-5xl text-center md:text-left">
-          <div className="flex flex-col items-center md:items-start">
-            <h3 className="font-semibold text-xl mb-4 flex items-center gap-2">
-              <div className="relative w-8 h-8 bg-brand-green rounded-full flex items-center justify-center text-white font-semibold text-xl">
-                M
-              </div>
-              <Link to="/" className="hover:text-brand-green transition-colors">
-                MyAroos
-              </Link>
-            </h3>
-            <p className="text-gray-300 mb-4">
-              A Muslim marriage readiness and compatibility tool to help you make one of the most important decisions in your life.
-            </p>
-          </div>
-
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="font-medium text-lg mb-4">Quick Links</h4>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/marriage-readiness"
-                  className="text-gray-300 hover:text-brand-green transition-colors"
-                >
-                  Marriage Readiness Quiz
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/compatibility"
-                  className="text-gray-300 hover:text-brand-green transition-colors"
-                >
-                  Compatibility Test
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/about"
-                  className="text-gray-300 hover:text-brand-green transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="flex flex-col items-center md:items-start">
-            <h4 className="font-medium text-lg mb-4">Disclaimer</h4>
-            <p className="text-gray-300 text-sm">
-              MyAroos is designed as a guidance tool. Always consult with Islamic scholars, family members, and trusted advisors when making important life decisions like marriage.
-            </p>
-          </div>
+    <footer className="relative mt-16 overflow-hidden bg-[hsl(165_35%_8%)] text-white">
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-green via-gold to-rose"
+      />
+      <div className="container-custom grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1.2fr]">
+        <div>
+          <Logo inverted />
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
+            A Muslim marriage readiness and compatibility tool to help you prepare for one of the most important decisions
+            of your life. Free, private and open source.
+          </p>
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-semibold transition-colors hover:border-gold hover:text-gold"
+          >
+            <Github className="h-4 w-4" />
+            Contribute on GitHub
+          </a>
         </div>
 
-        <div className="border-t border-gray-700 mt-8 pt-6 text-center text-gray-400 text-sm w-full max-w-5xl">
-          <p>© {currentYear} MyAroos. All rights reserved.</p>
-          <p className="mt-2">
-            Built with Love by{' '}
+        <div>
+          <h4 className="mb-4 text-sm font-bold uppercase tracking-[0.14em] text-gold">Explore</h4>
+          <ul className="space-y-3 text-white/75">
+            <li>
+              <Link to="/marriage-readiness" className="transition-colors hover:text-white">
+                Marriage Readiness Quiz
+              </Link>
+            </li>
+            <li>
+              <Link to="/compatibility" className="transition-colors hover:text-white">
+                Compatibility Test
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="transition-colors hover:text-white">
+                About & FAQ
+              </Link>
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 className="mb-4 text-sm font-bold uppercase tracking-[0.14em] text-gold">Disclaimer</h4>
+          <p className="text-sm leading-relaxed text-white/70">
+            MyAroos is a guidance tool. Always consult Islamic scholars, family members and trusted advisors when making
+            important life decisions like marriage.
+          </p>
+        </div>
+      </div>
+
+      <div className="border-t border-white/10">
+        <div className="container-custom flex flex-col items-center justify-between gap-2 py-6 text-sm text-white/55 md:flex-row">
+          <p>© {currentYear} MyAroos. Released under the MIT License.</p>
+          <p className="flex items-center gap-1.5">
+            Built with <Heart className="h-3.5 w-3.5 text-rose" fill="currentColor" /> by{" "}
             <a
               href="https://x.com/PiousGeek"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-brand-green transition-colors"
+              className="font-semibold text-white/80 transition-colors hover:text-gold"
             >
               Kolapo Imam
             </a>
+            and contributors
           </p>
         </div>
       </div>

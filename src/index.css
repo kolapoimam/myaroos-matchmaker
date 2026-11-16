@@ -1,137 +1,157 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * MyAroos design tokens
+ * Palette: ivory paper, deep emerald, gold foil and a soft rose.
+ * All colours are HSL triplets so Tailwind can apply opacity modifiers.
+ */
 @layer base {
-    :root {
-        --background: 0 0% 100%;
-        --foreground: 240 10% 3.9%;
-        --card: 0 0% 100%;
-        --card-foreground: 240 10% 3.9%;
-        --popover: 0 0% 100%;
-        --popover-foreground: 240 10% 3.9%;
-        --primary: 142.1 76.2% 36.3%;
-        --primary-foreground: 355.7 100% 97.3%;
-        --secondary: 240 4.8% 95.9%;
-        --secondary-foreground: 240 5.9% 10%;
-        --muted: 240 4.8% 95.9%;
-        --muted-foreground: 240 3.8% 46.1%;
-        --accent: 240 4.8% 95.9%;
-        --accent-foreground: 240 5.9% 10%;
-        --destructive: 0 84.2% 60.2%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 240 5.9% 90%;
-        --input: 240 5.9% 90%;
-        --ring: 142.1 76.2% 36.3%;
-        --radius: 0.5rem;
-        --brand-green: 142.1 76.2% 36.3%;
-        --brand-black: 240 10% 3.9%;
-        --brand-black-light: 240 5.9% 10%;
-    }
+  :root {
+    --background: 42 45% 97%;
+    --foreground: 160 30% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 30% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 30% 10%;
+    --primary: 162 72% 22%;
+    --primary-foreground: 42 60% 97%;
+    --secondary: 40 50% 92%;
+    --secondary-foreground: 160 30% 14%;
+    --muted: 40 35% 93%;
+    --muted-foreground: 160 10% 38%;
+    --accent: 38 70% 90%;
+    --accent-foreground: 30 60% 25%;
+    --destructive: 2 72% 52%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 38 25% 86%;
+    --input: 38 25% 82%;
+    --ring: 162 72% 28%;
+    --radius: 1rem;
 
-    .dark {
-        --background: 240 10% 3.9%;
-        --foreground: 0 0% 98%;
-        --card: 240 10% 3.9%;
-        --card-foreground: 0 0% 98%;
-        --popover: 240 10% 3.9%;
-        --popover-foreground: 0 0% 98%;
-        --primary: 142.1 76.2% 36.3%;
-        --primary-foreground: 355.7 100% 97.3%;
-        --secondary: 240 3.7% 15.9%;
-        --secondary-foreground: 0 0% 98%;
-        --muted: 240 3.7% 15.9%;
-        --muted-foreground: 240 5% 64.9%;
-        --accent: 240 3.7% 15.9%;
-        --accent-foreground: 0 0% 98%;
-        --destructive: 0 62.8% 30.6%;
-        --destructive-foreground: 0 0% 98%;
-        --border: 240 3.7% 15.9%;
-        --input: 240 3.7% 15.9%;
-        --ring: 142.1 76.2% 36.3%;
-        --brand-green: 142.1 76.2% 36.3%;
-        --brand-black: 240 10% 3.9%;
-        --brand-black-light: 240 5.9% 10%;
-    }
+    --gold: 38 68% 52%;
+    --rose: 12 72% 78%;
+    --mint: 152 48% 88%;
+    --ink: 160 30% 10%;
+    --pattern: 162 40% 30%;
+  }
 
-    *, *:before, *:after {
-        font-family: 'Plus Jakarta Sans', sans-serif !important;
-    }
+  .dark {
+    --background: 165 30% 6%;
+    --foreground: 40 40% 94%;
+    --card: 165 26% 9%;
+    --card-foreground: 40 40% 94%;
+    --popover: 165 26% 9%;
+    --popover-foreground: 40 40% 94%;
+    --primary: 156 55% 46%;
+    --primary-foreground: 165 30% 6%;
+    --secondary: 165 18% 14%;
+    --secondary-foreground: 40 40% 94%;
+    --muted: 165 18% 13%;
+    --muted-foreground: 160 10% 68%;
+    --accent: 38 40% 18%;
+    --accent-foreground: 38 80% 80%;
+    --destructive: 2 62% 46%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 165 16% 18%;
+    --input: 165 16% 22%;
+    --ring: 156 55% 46%;
 
-    input, button, textarea, select {
-        font-family: inherit;
-    }
+    --gold: 40 72% 60%;
+    --rose: 12 60% 66%;
+    --mint: 156 30% 18%;
+    --ink: 40 40% 94%;
+    --pattern: 156 40% 60%;
+  }
 
-    * {
-        @apply border-border;
-    }
+  * {
+    @apply border-border;
+  }
 
-    body {
-        @apply bg-background text-foreground;
-        font-feature-settings: "rlig" 1, "calt" 1;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+  html {
+    scroll-behavior: smooth;
+  }
 
-    h1, h2, h3, h4, h5, h6 {
-        @apply tracking-tight;
-    }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
 
-    .container-custom {
-        @apply px-4 md:px-8 max-w-7xl mx-auto;
-    }
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
 
-    .islamic-pattern {
-        background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f0f0f0' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .score-display {
-        @apply font-bold text-4xl text-foreground;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    }
+  ::selection {
+    background: hsl(var(--gold) / 0.35);
+  }
 }
 
 @layer components {
-    .funny-error-message {
-        @apply text-red-500 font-medium text-sm mt-1;
-        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+  .container-custom {
+    @apply mx-auto w-full max-w-6xl px-4 md:px-8;
+  }
+
+  /* Eight-point star lattice, drawn in the current theme colour */
+  .islamic-pattern {
+    position: relative;
+    isolation: isolate;
+  }
+  .islamic-pattern::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-color: hsl(var(--pattern));
+    opacity: 0.06;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='black' stroke-width='1.2'%3E%3Cpath d='M32 8l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Crect x='20' y='20' width='24' height='24' transform='rotate(45 32 32)'/%3E%3Ccircle cx='0' cy='0' r='6'/%3E%3Ccircle cx='64' cy='0' r='6'/%3E%3Ccircle cx='0' cy='64' r='6'/%3E%3Ccircle cx='64' cy='64' r='6'/%3E%3C/g%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'%3E%3Cg fill='none' stroke='black' stroke-width='1.2'%3E%3Cpath d='M32 8l7 17 17 7-17 7-7 17-7-17-17-7 17-7z'/%3E%3Crect x='20' y='20' width='24' height='24' transform='rotate(45 32 32)'/%3E%3Ccircle cx='0' cy='0' r='6'/%3E%3Ccircle cx='64' cy='0' r='6'/%3E%3Ccircle cx='0' cy='64' r='6'/%3E%3Ccircle cx='64' cy='64' r='6'/%3E%3C/g%3E%3C/svg%3E");
+    -webkit-mask-size: 64px 64px;
+    mask-size: 64px 64px;
+  }
+
+  .surface {
+    @apply rounded-[1.75rem] border bg-card/90 shadow-[0_1px_0_hsl(var(--border)),0_24px_60px_-30px_hsl(var(--ink)/0.25)] backdrop-blur-sm;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full border border-[hsl(var(--gold)/0.4)] bg-[hsl(var(--gold)/0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(var(--accent-foreground))];
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(100deg, hsl(var(--gold)) 0%, hsl(30 75% 45%) 50%, hsl(var(--gold)) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .sticker {
+    @apply inline-flex select-none items-center justify-center rounded-2xl border-2 border-foreground/80 bg-card px-3 py-1.5 text-sm font-bold shadow-[3px_3px_0_hsl(var(--foreground)/0.85)];
+  }
+
+  .funny-error-message {
+    @apply mt-1 text-sm font-medium text-destructive;
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  }
 }
 
 @keyframes shake {
-    10%, 90% {
-        transform: translate3d(-1px, 0, 0);
-    }
-    20%, 80% {
-        transform: translate3d(2px, 0, 0);
-    }
-    30%, 50%, 70% {
-        transform: translate3d(-4px, 0, 0);
-    }
-    40%, 60% {
-        transform: translate3d(4px, 0, 0);
-    }
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+  40%, 60% { transform: translate3d(4px, 0, 0); }
 }
 
-.dark .bg-white {
-    @apply bg-opacity-90;
-}
-
-.dark .islamic-pattern {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23222' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-}
-
-.dark .bg-gray-50 {
-    @apply bg-opacity-80;
-}
-
-.dark .text-muted-foreground {
-    @apply text-gray-300;
-}
-
-.dark .text-foreground {
-    @apply text-white;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
