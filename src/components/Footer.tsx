@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Heart } from "lucide-react";
+import { Github } from "lucide-react";
 import Logo from "./Logo";
 import { REPO_URL } from "@/lib/constants";
 
@@ -13,8 +13,8 @@ export default function Footer() {
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-1 bg-gold"
       />
-      <div className="container-custom grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1.2fr]">
-        <div>
+      <div className="container-custom grid gap-12 py-14 text-center md:grid-cols-[1.4fr_1fr_1.2fr] md:text-left">
+        <div className="flex flex-col items-center md:items-start">
           <Logo inverted />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
             A Muslim marriage readiness and compatibility tool to help you prepare for one of the most important decisions
@@ -62,19 +62,18 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="container-custom flex flex-col items-center justify-between gap-2 py-6 text-sm text-white/55 md:flex-row">
+        <div className="container-custom flex flex-col items-center justify-between gap-2 py-6 text-center text-sm text-white/55 md:flex-row md:text-left">
           <p>© {currentYear} MyAroos. Released under the MIT License.</p>
-          <p className="flex items-center gap-1.5">
-            Built with <Heart className="h-3.5 w-3.5 text-rose" fill="currentColor" /> by{" "}
+          <p>
+            Built by{" "}
             <a
-              href="https://x.com/PiousGeek"
+              href="https://kolapo.ng"
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold text-white/80 transition-colors hover:text-gold"
             >
               Kolapo Imam
             </a>
-            and contributors
           </p>
         </div>
       </div>

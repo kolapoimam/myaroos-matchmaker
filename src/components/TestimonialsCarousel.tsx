@@ -1,5 +1,9 @@
 import { Quote } from "lucide-react";
 
+/** DiceBear avatars live in public/avatars. Regenerate with `npm run avatars` */
+const avatarFor = (name: string) =>
+  `/avatars/${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}.svg`;
+
 const testimonials = [
   {
     name: "Aisha B.",
@@ -56,9 +60,14 @@ export default function TestimonialsCarousel() {
               <Quote className="mb-3 h-6 w-6 text-primary/60" />
               <blockquote className="text-[15px] leading-relaxed">{t.testimonial}</blockquote>
               <figcaption className="mt-5 flex items-center gap-3">
-                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
-                  {t.avatar}
-                </span>
+                <img
+                  src={avatarFor(t.name)}
+                  alt=""
+                  width={44}
+                  height={44}
+                  loading="lazy"
+                  className="h-11 w-11 rounded-full border-2 border-card bg-card"
+                />
                 <span>
                   <span className="block font-semibold">{t.name}</span>
                   <span className="block text-xs text-muted-foreground">{t.location}</span>

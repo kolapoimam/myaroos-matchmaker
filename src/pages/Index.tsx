@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Github, HeartHandshake, Lock, ScrollText, Sparkles } from "lucide-react";
+import { ArrowRight, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import HadithCarousel from "@/components/HadithCarousel";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import PageShell from "@/components/PageShell";
 import { useSeo } from "@/hooks/useSeo";
-import { REPO_URL } from "@/lib/constants";
 
 const features = [
   {
@@ -53,10 +52,7 @@ const Index = () => {
       <section className="container-custom pb-16 pt-10 md:pb-24 md:pt-16">
         <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_1fr]">
           <div className="animate-rise text-center lg:text-left">
-            <span className="eyebrow">
-              <Sparkles className="h-3.5 w-3.5" /> Free · Private · Open source
-            </span>
-            <h1 className="mt-6 text-5xl font-semibold leading-[1.02] md:text-7xl">
+            <h1 className="text-5xl font-semibold leading-[1.02] md:text-7xl">
               Find your <span className="italic text-primary">perfect match</span>{" "}
               <span className="text-gold">with Islamic values</span>
             </h1>
@@ -73,14 +69,6 @@ const Index = () => {
               <Button asChild size="lg" variant="outline" className="h-14 rounded-full border-2 px-8 text-base">
                 <Link to="/compatibility">Get Compatibility Score</Link>
               </Button>
-            </div>
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground lg:justify-start">
-              <span className="flex items-center gap-1.5">
-                <Lock className="h-4 w-4 text-primary" /> Runs in your browser
-              </span>
-              <span className="flex items-center gap-1.5">
-                <ScrollText className="h-4 w-4 text-primary" /> PNG & PDF reports
-              </span>
             </div>
           </div>
 
@@ -181,16 +169,6 @@ const Index = () => {
           <div className="relative mt-8 flex flex-col justify-center gap-3 sm:flex-row">
             <Button asChild size="lg" variant="secondary" className="h-14 rounded-full px-8 text-base">
               <Link to="/marriage-readiness">Get Started Now</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="ghost"
-              className="h-14 rounded-full border border-current/30 px-8 text-base hover:bg-white/10 hover:text-current"
-            >
-              <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
-                <Github className="mr-2 h-4 w-4" /> Star on GitHub
-              </a>
             </Button>
           </div>
         </div>

@@ -3,11 +3,11 @@
 > MyAroos is a free, open source web app that helps Muslims check how ready they are for marriage and how compatible they are with a potential spouse, based on Islamic values. It has a 23 question Marriage Readiness Quiz and a Compatibility Match Tool. Results show an overall score, category scores and practical tips, and can be downloaded as PNG or PDF. Everything runs in the browser. No account is needed and no answers are stored.
 
 Key facts:
-- Name: MyAroos ("aroos" means bride in Arabic, عروس)
+- Name: MyAroos ("aroos" means bride in Arabic)
 - Website: https://myaroos.vercel.app
 - Price: free
 - Privacy: no backend, no sign up, answers never leave the device
-- Creator: Kolapo Imam (https://x.com/PiousGeek)
+- Creator: Kolapo Imam (https://kolapo.ng)
 - Source code: https://github.com/kolapoimam/myaroos-matchmaker (MIT License)
 - Audience: Muslims preparing for marriage, including those in arranged or family introduced matches, converts and their families
 - It is a guidance tool. It does not replace a wali, family, scholars, or Istikhara

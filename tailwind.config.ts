@@ -23,7 +23,6 @@ export default {
 			fontFamily: {
 				sans: ['"Plus Jakarta Sans Variable"', '"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 				display: ['"Fraunces Variable"', 'Fraunces', 'Georgia', 'serif'],
-				arabic: ['Amiri', 'serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

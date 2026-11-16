@@ -22,7 +22,7 @@ We want MyAroos to be a welcoming space for everyone who contributes, whatever t
 
 ## Enforcement
 
-Maintainers may edit, hide or remove contributions that break this code, and may block people who repeatedly do so. To report a problem, open a private report through GitHub or contact the maintainer at https://x.com/PiousGeek. All reports will be handled confidentially.
+Maintainers may edit, hide or remove contributions that break this code, and may block people who repeatedly do so. To report a problem, open a private report through GitHub or contact the maintainer through https://kolapo.ng. All reports will be handled confidentially.
 
 ## Attribution
 

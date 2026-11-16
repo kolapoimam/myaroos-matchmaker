@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/android-chrome-192x192.png" width="88" alt="MyAroos logo" />
+<img src="public/favicon.svg" width="88" alt="MyAroos logo" />
 
 # MyAroos
 
@@ -61,9 +61,9 @@ An open source web app that helps Muslims check how ready they are for marriage 
 | --- | --- |
 | Framework | [React 18](https://react.dev) with [TypeScript](https://www.typescriptlang.org) and [Vite](https://vitejs.dev) |
 | Styling | [Tailwind CSS](https://tailwindcss.com) and [shadcn/ui](https://ui.shadcn.com) (Radix UI) |
-| Fonts | Fraunces, Plus Jakarta Sans and Amiri, self hosted with [Fontsource](https://fontsource.org) |
+| Fonts | Fraunces and Plus Jakarta Sans, self hosted with [Fontsource](https://fontsource.org) |
 | Export | [html-to-image](https://github.com/bubkoo/html-to-image) for PNG, [jsPDF](https://github.com/parallax/jsPDF) for PDF |
-| Extras | [canvas-confetti](https://github.com/catdad/canvas-confetti), [lucide-react](https://lucide.dev) icons |
+| Extras | [DiceBear](https://www.dicebear.com) avatars, [canvas-confetti](https://github.com/catdad/canvas-confetti), [lucide-react](https://lucide.dev) icons |
 | Hosting | [Vercel](https://vercel.com) |
 
 ## Getting started
@@ -190,4 +190,4 @@ MyAroos is a guidance tool, not a fatwa or a replacement for your wali, family o
 
 ## License
 
-Released under the [MIT License](LICENSE). Built with ❤️ by [Kolapo Imam](https://x.com/PiousGeek) and [contributors](https://github.com/kolapoimam/myaroos-matchmaker/graphs/contributors).
+Released under the [MIT License](LICENSE). Built by [Kolapo Imam](https://kolapo.ng).

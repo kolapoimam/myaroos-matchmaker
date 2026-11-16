@@ -74,11 +74,11 @@ function llms({ SITE, routes }) {
 > ${SITE.name} is a free, open source web app that helps Muslims check how ready they are for marriage and how compatible they are with a potential spouse, based on Islamic values. It has a 23 question Marriage Readiness Quiz and a Compatibility Match Tool. Results show an overall score, category scores and practical tips, and can be downloaded as PNG or PDF. Everything runs in the browser. No account is needed and no answers are stored.
 
 Key facts:
-- Name: ${SITE.name} ("aroos" means bride in Arabic, عروس)
+- Name: ${SITE.name} ("aroos" means bride in Arabic)
 - Website: ${SITE.url}
 - Price: free
 - Privacy: no backend, no sign up, answers never leave the device
-- Creator: ${SITE.author} (https://x.com/PiousGeek)
+- Creator: ${SITE.author} (https://kolapo.ng)
 - Source code: ${SITE.repo} (MIT License)
 - Audience: Muslims preparing for marriage, including those in arranged or family introduced matches, converts and their families
 - It is a guidance tool. It does not replace a wali, family, scholars, or Istikhara
