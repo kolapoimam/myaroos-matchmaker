@@ -56,44 +56,22 @@ const ReportCard = forwardRef<HTMLDivElement, { data: ReportData }>(({ data }, r
         overflow: "hidden",
       }}
     >
-      {/* Decorative corner glow */}
-      <div
-        style={{
-          position: "absolute",
-          top: -160,
-          right: -160,
-          width: 380,
-          height: 380,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(214,158,53,0.25), rgba(214,158,53,0) 70%)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: -180,
-          left: -180,
-          width: 420,
-          height: 420,
-          borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(47,167,124,0.18), rgba(47,167,124,0) 70%)",
-        }}
-      />
-
       {/* Header */}
       <div data-pdf-block style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <svg width="40" height="40" viewBox="0 0 40 40">
-            <circle cx="20" cy="20" r="19" fill={C.emerald} />
-            <path d="M24.5 10.5a10 10 0 1 0 5 16.5 8 8 0 1 1-5-16.5z" fill={C.gold} />
-            <circle cx="26.5" cy="14" r="2.2" fill="none" stroke={C.gold} strokeWidth="1.6" />
+          <svg width="40" height="40" viewBox="0 0 64 64">
+            <rect width="64" height="64" rx="15" fill="#0F5E4A" />
+            <circle cx="28" cy="35" r="17" fill="#E2A93B" />
+            <circle cx="35.5" cy="29.5" r="14.5" fill="#0F5E4A" />
+            <circle cx="44" cy="22" r="6.2" fill="none" stroke="#E2A93B" strokeWidth="3.4" />
+            <path d="M44 9.5l3.6 4.6H40.4z" fill="#F4E9D4" />
           </svg>
           <span style={{ fontFamily: display, fontSize: 26, fontWeight: 600 }}>MyAroos</span>
         </div>
         <span style={{ fontSize: 13, color: C.muted }}>{date}</span>
       </div>
 
-      <div style={{ height: 3, margin: "24px 0 32px", borderRadius: 3, background: `linear-gradient(90deg, ${C.emerald}, ${C.gold}, #F2B8A2)` }} />
+      <div style={{ height: 3, margin: "24px 0 32px", borderRadius: 3, background: C.gold }} />
 
       <div data-pdf-block style={{ textAlign: "center", position: "relative" }}>
         <div
@@ -119,20 +97,13 @@ const ReportCard = forwardRef<HTMLDivElement, { data: ReportData }>(({ data }, r
         {/* Score ring */}
         <div style={{ position: "relative", width: size, height: size, margin: "28px auto 0" }}>
           <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ transform: "rotate(-90deg)" }}>
-            <defs>
-              <linearGradient id="report-ring" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor={C.emeraldLight} />
-                <stop offset="60%" stopColor={C.emerald} />
-                <stop offset="100%" stopColor={C.gold} />
-              </linearGradient>
-            </defs>
             <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke={C.border} strokeWidth={stroke} />
             <circle
               cx={size / 2}
               cy={size / 2}
               r={r}
               fill="none"
-              stroke="url(#report-ring)"
+              stroke={tone.color}
               strokeWidth={stroke}
               strokeLinecap="round"
               strokeDasharray={circ}

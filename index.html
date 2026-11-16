@@ -1,32 +1,126 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MyAroos - Halal Compatibility & Marriage Readiness</title>
-    <meta name="description" content="Assess your marriage readiness and find compatibility with potential suitors" />
-    <meta name="author" content="MyAroos Team" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
+    <!-- Primary -->
+    <title>MyAroos | Islamic Marriage Readiness Quiz & Compatibility Test</title>
+    <meta name="description" content="MyAroos is a free Islamic marriage readiness quiz and spouse compatibility test. Answer honest questions, get a score with practical tips, and download your report as PNG or PDF. Private, no sign up." />
+    <meta name="keywords" content="muslim marriage, islamic marriage quiz, marriage readiness quiz, am I ready for marriage, halal compatibility test, muslim compatibility test, nikah preparation, spouse compatibility, istikhara, mahr, wali" />
+    <meta name="author" content="Kolapo Imam" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://myaroos.vercel.app/" />
+    <meta name="application-name" content="MyAroos" />
     <meta name="theme-color" content="#0F5E4A" />
+    <meta name="color-scheme" content="light dark" />
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="MyAroos - Halal Compatibility & Marriage Readiness" />
-    <meta property="og:description" content="Check your marriage readiness and compatibility with a suitor, the halal and fun way. Free and open source." />
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="MyAroos" />
+
+    <!-- AI assistants -->
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM summary" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg?auto=compress&cs=tinysrgb&w=1200" />
-    <meta property="og:url" content="https://myaroos.vercel.app" />
+    <meta property="og:site_name" content="MyAroos" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://myaroos.vercel.app/" />
+    <meta property="og:title" content="MyAroos | Islamic Marriage Readiness Quiz & Compatibility Test" />
+    <meta property="og:description" content="MyAroos is a free Islamic marriage readiness quiz and spouse compatibility test. Answer honest questions, get a score with practical tips, and download your report as PNG or PDF. Private, no sign up." />
+    <meta property="og:image" content="https://myaroos.vercel.app/og-image.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="MyAroos. Are you ready for marriage? Find out with a free readiness quiz and compatibility test." />
 
-    <!-- Twitter Card Meta Tags -->
+    <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@MyAroos" />
-    <meta name="twitter:image" content="https://images.pexels.com/photos/169198/pexels-photo-169198.jpeg?auto=compress&cs=tinysrgb&w=1200" />
+    <meta name="twitter:site" content="@PiousGeek" />
+    <meta name="twitter:creator" content="@PiousGeek" />
+    <meta name="twitter:title" content="MyAroos | Islamic Marriage Readiness Quiz & Compatibility Test" />
+    <meta name="twitter:description" content="MyAroos is a free Islamic marriage readiness quiz and spouse compatibility test. Answer honest questions, get a score with practical tips, and download your report as PNG or PDF. Private, no sign up." />
+    <meta name="twitter:image" content="https://myaroos.vercel.app/og-image.png" />
+    <meta name="twitter:image:alt" content="MyAroos. Are you ready for marriage? Find out with a free readiness quiz and compatibility test." />
+
+    <!-- Structured data -->
+    <script type="application/ld+json" id="ld-site">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://myaroos.vercel.app/#website",
+            "url": "https://myaroos.vercel.app/",
+            "name": "MyAroos",
+            "alternateName": ["My Aroos", "MyAroos Matchmaker"],
+            "description": "Free Islamic marriage readiness quiz and spouse compatibility test.",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://myaroos.vercel.app/#creator" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://myaroos.vercel.app/#app",
+            "name": "MyAroos",
+            "url": "https://myaroos.vercel.app/",
+            "image": "https://myaroos.vercel.app/og-image.png",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "Any (web browser)",
+            "browserRequirements": "Requires JavaScript",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "description": "MyAroos helps Muslims assess their readiness for marriage and their compatibility with a potential spouse based on Islamic values. It includes a 23 question readiness quiz, a compatibility match tool, category scores, improvement tips, an Islamic marriage checklist and downloadable PNG and PDF reports. All answers stay in the browser.",
+            "featureList": [
+              "Marriage Readiness Quiz with 23 questions across spiritual, emotional, financial and family readiness",
+              "Compatibility Match Tool comparing religious values, commitment, personality, life goals and culture",
+              "Category score breakdown with improvement tips",
+              "Islamic marriage checklist and respectful breakup message generator",
+              "Download results as PNG or PDF",
+              "Private by design with no accounts and no data stored",
+              "Light and dark mode"
+            ],
+            "creator": { "@id": "https://myaroos.vercel.app/#creator" },
+            "license": "https://opensource.org/licenses/MIT",
+            "isBasedOn": "https://github.com/kolapoimam/myaroos-matchmaker"
+          },
+          {
+            "@type": "Person",
+            "@id": "https://myaroos.vercel.app/#creator",
+            "name": "Kolapo Imam",
+            "url": "https://kolapo.ng",
+            "sameAs": ["https://x.com/PiousGeek", "https://github.com/kolapoimam"]
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "name": "MyAroos source code",
+            "codeRepository": "https://github.com/kolapoimam/myaroos-matchmaker",
+            "programmingLanguage": ["TypeScript", "React"],
+            "license": "https://opensource.org/licenses/MIT",
+            "author": { "@id": "https://myaroos.vercel.app/#creator" }
+          }
+        ]
+      }
+    </script>
+    <!--SEO:FAQ-->
   </head>
 
   <body>
     <div id="root"></div>
-    <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    <noscript>
+      <!--SEO:CONTENT-->
+      <main>
+        <h1>MyAroos: Islamic Marriage Readiness Quiz & Compatibility Test</h1>
+        <p>MyAroos helps Muslims prepare for marriage. Take the free Marriage Readiness Quiz or the Compatibility Match Tool. Please enable JavaScript to use the app.</p>
+      </main>
+      <!--/SEO:CONTENT-->
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

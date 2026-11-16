@@ -40,6 +40,9 @@ npm run build
 | --- | --- |
 | `src/data/readiness.ts` | Marriage Readiness Quiz categories, questions and option scores |
 | `src/data/compatibility.ts` | Compatibility questions and religious values lists |
+| `src/data/faq.ts` | FAQ answers (About page, structured data and llms-full.txt) |
+| `src/seo/routes.ts` | Page titles, descriptions and crawler summaries |
+| `scripts/seo-build.mjs` | Builds sitemap, llms.txt, llms-full.txt and prerendered pages |
 | `src/pages/` | One file per page (Home, Readiness, Compatibility, About, 404) |
 | `src/components/` | Shared UI such as `QuestionCard`, `Stepper`, `ScoreRing`, `ReportCard` |
 | `src/components/ui/` | shadcn/ui primitives. Avoid editing unless needed |
@@ -57,6 +60,14 @@ npm run build
 5. If your question should produce an improvement tip, add a `case` for its `id` in the page's tip logic.
 
 Please explain in your pull request why the question matters for an Islamic marriage. If it touches fiqh, cite your source.
+
+### Writing copy
+
+Keep result messages and tips general, kind and easy for any Muslim to relate to, wherever they live. Avoid jokes that depend on one culture's food or customs, and never joke about sacred places or prophets.
+
+### Design rules
+
+Use solid colours only (no gradients). Colours come from the tokens in `src/index.css`.
 
 ### Changing colours or fonts
 

@@ -11,11 +11,13 @@ import CompatibilityGraph from "@/components/CompatibilityGraph";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import ResultsActions from "@/components/ResultsActions";
 import PageShell from "@/components/PageShell";
+import { useSeo } from "@/hooks/useSeo";
 import Stepper from "@/components/Stepper";
 import ScoreRing from "@/components/ScoreRing";
 import QuestionCard from "@/components/QuestionCard";
 import { compatibilityQuestions, femaleReligiousValues, maleReligiousValues } from "@/data/compatibility";
 import { celebrate } from "@/lib/celebrate";
+import { SITE_URL } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 const steps = [
@@ -99,6 +101,7 @@ function ValuesPicker({ idPrefix, gender, selected, onToggle, emptyText }: Value
 }
 
 const Compatibility = () => {
+  useSeo();
   const [activeTab, setActiveTab] = useState("your-info");
   const [yourInfo, setYourInfo] = useState({
     name: "",
@@ -396,30 +399,30 @@ const Compatibility = () => {
     
     if (score >= 80) {
       return {
-        title: "MashaAllah! You two are like Medina dates—sweet and blessed!",
-        message: "Your compatibility is exceptional. Like a perfect cup of Arabic coffee and fresh dates, you complement each other wonderfully. Your shared religious values provide a strong foundation, and your personalities seem to fit together like the pieces of a beautiful Islamic geometric pattern. Make dua for continued harmony, and remember that even the most compatible couples need to nurture their relationship daily.",
+        title: "MashaAllah! You two are a great match.",
+        message: "Your compatibility is excellent. You share strong religious values and your outlook on life lines up well. Keep making dua for barakah, and remember that even the best matches need care, patience and good communication every day.",
       };
     } else if (score >= 60) {
       return {
-        title: "There's potential! Like biryani without raita—good but needs some adjustments.",
-        message: "You have a promising foundation, alhamdulillah! Like a pot of biryani that's missing its raita—the fundamentals are excellent, but a few complementary elements would make it perfect. With open communication and patience, your minor differences could actually strengthen your relationship. Focus on the areas where you align well, and approach your differences with compassion and understanding. Perhaps perform Istikhara (prayer for guidance) as you consider moving forward.",
+        title: "Real potential here, with a few things to talk through.",
+        message: "You have a promising foundation, alhamdulillah. There are some differences, but nothing that open and honest conversation can't handle. Talk through the areas below with patience, pray Istikhara (prayer for guidance), and move forward with clarity.",
       };
     } else if (score >= 40) {
       return {
-        title: "Major differences exist—like tea with salt instead of sugar!",
-        message: "Your compatibility is like accidentally putting salt in your tea instead of sugar—the fundamental elements are there, but the experience might not be what you're hoping for! There are significant differences in key areas that could lead to challenges. This doesn't mean a relationship is impossible, but it would require substantial compromise and understanding from both sides. Consider whether you're prepared for the work this relationship might require, and definitely perform Istikhara before proceeding.",
+        title: "Proceed with care. Some big differences showed up.",
+        message: "There are significant differences in key areas that could lead to challenges later. A good marriage is still possible, but it would take real compromise and understanding from both of you. Discuss the areas below honestly and pray Istikhara before going further.",
       };
     } else {
       return {
-        title: "Run. Like, really run. It's giving 'Pharaoh and Musa' vibes.",
-        message: "Your compatibility score suggests this match has more red flags than a Moroccan souk! Like Pharaoh and Musa (AS), you seem to be headed in completely different directions. While Allah is capable of bringing together even the most unlikely hearts, this particular match might require more adjustments than renovating the Kaaba. Consider whether you're prepared to make fundamental compromises on your values and expectations—and then consider if that's really what Allah would want for you. Perhaps it's time to make dua for patience and look elsewhere.",
+        title: "Lots of red flags. This match needs a serious rethink.",
+        message: "Your answers point to major differences in values and expectations. Allah can bring any two hearts together, but a marriage built on deep mismatch is hard work. Seek advice from family and people you trust, pray Istikhara, and don't be afraid to walk away kindly.",
       };
     }
   };
 
   const getShareText = () => {
     const score = calculateCompatibilityScore();
-    return `I just completed the Compatibility Match Tool on MyAroos and scored ${score}% with ${suitorInfo.name}! ${getResultMessage().title} Try your own compatibility test at MyAroos.com!`;
+    return `I just completed the Compatibility Match Tool on MyAroos and scored ${score}% with ${suitorInfo.name}! ${getResultMessage().title} Try your own compatibility test at ${SITE_URL}`;
   };
 
   const getCategoryScores = () => {

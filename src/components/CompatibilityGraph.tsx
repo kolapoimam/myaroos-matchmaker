@@ -25,7 +25,7 @@ const CompatibilityGraph = ({ scores }: CompatibilityGraphProps) => {
             <div className="h-3 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full transition-[width] duration-1000 ease-out"
-                style={{ width: `${Math.max(value, 2)}%`, background: `linear-gradient(90deg, ${tone.color}aa, ${tone.color})` }}
+                style={{ width: `${Math.max(value, 2)}%`, background: tone.color }}
               />
             </div>
           </div>

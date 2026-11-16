@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowRight, RotateCcw, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import PageShell from "@/components/PageShell";
+import { useSeo } from "@/hooks/useSeo";
 import QuestionCard from "@/components/QuestionCard";
 import Stepper from "@/components/Stepper";
 import ScoreRing from "@/components/ScoreRing";
@@ -12,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import ResultsActions from "@/components/ResultsActions";
 import { categories } from "@/data/readiness";
 import { celebrate } from "@/lib/celebrate";
+import { SITE_URL } from "@/lib/constants";
 
 const stepNudges = [
   "Bismillah, let's start with the heart of it all.",
@@ -31,6 +33,7 @@ const totalPossibleScore = categories.reduce(
 );
 
 const MarriageReadiness = () => {
+  useSeo();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [currentCategory, setCurrentCategory] = useState(0);
   const [showResults, setShowResults] = useState(false);
@@ -185,30 +188,30 @@ const MarriageReadiness = () => {
     
     if (percentage >= 80) {
       return {
-        title: "MashaAllah! You're more marriage-ready than a fresh batch of samosas!",
-        message: "Your preparation for marriage is excellent! You've clearly put in the work spiritually, emotionally, financially, and socially. Make dua for a spouse who matches your level of readiness—they're in for a treat, in sha Allah!",
+        title: "MashaAllah! You're marriage ready and fully charged.",
+        message: "Your preparation is excellent across the board. You have clearly put in the work spiritually, emotionally, financially and socially. Keep making dua for a spouse who matches your effort. They are in for a blessing, in sha Allah.",
       };
     } else if (percentage >= 60) {
       return {
-        title: "You're closer than Arafah is to Mina—almost there!",
-        message: "You've made solid progress on your marriage preparation journey! With a few tweaks here and there, you'll be saying 'qabiltu' (I accept) before you know it. Focus on the areas you scored lower in, and in sha Allah, you'll be fully prepared when the right person comes along.",
+        title: "Almost there! Just a few finishing touches left.",
+        message: "You have made solid progress on your marriage preparation. Focus on the areas where you scored lower, keep growing, and in sha Allah you will be fully ready when the right person comes along.",
       };
     } else if (percentage >= 40) {
       return {
-        title: "Your marriage prep is like biryani without rice—essential ingredients missing!",
-        message: "You've started the journey, but there's still considerable work to do. Don't rush into marriage before addressing the areas where you scored lower. Remember, a good marriage requires good preparation, just like you wouldn't serve uncooked biryani to guests!",
+        title: "Halfway there. Some key pieces are still missing.",
+        message: "You have started the journey, but there is still important work to do. Take time to strengthen the areas where you scored lower before rushing into marriage. Good preparation today makes a calmer home tomorrow.",
       };
     } else {
         return {
-          title: "Uh-oh! Your marriage readiness is giving 'left socks in the washing machine' vibes.",
-          message: "Let's be honest—you might need significant personal development before saying 'Qabiltu!' Marriage requires preparation, and rushing in unprepared is like trying to memorize Surah Baqarah the night before Ramadan. Focus on the specific improvement areas we've highlighted for you.",
+          title: "Not yet, and that's okay. Your future spouse can wait a little longer.",
+          message: "Be honest with yourself. There is real growth to do before saying 'qabiltu' (I accept). Use the tips below as your plan, take it one step at a time, and come back to retake the quiz when you feel ready.",
         };
     }
   };
 
   const getShareText = () => {
     const percentage = getScorePercentage();
-    return `I just completed the Marriage Readiness Quiz on MyAroos and scored ${percentage}%! ${getResultMessage().title} Check out your own readiness at MyAroos.com!`;
+    return `I just completed the Marriage Readiness Quiz on MyAroos and scored ${percentage}%! ${getResultMessage().title} Check your own readiness at ${SITE_URL}`;
   };
 
   useEffect(() => {

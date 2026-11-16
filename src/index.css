@@ -121,12 +121,6 @@
     @apply inline-flex items-center gap-2 rounded-full border border-[hsl(var(--gold)/0.4)] bg-[hsl(var(--gold)/0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-[hsl(var(--accent-foreground))];
   }
 
-  .text-gold-gradient {
-    background: linear-gradient(100deg, hsl(var(--gold)) 0%, hsl(30 75% 45%) 50%, hsl(var(--gold)) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
 
   .sticker {
     @apply inline-flex select-none items-center justify-center rounded-2xl border-2 border-foreground/80 bg-card px-3 py-1.5 text-sm font-bold shadow-[3px_3px_0_hsl(var(--foreground)/0.85)];

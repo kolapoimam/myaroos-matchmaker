@@ -5,11 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/seo-build.mjs assets",
     "build": "vite build",
+    "postbuild": "node scripts/seo-build.mjs pages",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p tsconfig.app.json"
+    "seo": "node scripts/seo-build.mjs assets"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",
@@ -82,7 +85,6 @@
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
     "eslint-plugin-react-refresh": "^0.4.9",
     "globals": "^15.9.0",
-    "lovable-tagger": "^1.1.7",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.11",
     "typescript": "^5.5.3",

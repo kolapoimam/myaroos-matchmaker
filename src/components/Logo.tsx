@@ -7,17 +7,15 @@ interface LogoProps {
   inverted?: boolean;
 }
 
-/** Crescent + ring mark with the MyAroos wordmark */
+/** Crescent + ring mark (same as public/favicon.svg) */
 export function LogoMark({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 40 40" className={cn("h-9 w-9", className)} aria-hidden="true">
-      <circle cx="20" cy="20" r="19" fill="hsl(var(--primary))" />
-      <path
-        d="M24.5 10.5a10 10 0 1 0 5 16.5 8 8 0 1 1-5-16.5z"
-        fill="hsl(var(--gold))"
-      />
-      <circle cx="26.5" cy="14" r="2.2" fill="none" stroke="hsl(var(--gold))" strokeWidth="1.6" />
-      <path d="M26.5 10.6l.8 1.2h-1.6z" fill="hsl(var(--gold))" />
+    <svg viewBox="0 0 64 64" className={cn("h-9 w-9", className)} aria-hidden="true">
+      <rect width="64" height="64" rx="15" fill="#0F5E4A" />
+      <circle cx="28" cy="35" r="17" fill="#E2A93B" />
+      <circle cx="35.5" cy="29.5" r="14.5" fill="#0F5E4A" />
+      <circle cx="44" cy="22" r="6.2" fill="none" stroke="#E2A93B" strokeWidth="3.4" />
+      <path d="M44 9.5l3.6 4.6H40.4z" fill="#F4E9D4" />
     </svg>
   );
 }

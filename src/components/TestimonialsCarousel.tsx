@@ -45,7 +45,7 @@ export default function TestimonialsCarousel() {
         <span className="eyebrow">Alhamdulillah</span>
         <h2 className="mt-4 text-4xl font-semibold md:text-5xl">What our users say</h2>
       </div>
-      <div className="group relative overflow-hidden [mask-image:linear-gradient(90deg,transparent,black_10%,black_90%,transparent)]">
+      <div className="group relative overflow-hidden">
         <div className="flex w-max animate-slide gap-5 py-4 [animation-duration:45s] group-hover:[animation-play-state:paused]">
           {loop.map((t, idx) => (
             <figure

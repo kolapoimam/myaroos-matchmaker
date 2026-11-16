@@ -22,7 +22,7 @@ export default function Stepper({ steps, current, onSelect }: StepperProps) {
     <div className="relative">
       <div className="absolute left-6 right-6 top-6 h-1 rounded-full bg-muted" aria-hidden="true">
         <div
-          className="h-full rounded-full bg-gradient-to-r from-brand-green-light via-primary to-gold transition-all duration-700 ease-out"
+          className="h-full rounded-full bg-primary transition-all duration-700 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>

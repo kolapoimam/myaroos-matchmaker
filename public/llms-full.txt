@@ -1,0 +1,488 @@
+# MyAroos
+
+> MyAroos is a free, open source web app that helps Muslims check how ready they are for marriage and how compatible they are with a potential spouse, based on Islamic values. It has a 23 question Marriage Readiness Quiz and a Compatibility Match Tool. Results show an overall score, category scores and practical tips, and can be downloaded as PNG or PDF. Everything runs in the browser. No account is needed and no answers are stored.
+
+Key facts:
+- Name: MyAroos ("aroos" means bride in Arabic, عروس)
+- Website: https://myaroos.vercel.app
+- Price: free
+- Privacy: no backend, no sign up, answers never leave the device
+- Creator: Kolapo Imam (https://x.com/PiousGeek)
+- Source code: https://github.com/kolapoimam/myaroos-matchmaker (MIT License)
+- Audience: Muslims preparing for marriage, including those in arranged or family introduced matches, converts and their families
+- It is a guidance tool. It does not replace a wali, family, scholars, or Istikhara
+
+## Tools
+
+- [Marriage Readiness Quiz](https://myaroos.vercel.app/marriage-readiness): The MyAroos Marriage Readiness Quiz has 23 questions in four categories: Spiritual Readiness, Emotional Readiness, Financial Readiness, and Family & Social Readiness. Each answer scores from 0 to 10. You get an overall readiness percentage, a score for each category and practical tips for weak areas. It is free, takes about five minutes and stores no data.
+- [Compatibility Match Tool](https://myaroos.vercel.app/compatibility): The MyAroos Compatibility Match Tool compares you with a potential spouse in three steps: your details, the suitor's details, and questions about the suitor. The score out of 100 combines shared religious values (40), religious commitment (20) and answers across Core Religious Practice, Personality & Lifestyle, Long-Term Compatibility and Cultural & Educational Compatibility (40). Results include an Islamic marriage checklist and a respectful breakup message generator.
+
+## About
+
+- [About and FAQ](https://myaroos.vercel.app/about): MyAroos was created to help Muslims choose a spouse based on Islamic principles and practical compatibility. It is a guidance tool, not a replacement for a wali, family or scholars. It is open source under the MIT License and runs fully in the browser with no data stored.
+- [Full details for AI assistants](https://myaroos.vercel.app/llms-full.txt): every question, scoring rule and FAQ answer in plain text
+
+## Open source
+
+- [GitHub repository](https://github.com/kolapoimam/myaroos-matchmaker): React, TypeScript, Tailwind CSS, Vite
+- [Contributing guide](https://github.com/kolapoimam/myaroos-matchmaker/blob/main/CONTRIBUTING.md)
+
+## Optional
+
+- [Sitemap](https://myaroos.vercel.app/sitemap.xml)
+
+---
+
+# MyAroos full reference
+
+## Pages
+
+- https://myaroos.vercel.app/
+  Title: MyAroos | Islamic Marriage Readiness Quiz & Compatibility Test
+  MyAroos is a free Islamic marriage readiness quiz and spouse compatibility test. Answer honest questions, get a score with practical tips, and download your report as PNG or PDF. Private, no sign up.
+- https://myaroos.vercel.app/marriage-readiness
+  Title: Marriage Readiness Quiz for Muslims | MyAroos
+  Am I ready for marriage? Take this free 23 question Islamic marriage readiness quiz covering prayer and faith, emotional maturity, finances and mahr, family and in-laws. Get your score and tips in 5 minutes.
+- https://myaroos.vercel.app/compatibility
+  Title: Islamic Compatibility Test for a Potential Spouse | MyAroos
+  Is this person right for me? Compare religious values, level of practice, personality, life goals and culture with a suitor. Free halal compatibility test with a marriage checklist and a respectful way to say no.
+- https://myaroos.vercel.app/about
+  Title: About MyAroos | FAQ, Privacy & How Scoring Works
+  Learn how MyAroos works, how scores are calculated, how your privacy is protected and how to contribute to this open source Islamic marriage tool.
+
+## Marriage Readiness Quiz
+
+The quiz is answered about yourself, one category at a time. Each option scores from 0 to 10. The overall result is the sum of your scores divided by the highest possible sum, shown as a percentage. Any answer scoring below 5 adds an improvement tip for its category.
+
+Result bands:
+- 80% and above: marriage ready
+- 60% to 79%: almost there, a few areas to improve
+- 40% to 59%: halfway, key pieces still missing
+- Below 40%: not yet, focus on personal growth first
+
+### Spiritual Readiness
+
+1. Do you pray five times daily?
+   - Yes, consistently on time (score 10)
+   - Yes, but sometimes delayed (score 8)
+   - Sometimes (3-4 prayers daily) (score 5)
+   - Rarely (1-2 prayers daily) (score 2)
+   - No, not currently praying (score 0)
+2. Have you studied Islamic marriage rights & responsibilities?
+   - Yes, extensively through courses/books (score 10)
+   - Yes, through occasional lectures/articles (score 7)
+   - Occasionally, basic knowledge only (score 5)
+   - Very minimal knowledge (score 2)
+   - No, not at all (score 0)
+3. How often do you seek Islamic knowledge?
+   - Daily dedicated study time (score 10)
+   - Weekly classes/study circles (score 7)
+   - Occasionally when I have time (score 4)
+   - Rarely, only during Ramadan (score 2)
+   - Not currently seeking knowledge (score 0)
+4. Are you comfortable leading/cooperating in religious household practices?
+   - Very comfortable and knowledgeable (score 10)
+   - Comfortable with most aspects (score 8)
+   - Needs improvement in some areas (score 5)
+   - Uncomfortable but willing to learn (score 3)
+   - Not comfortable at all (score 0)
+5. How often do you recite and reflect on the Quran?
+   - Daily with reflection on meanings (score 10)
+   - A few times per week (score 7)
+   - Weekly, usually on Friday (score 5)
+   - Rarely, only on special occasions (score 2)
+   - Not currently reciting (score 0)
+6. How well do you practice Islamic etiquettes in daily life (eating, sleeping, etc.)?
+   - Consistently follow Sunnah practices (score 10)
+   - Most of the time (score 7)
+   - Sometimes, when I remember (score 5)
+   - Rarely think about Islamic etiquettes (score 2)
+   - Not currently practicing these (score 0)
+
+### Emotional Readiness
+
+1. Can you handle disagreements maturely and Islamically?
+   - Yes, with patience and proper Islamic etiquette (score 10)
+   - Yes, though I sometimes get frustrated (score 7)
+   - Working on it, improving gradually (score 5)
+   - Find it difficult to remain calm (score 2)
+   - No, I struggle with controlling emotions (score 0)
+2. How do you handle stress and difficult conversations?
+   - Very calmly with dua and reflection (score 10)
+   - Calmly most of the time (score 8)
+   - It varies depending on the situation (score 5)
+   - With difficulty, often get overwhelmed (score 3)
+   - I avoid difficult conversations (score 0)
+3. Are you patient and understanding when things don't go your way?
+   - Always, with complete trust in Allah's plan (score 10)
+   - Most of the time (score 7)
+   - Sometimes, depending on the situation (score 5)
+   - Rarely, I usually get upset (score 2)
+   - No, I struggle with this consistently (score 0)
+4. How emotionally independent are you from your parents/family?
+   - Very independent while maintaining good relations (score 10)
+   - Moderately independent (score 7)
+   - Somewhat dependent for emotional support (score 5)
+   - Very dependent on family for decisions (score 2)
+   - Completely dependent on family (score 0)
+5. Have you emotionally healed from past relationships or rejections?
+   - No past relationships, I'm good (score 10)
+   - Mostly healed, occasional thoughts (score 7)
+   - In the process of healing (score 5)
+   - Still struggling with past experiences (score 2)
+   - Haven't started the healing process (score 0)
+6. Do you have realistic expectations about marriage and your future spouse?
+   - Very realistic and well-researched (score 10)
+   - Mostly realistic with some idealism (score 7)
+   - Somewhat realistic, some Hollywood influence (score 5)
+   - Quite unrealistic expectations (score 2)
+   - Completely fairy-tale expectations (score 0)
+
+### Financial Readiness
+
+1. Do you have a stable income?
+   - Yes, very stable with savings (score 10)
+   - Yes, stable but limited savings (score 8)
+   - Somewhat stable, paycheck to paycheck (score 5)
+   - Working on it, currently unstable (score 3)
+   - No income currently (score 0)
+2. Do you have financial goals for marriage?
+   - Yes, with detailed plans and timelines (score 10)
+   - Yes, general goals without specific plans (score 7)
+   - Somewhat, haven't thought deeply about it (score 5)
+   - Very vague ideas about finances (score 3)
+   - No financial planning for marriage (score 0)
+3. Can you budget effectively and avoid debt?
+   - Yes, excellent at budgeting and debt-free (score 10)
+   - Good at budgeting with minimal debt (score 8)
+   - Average, occasional budgeting issues (score 5)
+   - Trying to improve, significant debt (score 3)
+   - No budgeting skills, serious debt issues (score 0)
+4. Do you follow Islamic principles in financial matters (avoiding riba/interest)?
+   - Yes, strictly avoid all interest-based transactions (score 10)
+   - Mostly, with few exceptions when necessary (score 7)
+   - Trying, but have some interest-based loans/cards (score 4)
+   - Minimal consideration of Islamic finance (score 2)
+   - No consideration of Islamic finance principles (score 0)
+5. Are you financially prepared to give/receive mahr (dowry)?
+   - Fully prepared with savings set aside (score 10)
+   - Mostly prepared, need some time (score 7)
+   - Somewhat prepared, actively saving (score 5)
+   - Barely prepared, minimal savings (score 3)
+   - Not prepared at all (score 0)
+
+### Family & Social Readiness
+
+1. Have you discussed marriage expectations with your family?
+   - Yes, detailed discussions with clear understanding (score 10)
+   - Yes, general discussions (score 7)
+   - Briefly mentioned but no deep discussions (score 5)
+   - Planning to discuss soon (score 3)
+   - No discussions at all (score 0)
+2. Are you open to different cultural family dynamics?
+   - Very open and appreciative of diversity (score 10)
+   - Open to most cultural differences (score 8)
+   - Somewhat open, with some preferences (score 6)
+   - Depends on the specific culture (score 4)
+   - Not open to different cultural practices (score 0)
+3. Are you prepared for in-law relationships?
+   - Yes, well-prepared with realistic expectations (score 10)
+   - Yes, generally prepared (score 7)
+   - Somewhat prepared, some concerns (score 5)
+   - I haven't thought about it much (score 3)
+   - No, anxious about in-law relationships (score 0)
+4. Do you have healthy work-life balance skills?
+   - Excellent balance prioritizing family (score 10)
+   - Good balance most of the time (score 7)
+   - Moderate balance, sometimes overwork (score 5)
+   - Poor balance, often overwhelmed (score 3)
+   - No balance, work dominates everything (score 0)
+5. Do you have basic household management skills (cooking, cleaning, maintenance)?
+   - Excellent at multiple household skills (score 10)
+   - Good at most household tasks (score 7)
+   - Moderate skills in some areas (score 5)
+   - Minimal skills but willing to learn (score 3)
+   - No household skills currently (score 0)
+6. Do you maintain good, halal friendships that would support your marriage?
+   - Strong, supportive friends who encourage good (score 10)
+   - Good friends with positive influence (score 7)
+   - Mixed friendships, some positive, some negative (score 5)
+   - Few friends, mostly acquaintances (score 3)
+   - No friends or negative influences only (score 0)
+
+## Compatibility Match Tool
+
+Steps:
+1. Your info: nickname, age, gender, level of religious commitment (Practicing, Moderately Practicing, Non-Practicing) and the religious values that matter to you
+2. Suitor's info: the same fields for the potential spouse
+3. Compatibility: optional questions about the suitor, at least one per category
+
+Score out of 100:
+- Shared religious values: 40 points, based on how many of your selected values the suitor also has
+- Religious commitment: 20 points for the same level, 10 points for Practicing with Moderately Practicing, 0 otherwise
+- Compatibility questions: 40 points, from your answers about the suitor. Preference questions (where every option has the same score) do not raise or lower the score
+
+Result bands:
+- 80 and above: a great match
+- 60 to 79: real potential, a few things to talk through
+- 40 to 59: proceed with care, big differences
+- Below 40: many red flags, needs a serious rethink
+
+After the result, users can open an Islamic marriage checklist (meet the wali, pray Istikhara, discuss mahr and finances, family planning, living arrangements, boundaries, shared Islamic growth) or generate a respectful message to end things kindly.
+
+### Religious values (for a man)
+
+- Has a beard (Sunnah practice)
+- Prays 5 times daily
+- Observes Islamic finance (avoids riba)
+- Comfortable with polygamy
+- Prefers Islamic banking
+- Prefers a wali's involvement in the marriage process
+- Observes modesty in dress and social interactions
+- Willing to relocate for marriage
+- Follows a specific school of thought
+- Eats only halal-certified food
+- Plans to financially provide for the family
+- Open to homeschooling children with Islamic studies
+- Reads Quran regularly
+- Seeks Islamic knowledge actively
+- Has cooking skills
+- Wants children
+- Prays Tahajjud regularly
+- Observes voluntary fasts
+- Attends masjid regularly
+
+### Religious values (for a woman)
+
+- Wears Hijab
+- Wears Niqab
+- Prays 5 times daily
+- Comfortable with polygamy
+- Open to homeschooling children with Islamic studies
+- Prefers Islamic banking (avoids riba)
+- Observes modest social interactions
+- Willing to relocate for marriage
+- Follows a specific school of thought
+- Eats only halal-certified food
+- Willing to live with in-laws if necessary
+- Open to long-distance marriage initially
+- Speaks Arabic or is willing to learn
+- Reads Quran regularly
+- Seeks Islamic knowledge actively
+- Has cooking skills
+- Wants children
+- Prays Tahajjud regularly
+- Observes voluntary fasts
+
+### Core Religious Practice
+
+1. Does this person pray five times daily?
+   - Yes, consistently on time (score 10)
+   - Yes, but sometimes delayed (score 8)
+   - Sometimes (3-4 prayers daily) (score 5)
+   - Rarely (1-2 prayers daily) (score 2)
+   - No, not currently praying (score 0)
+2. Do they fast during Ramadan?
+   - Yes, all days with enthusiasm (score 10)
+   - Yes, most days (score 8)
+   - About half the month (score 5)
+   - Only a few days (score 3)
+   - No, rarely or never (score 0)
+3. Do they avoid riba (interest-based transactions)?
+   - Strictly, including student loans and mortgages (score 10)
+   - Mostly, with few exceptions when necessary (score 7)
+   - Sometimes, but has some interest-based loans (score 5)
+   - Rarely thinks about it (score 2)
+   - Not concerned about Islamic finance (score 0)
+4. How often do they read or listen to Quran?
+   - Daily, with understanding (score 10)
+   - Weekly, consistent schedule (score 7)
+   - Occasionally, especially during Ramadan (score 5)
+   - Rarely, only on special occasions (score 3)
+   - Never or almost never (score 0)
+5. Do they actively seek Islamic knowledge?
+   - Consistently through classes and self-study (score 10)
+   - Regularly through online lectures (score 7)
+   - Occasionally when interested in a topic (score 5)
+   - Rarely seeks knowledge (score 2)
+   - Never actively seeks knowledge (score 0)
+6. How strict are they about following a halal lifestyle (food, entertainment, etc.)?
+   - Very strict in all aspects (score 10)
+   - Mostly strict with occasional exceptions (score 7)
+   - Moderately observant, flexible on some things (score 5)
+   - Minimally observant, only basic requirements (score 3)
+   - Not particularly observant (score 0)
+
+### Personality & Lifestyle
+
+1. Are they introverted or extroverted?
+   - Strongly introverted (score 5)
+   - Somewhat introverted (score 5)
+   - Ambivert (balanced) (score 5)
+   - Somewhat extroverted (score 5)
+   - Strongly extroverted (score 5)
+2. How would you describe their communication style?
+   - Direct and straightforward (score 5)
+   - Diplomatic and tactful (score 5)
+   - Reflective and thoughtful (score 5)
+   - Emotional and expressive (score 5)
+   - Avoidant of difficult topics (score 2)
+3. How do they handle conflicts and disagreements?
+   - Through calm, solution-focused discussion (score 10)
+   - Through compromise and understanding (score 8)
+   - Taking a time-out, then revisiting (score 7)
+   - Emotionally, occasionally heated (score 3)
+   - Avoiding conflict altogether (score 1)
+4. Do they prioritize family over career?
+   - Family always comes first (score 10)
+   - Mostly family, but career is important (score 8)
+   - Balanced approach to both (score 7)
+   - Career-focused with family time (score 5)
+   - Career is the top priority (score 3)
+5. How do they prefer to spend weekends?
+   - Relaxing at home (score 5)
+   - With family activities (score 5)
+   - Outdoor activities and adventures (score 5)
+   - Socializing with friends (score 5)
+   - Being productive (work/study/projects) (score 5)
+6. What pace of life do they prefer?
+   - Slow and relaxed, minimal commitments (score 5)
+   - Moderate pace with planned activities (score 5)
+   - Busy and structured with many activities (score 5)
+   - Dynamic and spontaneous (score 5)
+   - Fast-paced and hectic (score 5)
+7. How would you describe their cleanliness and organization habits?
+   - Very organized and clean (score 5)
+   - Mostly organized with occasional messiness (score 5)
+   - Average cleanliness (score 5)
+   - Somewhat messy but functional (score 5)
+   - Very messy and disorganized (score 5)
+
+### Long-Term Compatibility
+
+1. How do they approach financial management?
+   - Very responsible, saves regularly (score 10)
+   - Responsible with occasional splurges (score 8)
+   - Balanced approach to saving and spending (score 7)
+   - Somewhat impulsive spending habits (score 3)
+   - Struggles with financial management (score 1)
+2. Are they open to polygamy?
+   - Yes, actively considering it (score 5)
+   - Yes, if circumstances warrant it (score 5)
+   - Maybe, under specific conditions (score 5)
+   - Not Sure (score 5)
+   - No (score 5)
+3. Do they want children?
+   - Yes, many (4+) (score 5)
+   - Yes, a few (1-3) (score 5)
+   - Undecided but open to it (score 5)
+   - Prefer not to have children (score 5)
+   - Definitely no children (score 5)
+4. What's their parenting style or preference?
+   - Islamic-focused with structure and discipline (score 5)
+   - Islamic-focused with balanced approach (score 5)
+   - Permissive but with Islamic values (score 5)
+   - Modern/Western-influenced approach (score 5)
+   - Haven't thought much about it (score 5)
+5. How do they feel about living with or near in-laws?
+   - Very comfortable living with in-laws (score 5)
+   - Comfortable living near in-laws (score 5)
+   - Comfortable temporarily if needed (score 5)
+   - Prefers some distance from in-laws (score 5)
+   - Uncomfortable with close in-law relationships (score 5)
+6. Are they willing to relocate for marriage?
+   - Yes, anywhere including internationally (score 10)
+   - Yes, within the same country (score 8)
+   - Yes, but only within nearby areas (score 6)
+   - Maybe under specific circumstances (score 5)
+   - No, not willing to relocate (score 0)
+7. Do they have clear life goals and plans?
+   - Very clear goals with action plans (score 10)
+   - Clear goals but flexible plans (score 8)
+   - General direction but no specific plans (score 6)
+   - Still figuring things out (score 4)
+   - No clear goals or plans (score 2)
+
+### Cultural & Educational Compatibility
+
+1. How important is their cultural background in daily life?
+   - Very important, practices cultural traditions (score 5)
+   - Somewhat important, observes major customs (score 5)
+   - Balanced between culture and Islamic practices (score 5)
+   - Less important than Islamic identity (score 5)
+   - Not important at all (score 5)
+2. How do they behave in mixed-gender settings?
+   - Prefers strict segregation (score 5)
+   - Limited, necessary interaction only (score 5)
+   - Modest interaction with boundaries (score 5)
+   - Comfortable but maintains Islamic boundaries (score 5)
+   - Very comfortable with minimal boundaries (score 5)
+3. What is their level of education or value placed on education?
+   - Highly educated and values continuous learning (score 5)
+   - College educated and values knowledge (score 5)
+   - Vocational/specialized training (score 5)
+   - High school education (score 5)
+   - Self-taught/informal education (score 5)
+4. Do they speak or are willing to learn your native language?
+   - Already fluent in my language (score 5)
+   - Currently learning my language (score 5)
+   - Willing to learn my language (score 5)
+   - Not sure if they're willing to learn (score 5)
+   - Not willing to learn my language (score 5)
+
+## Frequently asked questions
+
+### Is this app a substitute for parental guidance or Wali involvement?
+
+No, absolutely not. MyAroos is designed to be a complementary tool to traditional Islamic approaches to marriage. We strongly encourage involving parents, guardians (Wali), and trusted community members in your marriage process. Our tools can help you clarify your own readiness and compatibility, but should be used alongside proper Islamic protocols for marriage.
+
+### How does the compatibility assessment work?
+
+Our compatibility assessment examines several key areas that are important in an Islamic marriage, including:
+- Religious values and practices
+- Level of religious commitment
+- Core religious practices
+- Personality and lifestyle preferences
+- Long-term goals and expectations
+
+We use a weighted scoring system that prioritizes religious compatibility while also accounting for personal preferences.
+
+### Is my data secure and private?
+
+Yes. We do not store any of your responses or personal information on our servers. All assessments happen locally in your browser, and the results are not saved after you close or refresh the page. Your privacy is important to us, especially when it comes to such personal matters.
+
+### Are the hadiths used in this app authentic?
+
+We have made every effort to include only authentic hadiths from reliable sources. All hadiths displayed in our app come from recognized collections such as Bukhari, Muslim, Tirmidhi, Ibn Majah, and others. However, we are not Islamic scholars, and we encourage users to verify hadiths through reputable Islamic scholarship if they have any concerns.
+
+### What if I get a low compatibility score with someone?
+
+A low compatibility score doesn't necessarily mean you shouldn't proceed with the relationship, but it does indicate areas where significant differences exist. These differences may require compromise, adjustment, or further discussion. We provide a respectful breakup message generator for those who decide not to proceed, but we also encourage prayer (Istikhara) and consultation with trusted advisors before making any final decisions.
+
+### Can I use this app for arranged marriage prospects?
+
+Absolutely! MyAroos is especially useful for arranged marriage scenarios where you may have limited information about the potential spouse. The compatibility test can help guide your conversations during initial meetings and identify areas where you should seek more information. Many of our users find it helpful to complete the compatibility test after meeting a potential spouse suggested by family members.
+
+### How often should I take the marriage readiness quiz?
+
+We recommend taking the marriage readiness quiz at least once a year if you're actively seeking marriage. Personal growth happens continuously, and your readiness may change over time. If you've been working on specific areas of improvement, you might retake it after a few months to track your progress. The quiz is designed to be a tool for self-reflection rather than a one-time assessment.
+
+### Does the app consider cultural differences in marriage expectations?
+
+Yes, our compatibility tool recognizes that Muslims come from diverse cultural backgrounds with varying customs and traditions. While we prioritize Islamic principles that apply universally, we acknowledge cultural differences in our assessment questions. We encourage users to discuss cultural expectations openly, as these can significantly impact marital harmony.
+
+### Can converts to Islam use this app effectively?
+
+Absolutely! MyAroos is designed to be accessible to all Muslims, including recent converts. We've intentionally created our tools to focus on core Islamic values while being inclusive of people at different stages in their Islamic journey. If you're a convert, the marriage readiness quiz can be particularly helpful in identifying areas where you might benefit from more Islamic knowledge or community support before marriage.
+
+### Is MyAroos suitable for Muslims of all madhabs?
+
+Yes, MyAroos is designed to be inclusive of all orthodox Islamic schools of thought. Our questions focus on fundamental aspects of marriage that are generally agreed upon across major madhabs. Where there might be differences in fiqh rulings, we've taken a balanced approach that respects diverse interpretations while maintaining core Islamic principles.
+
+### How are the scores calculated in your assessment?
+
+Our scoring system is based on a weighted algorithm that prioritizes factors in this order: religious compatibility, life goals and values, personality traits, and practical considerations. Religious factors receive the highest weight in our calculations because of their fundamental importance in an Islamic marriage. Each category contributes to your overall compatibility score, giving you a comprehensive view of your potential relationship's strengths and areas that may need discussion.
+
+### How can I contribute feedback to improve MyAroos?
+
+We welcome feedback from our users! Your insights help us make MyAroos more beneficial for the Muslim community. You can share your suggestions, report any issues, or tell us your success stories by opening an issue on our GitHub repository. We particularly value feedback from Islamic scholars, marriage counselors, and community leaders who can help ensure our content remains authentic and beneficial.

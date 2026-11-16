@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useState } from "react";
 import { getScoreTone } from "@/lib/scoreTone";
 
 interface ScoreRingProps {
@@ -9,9 +9,8 @@ interface ScoreRingProps {
   caption?: string;
 }
 
-/** Circular progress ring with a gradient stroke and an animated count-up */
+/** Circular progress ring with a solid stroke coloured by score and an animated count-up */
 export default function ScoreRing({ score, size = 208, animate = true, caption }: ScoreRingProps) {
-  const gradientId = useId();
   const [display, setDisplay] = useState(animate ? 0 : score);
   const tone = getScoreTone(score);
 
@@ -46,13 +45,6 @@ export default function ScoreRing({ score, size = 208, animate = true, caption }
   return (
     <div className="relative mx-auto" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-        <defs>
-          <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#2FA77C" />
-            <stop offset="60%" stopColor="#0F6B4F" />
-            <stop offset="100%" stopColor="#D69E35" />
-          </linearGradient>
-        </defs>
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -67,7 +59,7 @@ export default function ScoreRing({ score, size = 208, animate = true, caption }
           cy={size / 2}
           r={radius}
           fill="none"
-          stroke={`url(#${gradientId})`}
+          stroke={tone.color}
           strokeWidth={stroke}
           strokeLinecap="round"
           strokeDasharray={circumference}

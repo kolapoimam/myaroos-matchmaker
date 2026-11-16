@@ -93,6 +93,7 @@ Open http://localhost:8080 in your browser.
 | `npm run preview` | Preview the production build |
 | `npm run lint` | Lint the code with ESLint |
 | `npm run typecheck` | Check types with TypeScript |
+| `npm run seo` | Regenerate `sitemap.xml`, `llms.txt` and `llms-full.txt` |
 
 ### Deploy
 
@@ -104,7 +105,9 @@ The app is a static site. Import the repo into Vercel, Netlify or Cloudflare Pag
 src/
 ├── data/
 │   ├── readiness.ts        # Readiness quiz questions and scores
-│   └── compatibility.ts    # Compatibility questions and religious values
+│   ├── compatibility.ts    # Compatibility questions and religious values
+│   └── faq.ts              # FAQ used on About, in JSON-LD and llms-full.txt
+├── seo/routes.ts           # Page titles, descriptions and crawler summaries
 ├── pages/                  # Home, Readiness, Compatibility, About, 404
 ├── components/
 │   ├── QuestionCard.tsx    # Tappable answer cards
@@ -117,7 +120,22 @@ src/
 │   ├── exportReport.ts     # PNG and PDF export
 │   └── celebrate.ts        # Confetti
 └── index.css               # Theme colours for light and dark mode
+scripts/seo-build.mjs       # Generates sitemap, llms.txt and prerendered pages
 ```
+
+## SEO and AI discoverability
+
+MyAroos is built to be found by search engines and AI assistants.
+
+| What | Where |
+| --- | --- |
+| Titles, descriptions, canonical, Open Graph and X cards | `index.html` and `src/seo/routes.ts` |
+| Structured data (WebApplication, WebSite, FAQPage, BreadcrumbList) | `index.html` and `scripts/seo-build.mjs` |
+| Prerendered HTML per page for crawlers without JavaScript | Generated into `dist/` after every build |
+| `sitemap.xml`, `llms.txt` and `llms-full.txt` | Generated into `public/` before every build |
+| `robots.txt` allowing search and AI crawlers | `public/robots.txt` |
+
+Edit questions or FAQ answers in `src/data/` and the sitemap, llms files and prerendered pages update on the next build. Run `npm run seo` to refresh the files in `public/` without building.
 
 ## How scoring works
 

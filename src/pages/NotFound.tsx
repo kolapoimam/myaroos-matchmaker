@@ -2,8 +2,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import PageShell from "@/components/PageShell";
+import { useSeo } from "@/hooks/useSeo";
 
 const NotFound = () => {
+  useSeo();
   const location = useLocation();
 
   useEffect(() => {

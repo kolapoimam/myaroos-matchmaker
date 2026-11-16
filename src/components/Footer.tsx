@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className="relative mt-16 overflow-hidden bg-[hsl(165_35%_8%)] text-white">
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-green via-gold to-rose"
+        className="absolute inset-x-0 top-0 h-1 bg-gold"
       />
       <div className="container-custom grid gap-12 py-14 md:grid-cols-[1.4fr_1fr_1.2fr]">
         <div>

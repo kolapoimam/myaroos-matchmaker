@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import HadithCarousel from "@/components/HadithCarousel";
 import TestimonialsCarousel from "@/components/TestimonialsCarousel";
 import PageShell from "@/components/PageShell";
+import { useSeo } from "@/hooks/useSeo";
 import { REPO_URL } from "@/lib/constants";
 
 const features = [
@@ -45,6 +46,7 @@ const tools = [
 ];
 
 const Index = () => {
+  useSeo();
   return (
     <PageShell>
       {/* Hero */}
@@ -56,7 +58,7 @@ const Index = () => {
             </span>
             <h1 className="mt-6 text-5xl font-semibold leading-[1.02] md:text-7xl">
               Find your <span className="italic text-primary">perfect match</span>{" "}
-              <span className="text-gold-gradient">with Islamic values</span>
+              <span className="text-gold">with Islamic values</span>
             </h1>
             <p className="mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground lg:mx-0">
               MyAroos helps you assess your marriage readiness and find compatibility with potential suitors based on
@@ -168,14 +170,8 @@ const Index = () => {
       {/* CTA */}
       <section className="container-custom">
         <div className="relative overflow-hidden rounded-[2rem] bg-primary px-6 py-16 text-center text-primary-foreground md:px-16">
-          <div
-            aria-hidden="true"
-            className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-[hsl(var(--gold)/0.35)] blur-3xl"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute -bottom-24 -right-10 h-72 w-72 rounded-full bg-[hsl(var(--rose)/0.35)] blur-3xl"
-          />
+          <div aria-hidden="true" className="absolute -left-16 -top-16 h-48 w-48 rounded-full bg-gold" />
+          <div aria-hidden="true" className="absolute -bottom-20 -right-12 h-56 w-56 rounded-full bg-rose" />
           <HeartHandshake className="relative mx-auto h-12 w-12 animate-wiggle text-[hsl(var(--gold))]" />
           <h2 className="relative mt-5 text-4xl font-semibold md:text-5xl">Ready to find your perfect match?</h2>
           <p className="relative mx-auto mt-4 max-w-2xl text-lg opacity-85">

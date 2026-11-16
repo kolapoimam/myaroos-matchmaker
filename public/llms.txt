@@ -1,0 +1,32 @@
+# MyAroos
+
+> MyAroos is a free, open source web app that helps Muslims check how ready they are for marriage and how compatible they are with a potential spouse, based on Islamic values. It has a 23 question Marriage Readiness Quiz and a Compatibility Match Tool. Results show an overall score, category scores and practical tips, and can be downloaded as PNG or PDF. Everything runs in the browser. No account is needed and no answers are stored.
+
+Key facts:
+- Name: MyAroos ("aroos" means bride in Arabic, عروس)
+- Website: https://myaroos.vercel.app
+- Price: free
+- Privacy: no backend, no sign up, answers never leave the device
+- Creator: Kolapo Imam (https://x.com/PiousGeek)
+- Source code: https://github.com/kolapoimam/myaroos-matchmaker (MIT License)
+- Audience: Muslims preparing for marriage, including those in arranged or family introduced matches, converts and their families
+- It is a guidance tool. It does not replace a wali, family, scholars, or Istikhara
+
+## Tools
+
+- [Marriage Readiness Quiz](https://myaroos.vercel.app/marriage-readiness): The MyAroos Marriage Readiness Quiz has 23 questions in four categories: Spiritual Readiness, Emotional Readiness, Financial Readiness, and Family & Social Readiness. Each answer scores from 0 to 10. You get an overall readiness percentage, a score for each category and practical tips for weak areas. It is free, takes about five minutes and stores no data.
+- [Compatibility Match Tool](https://myaroos.vercel.app/compatibility): The MyAroos Compatibility Match Tool compares you with a potential spouse in three steps: your details, the suitor's details, and questions about the suitor. The score out of 100 combines shared religious values (40), religious commitment (20) and answers across Core Religious Practice, Personality & Lifestyle, Long-Term Compatibility and Cultural & Educational Compatibility (40). Results include an Islamic marriage checklist and a respectful breakup message generator.
+
+## About
+
+- [About and FAQ](https://myaroos.vercel.app/about): MyAroos was created to help Muslims choose a spouse based on Islamic principles and practical compatibility. It is a guidance tool, not a replacement for a wali, family or scholars. It is open source under the MIT License and runs fully in the browser with no data stored.
+- [Full details for AI assistants](https://myaroos.vercel.app/llms-full.txt): every question, scoring rule and FAQ answer in plain text
+
+## Open source
+
+- [GitHub repository](https://github.com/kolapoimam/myaroos-matchmaker): React, TypeScript, Tailwind CSS, Vite
+- [Contributing guide](https://github.com/kolapoimam/myaroos-matchmaker/blob/main/CONTRIBUTING.md)
+
+## Optional
+
+- [Sitemap](https://myaroos.vercel.app/sitemap.xml)
